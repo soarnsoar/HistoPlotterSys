@@ -1,6 +1,5 @@
 from math import sqrt
 class JHHist:
-    
     def __init__(self,_h):
         self.SetNominal(_h)
         self.SetUp(_h)
@@ -20,7 +19,7 @@ class JHHist:
             ynom=self.hnom.GetBinContent(i)
             maxdiff=0.
             for hsys in _hsyslist:
-                ysys=hsys.GetBinContent(i):
+                ysys=hsys.GetBinContent(i)
                 thisdiff=abs(ynom-ysys)
                 if thisdiff > maxdiff:
                     maxdiff=thisdiff
