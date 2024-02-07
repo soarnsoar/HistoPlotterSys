@@ -1,3 +1,10 @@
+from proc import dict_proc
+allmc=[]
+for p in dict_proc:
+    if "IsData" in dict_proc[p]:
+        if dict_proc[p]["IsData"] : continue
+    allmc+=dict_proc[p]["procs"]
+allmc=list(set(allmc))   
 dict_nui={
     ##----
     "electronid":{
@@ -24,6 +31,7 @@ dict_nui={
             17:{"name":"pTbelow20","nmem":1,},
             18:{"name":"residual","nmem":1,},
         },##[end] structure
+        "procs":allmc
     },##[end] electronid
     "electronreco":{
         "info":"Electron_RECO",
@@ -46,8 +54,8 @@ dict_nui={
             14:{"name":"genmatching","nmem":1},
             15:{"name":"fitting","nmem":1},
             16:{"name":"altsub","nmem":1},
-        }##[end] structure
-
+        },##[end] structure
+        "procs":allmc
     },
 
     "electrontrigger":{
@@ -71,8 +79,8 @@ dict_nui={
             14:{"name":"genmatching","nmem":1},
             15:{"name":"fitting","nmem":1},
             16:{"name":"altsub","nmem":1},
-        }##[end] structure
-
+        },##[end] structure
+        "procs":allmc
     },
 
     "muonreco":{
@@ -95,8 +103,8 @@ dict_nui={
             13:{"name":"nmassbin","nmem":2,"direction":["Up","Down"]},
             14:{"name":"genmatching","nmem":1},
             15:{"name":"fitting","nmem":1},
-        }##[end] structure
-
+        },##[end] structure
+        "procs":allmc
     },
 
     "muontrk":{
@@ -119,8 +127,8 @@ dict_nui={
             13:{"name":"nmassbin","nmem":2,"direction":["Up","Down"]},
             14:{"name":"genmatching","nmem":1},
             15:{"name":"fitting","nmem":1},
-        }##[end] structure
-
+        },##[end] structure
+        "procs":allmc
     },
 
 
@@ -145,8 +153,8 @@ dict_nui={
             14:{"name":"genmatching","nmem":1},
             15:{"name":"fitting","nmem":1},
             16:{"name":"residual","nmem":1},
-        }##[end] structure
-
+        },##[end] structure
+        "procs":allmc
     },
     
 
@@ -171,8 +179,8 @@ dict_nui={
             14:{"name":"genmatching","nmem":1},
             15:{"name":"fitting","nmem":1},
             
-        }##[end] structure
-
+        },##[end] structure
+        "procs":allmc
     },
     ##---[end] efftool
     "btaglfcorr":{
@@ -181,7 +189,8 @@ dict_nui={
         "structure":{
             0:{"name":"Up"},
             1:{"name":"Down"}
-        }
+        },
+        "procs":allmc
     },
     "btaglfuncorr":{
         "info":"btaglfuncorr",
@@ -189,7 +198,8 @@ dict_nui={
         "structure":{
             0:{"name":"Up"},
             1:{"name":"Down"}
-        }
+        },
+        "procs":allmc
     },
     ##[TODO] after reprocessing histo factory(240207)
     #"btaghfuncorr":{
@@ -214,17 +224,20 @@ dict_nui={
         "info":"JER",
         "EffTool":0,
         "structure":{
-            0:{"name":"Up"},
-            1:{"name":"Down"}
-        }
+            "Up":{"name":"Up"},
+            "Down":{"name":"Down"}
+        },
+        "procs":allmc
     },
     "jesTotal":{
         "info":"JEC",
         "EffTool":0,
         "structure":{
-            0:{"name":"Up"},
-            1:{"name":"Down"}
-        }
+            "Up":{"name":"Up"},
+            "Down":{"name":"Down"}
+        },
+        "procs":allmc
+
     },
     "prefire":{
         "info":"prefire",
@@ -232,7 +245,8 @@ dict_nui={
         "structure":{
             0:{"name":"Up"},
             1:{"name":"Down"}
-        }
+        },
+        "procs":allmc
     },
     "pu":{
         "info":"PileUp",
@@ -240,7 +254,8 @@ dict_nui={
         "structure":{
             0:{"name":"Up"},
             1:{"name":"Down"}
-        }
+        },
+        "procs":allmc
     },
     "ps":{
         "info":"PartonShower",
@@ -250,7 +265,8 @@ dict_nui={
             1:{"name":"fsrUp"},
             2:{"name":"isrDown"},
             3:{"name":"isrUp"},
-        }
+        },
+        "procs":[p for p in allmc if p!="WJets_Sherpa"]
     },
 
 
