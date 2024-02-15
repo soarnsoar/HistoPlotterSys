@@ -201,24 +201,26 @@ dict_nui={
         },
         "procs":allmc
     },
-    ##[TODO] after reprocessing histo factory(240207)
-    #"btaghfuncorr":{
-    #    "info":"btaglfuncorr",
-    #    "EffTool":0,
-    #    "structure":{
-    #        0:{"name":"Up"},
-    #        1:{"name":"Down"}
-    #    }
-    #},
+    
+    "btaghfuncorr":{
+        "info":"btaglfuncorr",
+        "EffTool":0,
+        "structure":{
+            0:{"name":"Up"},
+            1:{"name":"Down"}
+        },
+        "procs":allmc
+    },
 
-    #"btaghfuncorr":{
-    #    "info":"btaglfuncorr",
-    #    "EffTool":0,
-    #    "structure":{
-    #        0:{"name":"Up"},
-    #        1:{"name":"Down"}
-    #    }
-    #},
+    "btaghfuncorr":{
+        "info":"btaglfuncorr",
+        "EffTool":0,
+        "structure":{
+            0:{"name":"Up"},
+            1:{"name":"Down"}
+        },
+        "procs":allmc
+    },
 
     "jer":{
         "info":"JER",

@@ -15,21 +15,25 @@ class JHHist:
         self.hdown=_h.Clone()
         
     def AddSys(self,_hsyslist):##---->Take bigger one among Up /Down error
-        for i in range(1,_hnom.GetNbinsX()):
+        for i in range(1,self.hnom.GetNbinsX()):
             ynom=self.hnom.GetBinContent(i)
-            maxdiff=0.
+            maxdiffup=0.
+            maxdiffdown=0.
             for hsys in _hsyslist:
                 ysys=hsys.GetBinContent(i)
-                thisdiff=abs(ynom-ysys)
-                if thisdiff > maxdiff:
-                    maxdiff=thisdiff
+                thisdiff=ysys-ynom
+                if thisdiff>0:
+                    if thisdiff > maxdiffup: maxdiffup=thisdiff
+                else:
+                    if thisdiff < maxdiffdown : maxdiffdown=thisdiff
+                
             ##---Now calc sqrtsum of old and new err.
             yup_old=self.hup.GetBinContent(i)
             ydown_old=self.hdown.GetBinContent(i)
             dyup_old=yup_old-ynom
             dydown_old=ynom-ydown_old
-            dyup=sqrt(dyup_old**2 + maxdiff**2)
-            dydown=sqrt(dydown_old**2 + maxdiff**2)
+            dyup=sqrt(dyup_old**2 + maxdiffup**2)
+            dydown=sqrt(dydown_old**2 + maxdiffdown**2)
             yup=ynom+dyup
             ydown=ynom-dydown
             if ynom>=0 and ydown<0 and self.AlwaysPositive : ydown=0.

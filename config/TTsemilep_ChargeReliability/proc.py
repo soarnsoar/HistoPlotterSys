@@ -6,7 +6,7 @@ dict_proc=OrderedDict({
         "name":"DY",
     },
     "QCD":{
-        "procs":["QCD_bEnriched_HT1000To1500","QCD_bEnriched_HT1500To2000","QCD_bEnriched_HT200To300","QCD_bEnriched_HT300To500","QCD_bEnriched_HT500To700","QCD_bEnriched_HT700To1000"],
+        "procs":["QCD_bEnriched_HT1000to1500","QCD_bEnriched_HT1500to2000","QCD_bEnriched_HT200to300","QCD_bEnriched_HT300to500","QCD_bEnriched_HT500to700","QCD_bEnriched_HT700to1000"],
         "color":6,
         "name":"QCD",
     },
@@ -44,6 +44,7 @@ dict_proc=OrderedDict({
         "proc":["Data"],
         "name":"Data",
         "IsData":True,
+        "color":1,
     }
 
 }
