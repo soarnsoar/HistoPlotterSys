@@ -97,6 +97,7 @@ if __name__ == '__main__':
     ##---test
 
     plotter.Draw()
+    plotter.DrawRatio()
     #plotter.DrawStatUpDown("hist sames")
     #plotter.DrawUpDown("hist sames")
     
