@@ -22,11 +22,11 @@ if __name__ == '__main__':
     #for run in ListToRun:
     #    Plotter(run)
 
-    filepath=dict_input["MuonLepReliab"]
+    filepath=dict_input["MuonHadReliab"]
 
 
-    cut="TTbarLep__bMuonInbLepPass"
-    X="bLep_pt"
+    cut="TTbarLep__bMuonInbHadPass"
+    X="bHad_pt"
     #print [p for p in sorted(dict_proc) if p!="Data"]
     ##---From Here
     hreader=HistoReader()
@@ -34,7 +34,8 @@ if __name__ == '__main__':
     hreader.SetX(X)
     hreader.RunWithConf(filepath,dict_nui,dict_proc)
     #print sorted(hreader.dict_h)
-    allmc=[p for p in sorted(dict_proc) if p!="Data"]
+    allmc=[p for p in dict_proc if p!="Data"]
+    print allmc
     hreader.MakeCombineShape("allmc",allmc)## combine all mcs OR bkg
     #print sorted(hreader.dict_h)
     #for nui in hreader.dict_h["allmc"]:
@@ -44,6 +45,7 @@ if __name__ == '__main__':
     #        #print hreader.dict_h["allmc"][nui][var].Integral()
     hnom=hreader.GetNominalShape("allmc")
     y_nom=hnom.Integral()
+    print "mc integral->",y_nom
     dyup_max=0.
     dyup_max_name=""
     dydown_max=0.
@@ -77,19 +79,27 @@ if __name__ == '__main__':
     print "UpInPercent=",UpInPercent
     print "DownInPercent=",DownInPercent
  
-    plotter=Plotter()
+    plotter=Plotter(cut+"__"+X)
+    plotter.SetDir("test")
     plotter.SetDataHist(hreader.GetNominalShape("Data"))
+    print "y_data ",hreader.GetNominalShape("Data").Integral()
     plotter.SetMCHist(hreader.GetNominalShape("allmc"))
+    print "y_mc ",hreader.GetNominalShape("allmc").Integral()
     ##---For Stack---##
-    list_hnominal=[]
     for p in allmc:
-        list_hnominal.append(hreader.GetNominalShape(p))
-    plotter.SetMCStack(list_hnominal)
+        print p
+        plotter.AddProcMCStack(hreader.GetNominalShape(p),p)
     
+    plotter.SetRatio()
+    plotter.SetMCsysUp(hup)
+    plotter.SetMCsysDown(hdown)
+    plotter.SetMCtotalUpDown()
     ##---test
-    c=ROOT.TCanvas()
-    plotter.h_stack.Draw("hist")
-    c.SaveAs("hstack_test.pdf")
+
+    plotter.Draw()
+    #plotter.DrawStatUpDown("hist sames")
+    #plotter.DrawUpDown("hist sames")
+    
     hreader.Reset()
     
     #del hreader

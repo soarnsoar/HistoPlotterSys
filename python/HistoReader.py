@@ -125,6 +125,8 @@ class HistoReader:
             _color=self.dict_proc[mainp]["color"]
             self.dict_h[mainp]["nominal"].SetFillColor(_color)
             self.dict_h[mainp]["nominal"].SetLineColor(_color)
+            self.dict_h[mainp]["nominal"].SetMarkerColor(_color)
+            if mainp.lower()=="data" : self.dict_h[mainp]["nominal"].SetFillColor(0)
             ip += 1
     def SetHistogramsEffTool(self,mainp,nui,structure):
         if not mainp in self.dict_h: self.dict_h[mainp]={}
