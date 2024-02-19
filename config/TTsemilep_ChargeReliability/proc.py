@@ -24,18 +24,17 @@ dict_proc=OrderedDict([
         "color":6,
         #"color":45,
     }),
+    ("SingleTop",{
+        "procs":["SingleTop_sch_Lep","SingleTop_tch_antitop_incl","SingleTop_tch_top_incl","SingleTop_tW_antitop_NoFullyHad","SingleTop_tW_top_NoFullyHad",""],
+        "color":3,
+        #"color":30,
+        "name":"SingleTop"
+    }),
     ("TTLJ_Unmatched",{
         "procs":["TTLJ_powheg_bHadJet_Unmatched","TTLJ_powheg_bLepJet_Unmatched"],
         "name":"TTLJ No b-flv matching",
-        "color":3,
-        #"color":46,
-    }),
-
-    ("SingleTop",{
-        "procs":["SingleTop_sch_Lep","SingleTop_tch_antitop_incl","SingleTop_tch_top_incl","SingleTop_tW_antitop_NoFullyHad","SingleTop_tW_top_NoFullyHad",""],
         "color":5,
-        #"color":30,
-        "name":"SingleTop"
+        #"color":46,
     }),
     ("TTLJ_bMatched",{
         "procs":["TTLJ_powheg_bHadJet_true_bmatch","TTLJ_powheg_bLepJet_true_bmatch"],

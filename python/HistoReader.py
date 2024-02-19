@@ -44,6 +44,7 @@ class HistoReader:
         for p in _proclist:
             if ip==0:
                 self.dict_h[_name]["nominal"]=self.dict_h[p]["nominal"].Clone()
+                
             else:
                 self.dict_h[_name]["nominal"].Add(self.dict_h[p]["nominal"])
             ip+=1
@@ -71,6 +72,7 @@ class HistoReader:
             #print _nui,_var,p,self.dict_h[p][_nui][_var].Integral()
             if i ==0:
                 hcomb=self.dict_h[p][_nui][_var].Clone()
+                
             else:
                 hcomb.Add(self.dict_h[p][_nui][_var])
         return hcomb.Clone()
@@ -120,6 +122,7 @@ class HistoReader:
             this_path=_nominal_path
             if ip == 0:
                 self.dict_h[mainp]["nominal"]=self.tfile.Get(this_path).Clone()
+                
             else:
                 self.dict_h[mainp]["nominal"].Add(self.tfile.Get(this_path).Clone())
             _color=self.dict_proc[mainp]["color"]
@@ -157,6 +160,7 @@ class HistoReader:
                    #print p,nui,suffix,self.tfile.Get(this_path).Integral()
                    if ip==0:
                        self.dict_h[mainp][nui][suffix]=self.tfile.Get(this_path).Clone()
+                       
                    else:
                        self.dict_h[mainp][nui][suffix].Add(self.tfile.Get(this_path).Clone())
                    ip += 1
@@ -178,6 +182,7 @@ class HistoReader:
                 #self.tfile.Get(self.GetHistPathTillNui(p)).ls()
                 if ip==0:
                     self.dict_h[mainp][nui][var]=self.tfile.Get(this_path).Clone()
+                    
                 else:
                     self.dict_h[mainp][nui][var].Add(self.tfile.Get(this_path).Clone())
                 ip += 1

@@ -89,6 +89,7 @@ class Plotter:
         B = 0.12*H_ref 
         L = 0.12*W_ref
         R = 0.04*W_ref
+        self.canvas.Close()
         del self.canvas
         self.canvas = ROOT.TCanvas(self.name,self.name,50,50,W,H)
 
@@ -114,8 +115,8 @@ class Plotter:
         self.canvas.cd()
         self.canvas.Update()
         self.canvas.RedrawAxis()
-        os.system("mkdir -p "+self.DirToSave)
-        self.canvas.SaveAs(self.DirToSave+"/c__"+self.name+".pdf")
+        os.system("mkdir -p "+self.DirToSave+"/c/")
+        self.canvas.SaveAs(self.DirToSave+"/c/c__"+self.name+".pdf")
     def DrawRatio(self):
         self.InitDraw()
         self.pad1=ROOT.TPad("pad1", "pad1", 0, 0.3, 1, 1) ##x1,y1,x2,y2
@@ -153,8 +154,8 @@ class Plotter:
         self.canvas.cd()
         self.canvas.Update()
         self.canvas.RedrawAxis()
-        os.system("mkdir -p "+self.DirToSave)
-        self.canvas.SaveAs(self.DirToSave+"/cratio__"+self.name+".pdf")        
+        os.system("mkdir -p "+self.DirToSave+"/cratio/")
+        self.canvas.SaveAs(self.DirToSave+"/cratio/cratio__"+self.name+".pdf")        
         
     def DrawStack(self,option=""):
         del self.h_stack
