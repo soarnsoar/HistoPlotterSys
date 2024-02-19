@@ -210,13 +210,13 @@ class Plotter:
     def SetMCsysUp(self,_h):
         self.h_mc_sysup=_h.Clone()
         self.h_mc_sysup.SetStats(0)
-        self.h_ratio_sysup=self.h_data.Clone()
-        self.h_ratio_sysup.Divide(self.h_mc_sysup)
+        self.h_ratio_sysup=self.h_mc_sysup.Clone()
+        self.h_ratio_sysup.Divide(self.h_mc)
     def SetMCsysDown(self,_h):
         self.h_mc_sysdown=_h.Clone()
         self.h_mc_sysdown.SetStats(0)
-        self.h_ratio_sysdown=self.h_data.Clone()
-        self.h_ratio_sysdown.Divide(self.h_mc_sysdown)
+        self.h_ratio_sysdown=self.h_mc_sysdown.Clone()
+        self.h_ratio_sysdown.Divide(self.h_mc)
     def SetMCtotalUpDown(self):
         self.h_mc_up=self.h_mc.Clone()
         self.h_mc_up.SetStats(0)
@@ -248,17 +248,18 @@ class Plotter:
             self.h_mc_down.SetBinContent(i,ydown)
         ##--gr
         self.gr_mc=self.Convert_HistToGraphAsymErr(self.h_mc,self.h_mc_up,self.h_mc_down)
-
-        ##--ratio stat
-        self.h_ratio_statup=self.h_data.Clone()
-        self.h_ratio_statup.Divide(self.h_mc_statup)
-        self.h_ratio_statdown=self.h_data.Clone()
-        self.h_ratio_statdown.Divide(self.h_mc_statdown)
-        self.gr_ratio_stat=self.Convert_HistToGraphAsymErr(self.h_ratio,self.h_ratio_statup,self.h_ratio_statdown)
-
-        ##--ratio
+        ##--ratio one
         self.h_ratio_one=self.h_mc.Clone()
         self.h_ratio_one.Divide(self.h_mc)
+        ##--ratio stat
+        self.h_ratio_statup=self.h_mc_statup.Clone()
+        self.h_ratio_statup.Divide(self.h_mc)
+        self.h_ratio_statdown=self.h_mc_statdown.Clone()
+        self.h_ratio_statdown.Divide(self.h_mc)
+        self.gr_ratio_stat=self.Convert_HistToGraphAsymErr(self.h_ratio_one,self.h_ratio_statup,self.h_ratio_statdown)
+
+        ##--ratio
+
         self.h_ratio_up=self.h_mc_up.Clone()
         self.h_ratio_up.Divide(self.h_mc)
         self.h_ratio_down=self.h_mc_down.Clone()
