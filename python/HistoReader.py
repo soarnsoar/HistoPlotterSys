@@ -89,23 +89,23 @@ class HistoReader:
                     self.dict_h[_name][nui][var]=self.GetProcCombineShapes(_proclist,nui,var)
 
         ##---Make stat up down
-        self.SetStatUpDown(_name)
+        self.SetStatUpDown(_name,"stat_"+_name)
 
-    def SetStatUpDown(self,_name):##Using nominal
+    def SetStatUpDown(self,_name,_nuiname="stat"):##Using nominal
         Nbins=self.dict_h[_name]["nominal"].GetNbinsX()
-        self.dict_h[_name]["stat"]={}
-        self.dict_h[_name]["stat"]["Up"]=self.dict_h[_name]["nominal"].Clone()
-        self.dict_h[_name]["stat"]["Down"]=self.dict_h[_name]["nominal"].Clone()
-        self.dict_h[_name]["stat"]["Up"].Reset()
-        self.dict_h[_name]["stat"]["Down"].Reset()
+        self.dict_h[_name][_nuiname]={}
+        self.dict_h[_name][_nuiname]["Up"]=self.dict_h[_name]["nominal"].Clone()
+        self.dict_h[_name][_nuiname]["Down"]=self.dict_h[_name]["nominal"].Clone()
+        self.dict_h[_name][_nuiname]["Up"].Reset()
+        self.dict_h[_name][_nuiname]["Down"].Reset()
         for i in range(1,Nbins+1):
             y=self.dict_h[_name]["nominal"].GetBinContent(i)
             yerr=self.dict_h[_name]["nominal"].GetBinError(i)
             yup=y+yerr
             ydown=y-yerr
             if ydown<0 : ydown=0
-            self.dict_h[_name]["stat"]["Up"].SetBinContent(yup)
-            self.dict_h[_name]["stat"]["Down"].SetBinContent(ydown)
+            self.dict_h[_name][_nuiname]["Up"].SetBinContent(yup)
+            self.dict_h[_name][_nuiname]["Down"].SetBinContent(ydown)
             
 
     def MakeProcDivideShape(self,_name,_nume,_deno):
@@ -313,7 +313,7 @@ class HistoReader:
                 self.dict_h[mainp]["nominal"].SetMarkerSize(0.5)
                 self.dict_h[mainp]["nominal"].SetMarkerStyle(20)
             ip += 1
-        self.SetStatUpDown(mainp)
+        self.SetStatUpDown(mainp,"stat_"+mainp)
     def SetHistogramsEffTool(self,mainp,nui,structure):
         if not mainp in self.dict_h: self.dict_h[mainp]={}
         if not nui in self.dict_h[mainp]: self.dict_h[mainp][nui]={}
