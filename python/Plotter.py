@@ -12,6 +12,12 @@ class Plotter:
         self.canvas = ROOT.TCanvas()
         self.DirToSave="./"
         self.dict_stack=OrderedDict()
+        self.dict_h_mc=OrderedDict()
+        self.dict_h_data=OrderedDict()
+        self.dict_h_ratio=OrderedDict()
+        
+        self.dict_gr_mc=OrderedDict()
+        self.dict_gr_ratio=OrderedDict()
         self.h_stack=ROOT.THStack("","")
         self.leg=ROOT.TLegend(0.1,0.75,0.35,0.95)#x1,y1,x2,y2
         self.ymax=-9999999.
@@ -19,28 +25,29 @@ class Plotter:
         self.lumi=41.5
         self.sqrtS=13
     def SetDataHist(self,_h):
-        self.h_data=_h.Clone()
-        self.h_data.SetStats(0)
-        if self.h_data.GetMaximum() > self.ymax: self.ymax=self.h_data.GetMaximum()
-        if self.h_data.GetMinimum() < self.ymin: self.ymin=self.h_data.GetMinimum()
+        self.dict_h_data["nominal"]=_h.Clone()
+        self.dict_h_data["nominal"].SetStats(0)
+        if self.h_data.GetMaximum() > self.ymax: self.ymax=self.dict_h_data["nominal"].GetMaximum()
+        if self.h_data.GetMinimum() < self.ymin: self.ymin=self.dict_h_data["nominal"].GetMinimum()
     def SetMCHist(self,_h):
-        self.h_mc=_h.Clone()
-        self.h_mc.SetStats(0)
-        if self.h_mc.GetMaximum() > self.ymax: self.ymax=self.h_mc.GetMaximum()
-        if self.h_mc.GetMinimum() < self.ymin: self.ymin=self.h_mc.GetMinimum()
+        self.dict_h_mc["nominal"]=_h.Clone()
+        self.dict_h_mc["nominal"].SetStats(0)
+        
+        if self.h_mc.GetMaximum() > self.ymax: self.ymax=self.dict_h_mc["nominal"].GetMaximum()
+        if self.h_mc.GetMinimum() < self.ymin: self.ymin=self.dict_h_mc["nominal"].GetMinimum()
         self.SetMCstatUpDown()
     def SetMCstatUpDown(self):
-        self.h_mc_statup=self.h_mc.Clone()
-        self.h_mc_statup.Reset()
-        self.h_mc_statdown=self.h_mc.Clone()
-        self.h_mc_statdown.Reset()
-        for i in range(1,self.h_mc.GetNbinsX()+1):
-            y=self.h_mc.GetBinContent(i)
-            yerr=self.h_mc.GetBinError(i)
-            self.h_mc_statup.SetBinContent(i,y+yerr)
-            self.h_mc_statdown.SetBinContent(i,y-yerr)
+        self.dict_h_mc["statup"]=self.dict_h_mc["nominal"].Clone()
+        self.dict_h_mc["statup"].Reset()
+        self.dict_h_mc["statdown"]=self.dict_h_mc["nominal"].Clone()
+        self.dict_h_mc["statdown"].Reset()
+        for i in range(1,self.dict_h_mc["nominal"].GetNbinsX()+1):
+            y=self.dict_h_mc["nominal"].GetBinContent(i)
+            yerr=self.dict_h_mc["nominal"].GetBinError(i)
+            self.dict_h_mc["statup"].SetBinContent(i,y+yerr)
+            self.dict_h_mc["statdown"].SetBinContent(i,y-yerr)
 
-        self.gr_mc_stat=self.Convert_HistToGraphAsymErr(self.h_mc,self.h_mc_statup,self.h_mc_statdown)
+        self.dict_gr_mc["stat"]=self.Convert_HistToGraphAsymErr(self.dict_h_mc["nominal"],self.dict_h_mc["statup"],self.dict_h_mc["statdown"])
     
     def AddProcMCStack(self,_h,name):
         self.dict_stack[name]=_h
@@ -137,6 +144,14 @@ class Plotter:
         self.pad2.SetGridx()
         self.pad2.Draw()
         self.pad2.cd()
+        self.DrawRatioAndError()
+        CMS_lumi.CMS_lumi(self.canvas, self.iPeriod, self.iPos)
+        self.canvas.cd()
+        self.canvas.Update()
+        self.canvas.RedrawAxis()
+        os.system("mkdir -p "+self.DirToSave+"/cratio/")
+        self.canvas.SaveAs(self.DirToSave+"/cratio/cratio__"+self.name+".pdf")        
+    def DrawRatioAndError(self):
         ##TODO::handle this with input args
         self.h_ratio.SetMinimum(0.5)        
         self.h_ratio.SetMaximum(1.5)
@@ -150,13 +165,6 @@ class Plotter:
         self.gr_ratio.Draw('E2sames')
         self.line.Draw("sames")
         #self.leg.Draw()
-        CMS_lumi.CMS_lumi(self.canvas, self.iPeriod, self.iPos)
-        self.canvas.cd()
-        self.canvas.Update()
-        self.canvas.RedrawAxis()
-        os.system("mkdir -p "+self.DirToSave+"/cratio/")
-        self.canvas.SaveAs(self.DirToSave+"/cratio/cratio__"+self.name+".pdf")        
-        
     def DrawStack(self,option=""):
         del self.h_stack
         self.h_stack=ROOT.THStack("","")
@@ -207,16 +215,14 @@ class Plotter:
         
     def SaveAs(self):
         True
-    def SetMCsysUp(self,_h):
-        self.h_mc_sysup=_h.Clone()
-        self.h_mc_sysup.SetStats(0)
-        self.h_ratio_sysup=self.h_data.Clone()
-        self.h_ratio_sysup.Divide(self.h_mc_sysup)
-    def SetMCsysDown(self,_h):
-        self.h_mc_sysdown=_h.Clone()
-        self.h_mc_sysdown.SetStats(0)
-        self.h_ratio_sysdown=self.h_data.Clone()
-        self.h_ratio_sysdown.Divide(self.h_mc_sysdown)
+    def AddMCnuisance(self,_sysname,var,_h):
+        if not _sysname in self.dict_h_mc: self.dict_h_mc[_sysname]={}
+        self.dict_h_mc[_sysname][var]=_h.Clone()
+        if not _sysname in self.dict_h_ratio : self.dict_h_ratio[_sysname]={}
+        self.dict_h_ratio[_sysname][var]=self.dict_h_data["nominal"].Clone()
+        self.dict_h_ratio[_sysname][var].Divide(self.dict_h_mc[_sysname][var])
+    def CombineUncertainties(self,_dict_nui):
+        True
     def SetMCtotalUpDown(self):
         self.h_mc_up=self.h_mc.Clone()
         self.h_mc_up.SetStats(0)
@@ -248,17 +254,18 @@ class Plotter:
             self.h_mc_down.SetBinContent(i,ydown)
         ##--gr
         self.gr_mc=self.Convert_HistToGraphAsymErr(self.h_mc,self.h_mc_up,self.h_mc_down)
-
-        ##--ratio stat
-        self.h_ratio_statup=self.h_data.Clone()
-        self.h_ratio_statup.Divide(self.h_mc_statup)
-        self.h_ratio_statdown=self.h_data.Clone()
-        self.h_ratio_statdown.Divide(self.h_mc_statdown)
-        self.gr_ratio_stat=self.Convert_HistToGraphAsymErr(self.h_ratio,self.h_ratio_statup,self.h_ratio_statdown)
-
-        ##--ratio
+        ##--ratio one
         self.h_ratio_one=self.h_mc.Clone()
         self.h_ratio_one.Divide(self.h_mc)
+        ##--ratio stat
+        self.h_ratio_statup=self.h_mc_statup.Clone()
+        self.h_ratio_statup.Divide(self.h_mc)
+        self.h_ratio_statdown=self.h_mc_statdown.Clone()
+        self.h_ratio_statdown.Divide(self.h_mc)
+        self.gr_ratio_stat=self.Convert_HistToGraphAsymErr(self.h_ratio_one,self.h_ratio_statup,self.h_ratio_statdown)
+
+        ##--ratio
+
         self.h_ratio_up=self.h_mc_up.Clone()
         self.h_ratio_up.Divide(self.h_mc)
         self.h_ratio_down=self.h_mc_down.Clone()

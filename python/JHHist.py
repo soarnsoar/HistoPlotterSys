@@ -15,7 +15,7 @@ class JHHist:
         self.hdown=_h.Clone()
         
     def AddSys(self,_hsyslist):##---->Take bigger one among Up /Down error
-        for i in range(1,self.hnom.GetNbinsX()):
+        for i in range(1,self.hnom.GetNbinsX()+1):
             ynom=self.hnom.GetBinContent(i)
             maxdiffup=0.
             maxdiffdown=0.
@@ -42,13 +42,15 @@ class JHHist:
 
  
     ##---Replica Error:Asym case
-    def MakeShapeReplicaAsym(self,_hsyslist):
-        Nbin=self.h.GetNbinsX()
+    def GetShapeReplicaAsym(self,_hsyslist):
+        Nbin=self.hnom.GetNbinsX()
         hnom=self.hnom
-        self.replicaAsymUp=hnom.Clone().Reset()
-        self.replicaAsymDown=hnom.Clone().Reset()
+        replicaAsymUp=hnom.Clone()
+        replicaAsymUp.Reset()
+        replicaAsymDown=hnom.Clone()
+        replicaAsymDown.Reset()
 
-        for ib in range(1,Nbin):
+        for ib in range(1,Nbin+1):
             ynom=hnom.GetBinContent(ib)
             dyup2sum=0.
             dydown2sum=0.
@@ -64,10 +66,11 @@ class JHHist:
             yup=ynom+dyup
             ydown=ynom-dydown
             if ynom>=0 and ydown<0 and self.AlwaysPositive:ydown=0.
-            self.replicaAsymUp.SetBinContent(ib,yup)
-            self.replicaAsymDown.SetBinContent(ib,ydown)
-    def GetShapeReplicaAsym():
-        return self.replicaAsymUp,self.replicaAsymDown
+            replicaAsymUp.SetBinContent(ib,yup)
+            replicaAsymDown.SetBinContent(ib,ydown)
+        return replicaAsymUp,replicaAsymDown
+    #def GetShapeReplicaAsym(self):
+    #    return self.replicaAsymUp,self.replicaAsymDown
 
     ##---Replica Error:Sym case
     def MakeShapeReplicaSym(self,_hsyslist):
@@ -76,7 +79,7 @@ class JHHist:
         self.replicaSymUp=hnom.Clone().Reset()
         self.replicaSymDown=hnom.Clone().Reset()
 
-        for ib in range(1,Nbin):
+        for ib in range(1,Nbin+1):
             ynom=hnom.GetBinContent(ib)
             dy2sum=0.
             for hsys in _hsyslist:
@@ -89,7 +92,7 @@ class JHHist:
             if ynom>=0 and ydown<0 and self.AlwaysPositive:ydown=0.
             self.replicaSymUp.SetBinContent(ib,yup)
             self.replicaSymDown.SetBinContent(ib,ydown)
-    def GetShapeReplicaSym():
+    def GetShapeReplicaSym(self):
         return self.replicaSymUp, self.replicaSymDown
     ##--PDF shape
     #ref:https://arxiv.org/pdf/2203.05506.pdf
@@ -99,7 +102,7 @@ class JHHist:
         self.hessianAsymUp=hnom.Clone().Reset()
         self.hessianAsymDown=hnom.Clone().Reset()
 
-        for ib in range(1,Nbin):
+        for ib in range(1,Nbin+1):
             ynom=hnom.GetBinContent(ib)
             dyup2sum=0.
             dydown2sum=0.
@@ -117,7 +120,7 @@ class JHHist:
             if ynom>=0 and ydown<0 and self.AlwaysPositive:ydown=0.
             self.hessianAsymUp.SetBinContent(ib,yup)
             self.hessianAsymDown.SetBinContent(ib,ydown)
-    def GetHessianAsymShape():
+    def GetHessianAsymShape(self):
         return self.hessianAsymUp, self.hessianAsymDown
 
     def MakeHessianSymShape(self,_hsyslist):
@@ -127,7 +130,7 @@ class JHHist:
         self.hessianSymDown=hnom.Clone().Reset()
 
 
-        for ib in range(1,Nbin):
+        for ib in range(1,Nbin+1):
             ynom=hnom.GetBinContent(ib)
             dy2sum=0.
             for hsys in _hsyslist:
