@@ -9,13 +9,13 @@ dict_nui={
     ##----
     "electronid":{
         "info":"Electron_MediumID",
-        "EffTool":True,
+        "type":"EffTool",
         "structure":{
             ##--type
             #replica -> rms sum
             #group -> envelop among variation members in the group 
             0:{"name":"stat","nmem":20,"type":"replica"},##rms for mem
-            1:{"name":"altbkg","nmem":1,"type":"group":"altbkg"},## envelop among all group element
+            1:{"name":"altbkg","nmem":1,"type":"group","group":"altbkg"},## envelop among all group element
             2:{"name":"altbkg2","nmem":1,"type":"group","group":"altbkg"},
             3:{"name":"altsig","nmem":1,"type":"group","group":"altsig"},
             4:{"name":"altsig2","nmem":1,"type":"group","group":"altsig"},
@@ -38,7 +38,7 @@ dict_nui={
     },##[end] electronid
     "electronreco":{
         "info":"Electron_RECO",
-        "EffTool":True,
+        "type":"EffTool",
         "structure":{
             0:{"name":"stat","nmem":20,"type":"replica"},
             1:{"name":"altbkg","nmem":1,"type":"group","group":"algbkg"},
@@ -63,7 +63,7 @@ dict_nui={
 
     "electrontrigger":{
         "info":"Electron_Trigger",
-        "EffTool":True,
+        "type":"EffTool",
         "structure":{
             0:{"name":"stat","nmem":20,"type":"replica"},
             1:{"name":"altbkg","nmem":1,"type":"group","group":"altbkg"},
@@ -88,7 +88,7 @@ dict_nui={
 
     "muonreco":{
         "info":"Muon_RECO",
-        "EffTool":True,
+        "type":"EffTool",
         "structure":{
             0:{"name":"stat","nmem":20,"type":"replica"},
             1:{"name":"altbkg","nmem":1,"type":"group","group":"altbkg"},
@@ -112,7 +112,7 @@ dict_nui={
 
     "muontrk":{
         "info":"Muon_Tracking",
-        "EffTool":True,
+        "type":"EffTool",
         "structure":{
             0:{"name":"stat","nmem":20,"type":"replica"},
             1:{"name":"altbkg","nmem":1,"type":"group","group":"altbkg"},
@@ -137,7 +137,7 @@ dict_nui={
 
     "muonid":{
         "info":"Muon_ID",
-        "EffTool":True,
+        "type":"EffTool",
         "structure":{
             0:{"name":"stat","nmem":20,"type":"replica"},
             1:{"name":"altbkg","nmem":1,"type":"group","group":"altbkg"},
@@ -163,7 +163,7 @@ dict_nui={
 
     "muontrigger":{
         "info":"Muon_Trigger",
-        "EffTool":True,
+        "type":"EffTool",
         "structure":{
             0:{"name":"stat","nmem":20,"type":"replica"},
             1:{"name":"altbkg","nmem":1,"type":"group","group":"altbkg"},
@@ -188,7 +188,6 @@ dict_nui={
     ##---[end] efftool
     "btaglfcorr":{
         "info":"btaglfcorr",
-        "EffTool":0,
         "structure":{
             0:{"name":"Up","type":"group","group":"btaglfcorr"},
             1:{"name":"Down","type":"group","group":"btaglfcorr"}
@@ -197,7 +196,6 @@ dict_nui={
     },
     "btaglfuncorr":{
         "info":"btaglfuncorr",
-        "EffTool":0,
         "structure":{
             0:{"name":"Up","type":"group","group":"btaglfuncorr"},
             1:{"name":"Down","type":"group","group":"btaglfuncorr"}
@@ -207,17 +205,15 @@ dict_nui={
     
     "btaghfcorr":{
         "info":"btaghfcorr",
-        "EffTool":0,
         "structure":{
             0:{"name":"Up","type":"group","group":"btaghfcorr"},
-            1:{"name":"Down""type":"group","group":"btaghfcorr"},
+            1:{"name":"Down","type":"group","group":"btaghfcorr"},
         },
         "procs":allmc
     },
 
     "btaghfuncorr":{
         "info":"btaghfuncorr",
-        "EffTool":0,
         "structure":{
             0:{"name":"Up","type":"group","group":"btaghfuncorr"},
             1:{"name":"Down","type":"group","group":"btaghfuncorr"}
@@ -227,7 +223,6 @@ dict_nui={
 
     "jer":{
         "info":"JER",
-        "EffTool":0,
         "structure":{
             "Up":{"name":"Up","type":"group","group":"jer"},
             "Down":{"name":"Down","type":"group","group":"jer"}
@@ -236,7 +231,6 @@ dict_nui={
     },
     "jesTotal":{
         "info":"JEC",
-        "EffTool":0,
         "structure":{
             "Up":{"name":"Up","type":"group","group":"jes"},
             "Down":{"name":"Down","type":"group","group":"jes"}
@@ -246,7 +240,7 @@ dict_nui={
     },
     "prefire":{
         "info":"prefire",
-        "EffTool":0,
+
         "structure":{
             0:{"name":"Up","type":"group","group":"prefire"},
             1:{"name":"Down","type":"group","group":"prefire"}
@@ -255,7 +249,6 @@ dict_nui={
     },
     "pu":{
         "info":"PileUp",
-        "EffTool":0,
         "structure":{
             0:{"name":"Up","type":"group","group":"pu"},
             1:{"name":"Down","type":"group","group":"pu"}
@@ -264,7 +257,6 @@ dict_nui={
     },
     "ps":{
         "info":"PartonShower",
-        "EffTool":0,
         "structure":{
             0:{"name":"fsrDown","type":"group","group":"fsr"},
             1:{"name":"fsrUp","type":"group","group":"fsr"},

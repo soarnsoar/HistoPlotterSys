@@ -4,9 +4,27 @@ DEBUG=False
 class HistoReader:
     def __init__(self):
         self.dict_h={}
-        self.dict_h_ratio={}
+        self.dict_hstack={}
+        self.dict_grerr={}
     def Reset(self):
+        del self.dict_h
+        del self.dict_hstack
+        del self.dict_grerr
         self.dict_h={}
+        self.dict_hstack={}
+        self.dict_grerr={}
+    def IsEffTool(self,_nui):
+        _IsEffTool=False
+        if "type" in self.dict_nui[_nui]:
+            if self.dict_nui[_nui]["type"]=="EffTool": _IsEffTool=True
+        return _IsEffTool
+
+    def IsStatType(self,_nui):
+        _IsStatType=False
+        if "type" in self.dict_nui[_nui]:
+            if self.dict_nui[_nui]["type"]=="stat": _IsStatType=True
+        return _IsStatType
+
     def LoadWithConf(self,_filepath,_dict_nui,_dict_proc):
         self.SetInputPath(_filepath)
         self.OpenFile()
@@ -24,32 +42,41 @@ class HistoReader:
                 self.SetProcs(_dict_proc[mainp]["procs"])
             self.SetHistogramsNominal(mainp)
 
-            for nui in _dict_nui:
-                #print "self.SetHistogramsEffTool"
-                self.SetHistograms(mainp,nui,_dict_nui[nui]['structure'],_dict_nui[nui]["EffTool"])
+            for nui in self.dict_nui:
+                if self.IsStatType(nui):continue
+                self.SetHistograms(mainp,nui,self.dict_nui[nui]['structure'],self.IsEffTool(nui))
+
         ##---CloseFile----##
         self.CloseFile()
-        
-    def MakeBkgShape(self):
-        self.MakeProcCombineShape("bkg",self.bkglist)
+
+
+    def MakeBkgShape(self,_bkglist):
+        self.MakeProcCombineShape("bkg",_bkglist)
         self.MakeBkgSubShape("data-bkg","Data","bkg")
         # def MakeBkgSubShape(self,_name,_dataname,_bkgname,_coeff=-1):
         ##---Combine Variations---##
         if not "allsys" in self.dict_h["data-bkg"] : self.dict_h["data-bkg"]["allsys"]={}
-        self.dict_h["data-bkg"]["allsys"]["Up"],self.dict_h["data-bkg"]["allsys"]["Down"]=self.GetSysTotalUpDownShape("data-bkg",sorted(self.dict_nui))
-        #def GetSysTotalUpDownShape(self,_name,_nuilist):
+        self.dict_h["data-bkg"]["allsys"]["Up"],self.dict_h["data-bkg"]["allsys"]["Down"]=self.GetTotalUpDownShape("data-bkg",sorted(self.dict_nui),True)
+        
+        self.dict_grerr["data-bkg"]={}
+        self.dict_grerr["data-bkg"]["allsys"]=self.Convert_HistToGraphAsymErr(self.dict_h["data-bkg"]["nominal"], self.dict_h["data-bkg"]["allsys"]["Up"],self.dict_h["data-bkg"]["allsys"]["Down"])
+        #def Convert_HistToGraphAsymErr(self,_h,_hup,_hdown):
+
     def MakeAllMCShape(self,_allmclist):
         self.MakeProcCombineShape("allmc",_allmclist)
-        
-    def SetHistogram(self,mainp,nui,structure,isEffTool):
+        self.dict_hstack["allmc"]=ROOT.THStack("allmc","allmc")
+        for p in _allmclist:
+            self.dict_hstack["allmc"].Add(self.dict_h[p]["nominal"])
+        self.MakeProcDivideShape("data/allmc","Data","allmc")
+        self.MakeProcDivideShape("allmc/allmc","allmc","allmc")
+    def SetHistograms(self,mainp,nui,structure,isEffTool):
         if isEffTool:
-            self.SetHistogramsEffTool(mainp,nui,_dict_nui[nui]['structure'])
+            self.SetHistogramsEffTool(mainp,nui,self.dict_nui[nui]['structure'])
         else:
-            self.SetHistogramsOthers(mainp,nui,_dict_nui[nui]['structure'])
+            self.SetHistogramsOthers(mainp,nui,self.dict_nui[nui]['structure'])
     def GetVariations(self,nui,_proclist):
         _allvar=set([])
         for p in _proclist:
-            #print sorted(self.dict_h[p][nui])
             _allvar=(_allvar | set(sorted(self.dict_h[p][nui])))
 
         return list(_allvar)
@@ -62,7 +89,7 @@ class HistoReader:
         for p in _proclist:
             if ip==0:
                 self.dict_h[_name]["nominal"]=self.dict_h[p]["nominal"].Clone()
-                
+                self.dict_h[_name]["nominal"].SetDirectory(0)
             else:
                 self.dict_h[_name]["nominal"].Add(self.dict_h[p]["nominal"])
             ip+=1
@@ -73,12 +100,11 @@ class HistoReader:
             if not nui in self.dict_h[_name] : self.dict_h[_name][nui]={}
 
             ##[if efftool type]
-            if self.dict_nui[nui]["EffTool"]:
+            if self.IsEffTool(nui):
                 ## dict_h[_name][nui][iset][imem]----->histogram
-                if not iset in self.dict_h[_name][nui]: 
-                    self.dict_h[_name][nui][iset]={}
                 for iset in self.dict_nui[nui]["structure"]:
-                    nmem=self.dict_nui[nui]["structure"]["nmem"]
+                    if not iset in self.dict_h[_name][nui]: self.dict_h[_name][nui][iset]={}
+                    nmem=self.dict_nui[nui]["structure"][iset]["nmem"]
                     for imem in range(nmem):
                         self.dict_h[_name][nui][iset][imem]=self.GetProcCombineShapesEffTool(_proclist,nui,iset,imem)
                         
@@ -90,12 +116,19 @@ class HistoReader:
 
         ##---Make stat up down
         self.SetStatUpDown(_name,"stat_"+_name)
-
+        ##---Make total up/down shape
+        self.dict_h[_name]["total"]={}
+        self.dict_h[_name]["total"]["Up"],self.dict_h[_name]["total"]["Down"]=self.GetTotalUpDownShape(_name,sorted(self.dict_nui))
+        self.dict_grerr[_name]={}
+        self.dict_grerr[_name]["total"]=self.Convert_HistToGraphAsymErr(self.dict_h[_name]["nominal"], self.dict_h[_name]["total"]["Up"],self.dict_h[_name]["total"]["Down"])        
+        #def GetTotalUpDownShape(self,_name,_nuilist,sysonly=False)
     def SetStatUpDown(self,_name,_nuiname="stat"):##Using nominal
         Nbins=self.dict_h[_name]["nominal"].GetNbinsX()
         self.dict_h[_name][_nuiname]={}
         self.dict_h[_name][_nuiname]["Up"]=self.dict_h[_name]["nominal"].Clone()
+        self.dict_h[_name][_nuiname]["Up"].SetDirectory(0)
         self.dict_h[_name][_nuiname]["Down"]=self.dict_h[_name]["nominal"].Clone()
+        self.dict_h[_name][_nuiname]["Down"].SetDirectory(0)
         self.dict_h[_name][_nuiname]["Up"].Reset()
         self.dict_h[_name][_nuiname]["Down"].Reset()
         for i in range(1,Nbins+1):
@@ -104,38 +137,55 @@ class HistoReader:
             yup=y+yerr
             ydown=y-yerr
             if ydown<0 : ydown=0
-            self.dict_h[_name][_nuiname]["Up"].SetBinContent(yup)
-            self.dict_h[_name][_nuiname]["Down"].SetBinContent(ydown)
-            
+            self.dict_h[_name][_nuiname]["Up"].SetBinContent(i,yup)
+            self.dict_h[_name][_nuiname]["Down"].SetBinContent(i,ydown)
+        self.dict_nui[_nuiname]={
+            "structure":["Up","Down"],
+            "type":"stat",
+        }
 
-    def MakeProcDivideShape(self,_name,_nume,_deno):
+        
+    def MakeProcDivideShape(self,_name,_nume,_deno, fix_deno_uncertainty=True):
         ## -proc whose name is _name is _nume/_deno
         self.dict_h[_name]={}
         ##--nominal--##
         self.dict_h[_name]["nominal"]=self.dict_h[_nume]["nominal"].Clone()
-        self.dict_h[_name]["nominal"].Divide(self.dict_h[_deno]["nominal"])
+        self.dict_h[_name]["nominal"].SetDirectory(0)
+        ##--nominal=h_deno_with_no_staterr--##
+        h_deno_with_no_staterr=self.dict_h[_deno]["nominal"].Clone()
+        h_deno_with_no_staterr.SetDirectory(0)
+        for i in range(1,h_deno_with_no_staterr.GetNbinsX()+1):
+            h_deno_with_no_staterr.SetBinError(i,0)
+        self.dict_h[_name]["nominal"].Divide(h_deno_with_no_staterr)
         
         ##--nuiance--##
         for nui in sorted(self.dict_nui):
             if not nui in self.dict_h[_name] : self.dict_h[_name][nui]={}
 
             ##[if efftool type]
-            if self.dict_nui[nui]["EffTool"]:
+            #if self.dict_nui[nui]["EffTool"]:
+            if self.IsEffTool(nui):            
                 ## dict_h[_name][nui][iset][imem]----->histogram
-                if not iset in self.dict_h[_name][nui]: 
-                    self.dict_h[_name][nui][iset]={}
                 for iset in self.dict_nui[nui]["structure"]:
-                    nmem=self.dict_nui[nui]["structure"]["nmem"]
+                    if not iset in self.dict_h[_name][nui]: 
+                        self.dict_h[_name][nui][iset]={}
+                    nmem=self.dict_nui[nui]["structure"][iset]["nmem"]
                     for imem in range(nmem):
                         ##--if numerator has this variation
                         if nui in self.dict_h[_nume]:
                             self.dict_h[_name][nui][iset][imem]=self.dict_h[_nume][nui][iset][imem].Clone()
+                            self.dict_h[_name][nui][iset][imem].SetDirectory(0)
                         else: ##if not has this var
                             self.dict_h[_name][nui][iset][imem]=self.dict_h[_nume]["nominal"].Clone()
-                        if nui in self.dict_h[_deno]:##if denominator has this variation
-                            self.dict_h[_name][nui][iset][imem].Divide(self.dict_h[_deno][nui][iset][imem])
-                        else:##if not deno has the var 
+                            self.dict_h[_name][nui][iset][imem].SetDirectory(0)
+
+                        if fix_deno_uncertainty:
                             self.dict_h[_name][nui][iset][imem].Divide(self.dict_h[_deno]["nominal"])
+                        else:
+                            if nui in self.dict_h[_deno]:##if denominator has this variation
+                                self.dict_h[_name][nui][iset][imem].Divide(self.dict_h[_deno][nui][iset][imem])
+                            else:##if not deno has the var 
+                                self.dict_h[_name][nui][iset][imem].Divide(self.dict_h[_deno]["nominal"])
                             
             else:
                 ##---NOT efftool type
@@ -143,39 +193,55 @@ class HistoReader:
                 for var in self.dict_nui[nui]["structure"]:
                     if nui in self.dict_h[_nume]: ##if numerator has this var
                         self.dict_h[_name][nui][var]=self.dict_h[_nume][nui][var].Clone()
+                        self.dict_h[_name][nui][var].SetDirectory(0)
                     else:##if not has this var
                         self.dict_h[_name][nui][var]=self.dict_h[_nume]["nominal"].Clone()
-                    if nui in self.dict_h[_deno]:##if deno has this var
-                        self.dict_h[_name][nui][var].Divide(self.dict_h[_deno][nui][var])
-                    else:##if deno does not have this var
-                        self.dict_h[_name][nui][var].Divide(self.dict_h[_deno]["nominal"])
+                        self.dict_h[_name][nui][var].SetDirectory(0)
+                    if fix_deno_uncertainty:
+                            self.dict_h[_name][nui][var].Divide(self.dict_h[_deno]["nominal"])
+                    else:
+                        if nui in self.dict_h[_deno]:##if deno has this var
+                            self.dict_h[_name][nui][var].Divide(self.dict_h[_deno][nui][var])
+                        else:##if deno does not have this var
+                            self.dict_h[_name][nui][var].Divide(self.dict_h[_deno]["nominal"])
 
         ##--Make TotalSysUpDown
         #def GetSysTotalUpDownShape(self,_name,_nuilist):
-        self.dict_h[_name]["allsys"]["Up"],self.dict_h[_name]["allsys"]["Down"]=self.GetSysTotalUpDownShape(_name,sorted(self.dict_nui))
+        self.dict_h[_name]["allsys"]={}
+        self.dict_h[_name]["allsys"]["Up"],self.dict_h[_name]["allsys"]["Down"]=self.GetTotalUpDownShape(_name,sorted(self.dict_nui),True)
+        self.dict_h[_name]["total"]={}
+        self.dict_h[_name]["total"]["Up"],self.dict_h[_name]["total"]["Down"]=self.GetTotalUpDownShape(_name,sorted(self.dict_nui))
+        
+        self.dict_grerr[_name]={}
+        self.dict_grerr[_name]["allsys"]=self.Convert_HistToGraphAsymErr(self.dict_h[_name]["nominal"], self.dict_h[_name]["allsys"]["Up"],self.dict_h[_name]["allsys"]["Down"])
+        self.dict_grerr[_name]["total"]=self.Convert_HistToGraphAsymErr(self.dict_h[_name]["nominal"], self.dict_h[_name]["total"]["Up"],self.dict_h[_name]["total"]["Down"])
+        
     def MakeBkgSubShape(self,_name,_dataname,_bkgname,_coeff=-1):
         ##---
         #data - bkg
         self.dict_h[_name]={}
         ##--nominal--##
         self.dict_h[_name]["nominal"]=self.dict_h[_dataname]["nominal"].Clone()
+        self.dict_h[_name]["nominal"].SetDirectory(0)
         self.dict_h[_name]["nominal"].Add(self.dict_h[_bkgname]["nominal"],_coeff)
 
         ##--nuiance--##
         for nui in sorted(self.dict_nui):
             if not nui in self.dict_h[_name] : self.dict_h[_name][nui]={}
             ##---if efftool
-            if self.dict_nui[nui]["EffTool"]:
+            if self.IsEffTool(nui):
                 for iset in self.dict_nui[nui]["structure"]:
-                    if not iset in self.self.dict_h[_name][nui]:
+                    if not iset in self.dict_h[_name][nui]:
                         self.dict_h[_name][nui][iset]={}
                     nmem=self.dict_nui[nui]["structure"][iset]["nmem"]    
                     for imem in range(nmem):
                         self.dict_h[_name][nui][iset][imem]=self.dict_h[_dataname]["nominal"].Clone()
+                        self.dict_h[_name][nui][iset][imem].SetDirectory(0)
                         self.dict_h[_name][nui][iset][imem].Add(self.dict_h[_bkgname][nui][iset][imem],_coeff)
             else:##--if not efftool
                 for var in self.dict_nui[nui]["structure"]:
                     self.dict_h[_name][nui][var]=self.dict_h[_dataname]["nominal"].Clone()
+                    self.dict_h[_name][nui][var].SetDirectory(0)
                     self.dict_h[_name][nui][var].Add(self.dict_h[_bkgname][nui][var],_coeff)
 
     def SortVariationGroup(self,_nui):
@@ -186,19 +252,22 @@ class HistoReader:
                 if self.dict_nui[_nui]["structure"][iset]["type"]=="group":
                     _HasGroup=True
             _groupname=""
-            if _HadGroup:
+            if _HasGroup:
                 _groupname=self.dict_nui[_nui]["structure"][iset]["group"]
 
             else:
                 _groupname=iset
             if not _groupname in _dict_group: _dict_group[_groupname]=[]
-            _dict_group[groupname].append(iset)
+            _dict_group[_groupname].append(iset)
         return _dict_group
         
-    def GetSysTotalUpDownShape(self,_name,_nuilist):
+    def GetTotalUpDownShape(self,_name,_nuilist,sysonly=False):
         _h_combiner=JHHist(self.dict_h[_name]["nominal"])
         for nui in _nuilist:
-            isEffTool=self.dict_nui[nui]["EffTool"]
+            #isEffTool=self.dict_nui[nui]["EffTool"]
+            if sysonly:
+                if self.IsStatType(nui): continue
+            isEffTool=self.IsEffTool(nui)
             if isEffTool:
                 _dict_group=self.SortVariationGroup(nui)
                 for group in _dict_group:
@@ -208,10 +277,14 @@ class HistoReader:
                         _this_type= self.dict_nui[nui]["structure"][list_iset[0]]["type"]
                         if _this_type=="replica":isReplicaType=True
                     if isReplicaType:
+                        _hlist=[]
                         for iset in list_iset:
                             nmem=self.dict_nui[nui]["structure"][iset]["nmem"]
                             for imem in range(nmem):
-                                _h_combiner.AddSys([self.dict_h[_name][nui][iset][imem]])
+                                #_h_combiner.AddSys([self.dict_h[_name][nui][iset][imem]])
+                                _hlist.append(self.dict_h[_name][nui][iset][imem])
+                        _hup,_hdown=_h_combiner.GetShapeReplicaAsym(_hlist)
+                        _h_combiner.AddSys([_hup,_hdown])
                     else:##Envelop among all elements
                         _hlist=[]
                         for iset in list_iset:
@@ -228,16 +301,19 @@ class HistoReader:
                 _h_combiner.AddSys(_hlist)
             
 
-        return _h_combiner.hup, _h_combiner.hdown
+        return _h_combiner.hup.Clone(), _h_combiner.hdown.Clone()
 
     def GetProcCombineShapes(self,_proclist,_nui,_var):
         for i,p in enumerate(_proclist):
-            #print _nui,_var,p,self.dict_h[p][_nui][_var].Integral()
-            if i ==0:
-                hcomb=self.dict_h[p][_nui][_var].Clone()
-                
+            if _nui in self.dict_h[p]:
+                _hToAdd=self.dict_h[p][_nui][_var]
             else:
-                hcomb.Add(self.dict_h[p][_nui][_var])
+                _hToAdd=self.dict_h[p]["nominal"]
+            if i ==0:
+                hcomb=_hToAdd.Clone()
+                hcomb.SetDirectory(0)
+            else:
+                hcomb.Add(_hToAdd)
         return hcomb.Clone()
 
     def GetProcCombineShapesEffTool(self,_proclist,_nui,_iset,_imem):
@@ -245,7 +321,7 @@ class HistoReader:
             if i ==0:
                 hcomb=self.dict_h[p][_nui][_iset][_imem].Clone()
             else:
-                hcomb.Add(self.dict_h[p][_nui][_iset][_imem][_var])
+                hcomb.Add(self.dict_h[p][_nui][_iset][_imem])
         return hcomb.Clone()
 
     def __del__(self):
@@ -257,11 +333,6 @@ class HistoReader:
     def SetProcs(self,_procs):
         self.procs=_procs
         #TTbarLep__bHadFail/Thad_M/TTLL_powheg/btaglfcorr
-    def SetBkgList(self,_bkglist):
-        self.bkglist=_bkglist
-    def SetSigList(self,_siglist):
-        self.siglist=_siglist
-
     def SetCut(self,_cut):
         self.cut=_cut
     def SetX(self,_x):
@@ -300,10 +371,10 @@ class HistoReader:
             if not self.IsHistExist(_nominal_path): continue
             this_path=_nominal_path
             if ip == 0:
-                self.dict_h[mainp]["nominal"]=self.tfile.Get(this_path).Clone()
-                
+                self.dict_h[mainp]["nominal"]=(self.tfile.Get(this_path)).Clone()
+                self.dict_h[mainp]["nominal"].SetDirectory(0)
             else:
-                self.dict_h[mainp]["nominal"].Add(self.tfile.Get(this_path).Clone())
+                self.dict_h[mainp]["nominal"].Add(self.tfile.Get(this_path))
             _color=self.dict_proc[mainp]["color"]
             self.dict_h[mainp]["nominal"].SetFillColor(_color)
             self.dict_h[mainp]["nominal"].SetLineColor(_color)
@@ -313,6 +384,7 @@ class HistoReader:
                 self.dict_h[mainp]["nominal"].SetMarkerSize(0.5)
                 self.dict_h[mainp]["nominal"].SetMarkerStyle(20)
             ip += 1
+        #print mainp,type(self.dict_h[mainp]["nominal"])
         self.SetStatUpDown(mainp,"stat_"+mainp)
     def SetHistogramsEffTool(self,mainp,nui,structure):
         if not mainp in self.dict_h: self.dict_h[mainp]={}
@@ -345,9 +417,9 @@ class HistoReader:
 
                    if ip==0:
                        self.dict_h[mainp][nui][iset][imem]=self.tfile.Get(this_path).Clone()
-                       
+                       self.dict_h[mainp][nui][iset][imem].SetDirectory(0)
                    else:
-                       self.dict_h[mainp][nui][iset][imem].Add(self.tfile.Get(this_path).Clone())
+                       self.dict_h[mainp][nui][iset][imem].Add(self.tfile.Get(this_path))
                    ip += 1
     def SetHistogramsOthers(self,mainp,nui,structure): ## common systematics
         if not mainp in self.dict_h: self.dict_h[mainp]={}
@@ -367,24 +439,65 @@ class HistoReader:
                 #self.tfile.Get(self.GetHistPathTillNui(p)).ls()
                 if ip==0:
                     self.dict_h[mainp][nui][var]=self.tfile.Get(this_path).Clone()
-                    
+                    self.dict_h[mainp][nui][var].SetDirectory(0)
                 else:
-                    self.dict_h[mainp][nui][var].Add(self.tfile.Get(this_path).Clone())
+                    self.dict_h[mainp][nui][var].Add(self.tfile.Get(this_path))
                 ip += 1
-if __name__ == '__main__':
-    tester=HistoReader()
-    tester.SetInputPath("../SKFlatOutput/TTsemilep_ChargeReliability/RunSyst__RunJet__RunHadronSide__RunChAcc__/combine.root")
-    tester.OpenFile()    
-    tester.SetProcs(["QCD_bEnriched_HT200to300"])
-    tester.SetCut("TTbarLep__bHadFail")
-    tester.SetX("Thad_M")
-    #tester.SetNuisance("electronid")
-    #tester.SetHistogramsWithSetMem(0,20)
-    tester.SetNuisance("btaglfcorr")
-    tester.SetHistograms(2)
-    c=ROOT.TCanvas()
-    #for i in range(20):
-    for i in range(2):
-        tester.dict_h[i].Draw()
-        c.SaveAs("test"+str(i)+".pdf")
+    
+    def SetFillColorAlphaOnly(self,_proc,_color,_alpha):
+        self.dict_h[_proc]["nominal"].SetFillColor(0)
+        self.dict_h[_proc]["nominal"].SetLineColor(0)
+        if _proc in self.dict_grerr:
+            if "total" in self.dict_grerr[_proc]:
+                self.dict_grerr[_proc]["total"].SetFillColorAlpha(_color,_alpha)
+            if "allsys" in self.dict_grerr[_proc]:
+                self.dict_grerr[_proc]["allsys"].SetFillColorAlpha(_color,_alpha)
+    def Convert_HistToGraphAsymErr(self,_h,_hup,_hdown):
+        N=_h.GetNbinsX()
+        gr=ROOT.TGraphAsymmErrors(N+1)
 
+        for i in range(1,N+1):
+            x1=_h.GetBinLowEdge(i)
+            x2=x1+_h.GetBinWidth(i)
+            x=(x1+x2)/2
+            y=_h.GetBinContent(i)
+            yup=_hup.GetBinContent(i)
+            dyup=yup-y
+            ydown=_hdown.GetBinContent(i)
+            dydown=y-ydown
+            #if y>0:
+            #    print dyup/y
+            #    print dydown/y
+            #print x1,x2
+            gr.SetPoint(i-1,x,y)
+            gr.SetPointError(i-1,x-x1,x2-x,dydown,dyup)
+        return ROOT.TGraphAsymmErrors(gr)
+if __name__ == '__main__':
+    from config.TTsemilep_ChargeReliability.input import dict_input
+    from config.TTsemilep_ChargeReliability.nuisance import dict_nui
+    from config.TTsemilep_ChargeReliability.proc import dict_proc
+    from config.TTsemilep_ChargeReliability.cut_and_x import dict_cut_and_x
+    _filepath=dict_input["MuonHadReliab"]
+    tester=HistoReader()
+    tester.SetCut("TTbarLep__bMuonInbHadPass")
+    tester.SetX("bHad_pt")
+    
+    tester.LoadWithConf(_filepath,dict_nui,dict_proc)
+    allmc=[p for p in dict_proc if p!="Data"]
+    bkg=[p for p in dict_proc if p!="Data" and p!="TTLJ_bMatched" and p!="TTLJ_bbarMatched"]
+    tester.MakeBkgShape(bkg)
+    tester.MakeAllMCShape(allmc)
+
+    ##---test pad1---##
+    tester.SetFillColorAlphaOnly("allmc",1,0.3)
+    c=ROOT.TCanvas()
+    tester.dict_h["Data"]["nominal"].Draw("e1")
+    tester.dict_hstack["allmc"].Draw("histsames")
+    tester.dict_grerr["allmc"]["total"].Draw("e2sames")
+    c.SaveAs("test_pad1.pdf")
+    ##---test pad2---##
+    tester.SetFillColorAlphaOnly("allmc/allmc",1,0.3)
+    c2=ROOT.TCanvas()
+    tester.dict_h["data/allmc"]["nominal"].Draw("e1")
+    tester.dict_grerr["allmc/allmc"]["total"].Draw("e2sames")
+    c2.SaveAs("test_pad2.pdf")
