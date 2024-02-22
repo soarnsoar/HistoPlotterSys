@@ -1,18 +1,19 @@
 import ROOT
+from collections import OrderedDict
 from JHHist import JHHist
 DEBUG=False
 class HistoReader:
     def __init__(self):
-        self.dict_h={}
-        self.dict_hstack={}
-        self.dict_grerr={}
+        self.dict_h=OrderedDict()
+        self.dict_hstack=OrderedDict()
+        self.dict_grerr=OrderedDict()
     def Reset(self):
-        del self.dict_h
-        del self.dict_hstack
-        del self.dict_grerr
-        self.dict_h={}
-        self.dict_hstack={}
-        self.dict_grerr={}
+        #del self.dict_h
+        #del self.dict_hstack
+        #del self.dict_grerr
+        self.dict_h=OrderedDict()
+        self.dict_hstack=OrderedDict()
+        self.dict_grerr=OrderedDict()
     def IsEffTool(self,_nui):
         _IsEffTool=False
         if "type" in self.dict_nui[_nui]:
@@ -67,8 +68,10 @@ class HistoReader:
         self.dict_hstack["allmc"]=ROOT.THStack("allmc","allmc")
         for p in _allmclist:
             self.dict_hstack["allmc"].Add(self.dict_h[p]["nominal"])
+        self.SetFillColorAlphaOnly("allmc",1,0.3)
         self.MakeProcDivideShape("data/allmc","Data","allmc")
         self.MakeProcDivideShape("allmc/allmc","allmc","allmc")
+        self.SetFillColorAlphaOnly("allmc/allmc",1,0.3)
     def SetHistograms(self,mainp,nui,structure,isEffTool):
         if isEffTool:
             self.SetHistogramsEffTool(mainp,nui,self.dict_nui[nui]['structure'])
@@ -324,10 +327,10 @@ class HistoReader:
                 hcomb.Add(self.dict_h[p][_nui][_iset][_imem])
         return hcomb.Clone()
 
-    def __del__(self):
-        #self.tfile.Close()
-        del self.tfile
-        self.Reset()
+    #def __del__(self):
+    #    #self.tfile.Close()
+    #    #del self.tfile
+    #    #self.Reset()
     def SetInputPath(self,_path):
         self.fpath=_path
     def SetProcs(self,_procs):
@@ -472,11 +475,19 @@ class HistoReader:
             gr.SetPoint(i-1,x,y)
             gr.SetPointError(i-1,x-x1,x2-x,dydown,dyup)
         return ROOT.TGraphAsymmErrors(gr)
+    def GetHistDict(self):
+        return self.dict_h
+    def GetStackDict(self):
+        return self.dict_hstack
+    def GetGrErrDict(self):
+        return self.dict_grerr
+
 if __name__ == '__main__':
     from config.TTsemilep_ChargeReliability.input import dict_input
     from config.TTsemilep_ChargeReliability.nuisance import dict_nui
     from config.TTsemilep_ChargeReliability.proc import dict_proc
     from config.TTsemilep_ChargeReliability.cut_and_x import dict_cut_and_x
+
     _filepath=dict_input["MuonHadReliab"]
     tester=HistoReader()
     tester.SetCut("TTbarLep__bMuonInbHadPass")
@@ -488,16 +499,20 @@ if __name__ == '__main__':
     tester.MakeBkgShape(bkg)
     tester.MakeAllMCShape(allmc)
 
-    ##---test pad1---##
-    tester.SetFillColorAlphaOnly("allmc",1,0.3)
-    c=ROOT.TCanvas()
-    tester.dict_h["Data"]["nominal"].Draw("e1")
-    tester.dict_hstack["allmc"].Draw("histsames")
-    tester.dict_grerr["allmc"]["total"].Draw("e2sames")
-    c.SaveAs("test_pad1.pdf")
-    ##---test pad2---##
-    tester.SetFillColorAlphaOnly("allmc/allmc",1,0.3)
-    c2=ROOT.TCanvas()
-    tester.dict_h["data/allmc"]["nominal"].Draw("e1")
-    tester.dict_grerr["allmc/allmc"]["total"].Draw("e2sames")
-    c2.SaveAs("test_pad2.pdf")
+    ##---test plotter
+    from Plotter import Plotter
+    plotter=Plotter("test")
+    plotter.SetHistDict(tester.GetHistDict())
+    plotter.SetStackDict(tester.GetStackDict())
+    plotter.SetGrErrDict(tester.GetGrErrDict())
+    plotter.SetLegendList(dict_proc)
+
+    plotter.AddHistToPad1("Data",False,"e1")
+    plotter.AddHistToPad1("allmc",True,"e2")
+    plotter.AddTHStackToPad1("allmc","hist")
+
+    plotter.AddHistToPad2("data/allmc",False,"e1")
+    plotter.AddHistToPad2("allmc/allmc",True,"e2")
+
+    plotter.Draw()
+    
