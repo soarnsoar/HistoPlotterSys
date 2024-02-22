@@ -286,6 +286,15 @@ class Plotter:
         for name in self.leglist:
             if name=="Data" : continue
             self.leg.AddEntry(self.dict_h[name]["nominal"],name)
-        self.leg.AddEntry(self.dict_h["Data"]["nominal"],"Data")
+        if "Data" in self.dict_h:
+            self.leg.AddEntry(self.dict_h["Data"]["nominal"],"Data")
         self.leg.SetNColumns(ncolomns)
         self.leg.Draw()
+    def SetLineColor(self,_name,_color):
+        self.dict_h[_name]["nominal"].SetLineColor(_color)
+    def SetFillColorAlpha(self,_name,_color,_alpha):
+        if "total" in self.dict_grerr[_name]:
+            self.dict_grerr[_name]["total"].SetFillColorAlpha(_color,_alpha)
+        if "allsys" in self.dict_grerr[_name]:
+            self.dict_grerr[_name]["allsys"].SetFillColorAlpha(_color,_alpha)
+

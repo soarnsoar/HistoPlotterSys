@@ -69,8 +69,9 @@ class HistoReader:
         for p in _allmclist:
             self.dict_hstack["allmc"].Add(self.dict_h[p]["nominal"])
         self.SetFillColorAlphaOnly("allmc",1,0.3)
-        self.MakeProcDivideShape("data/allmc","Data","allmc")
-        self.MakeProcDivideShape("allmc/allmc","allmc","allmc")
+        #def MakeProcDivideShape(_nume,_dict_h_nume,_deno,dict_h_deno,_dict_nui,fix_deno_uncertainty=True):
+        self.dict_h["data/allmc"],self.dict_grerr["data/allmc"]=MakeProcDivideShape("Data",self.dict_h,"allmc",self.dict_h,self.dict_nui)
+        self.dict_h["allmc/allmc"],self.dict_grerr["allmc/allmc"]=MakeProcDivideShape("allmc",self.dict_h,"allmc",self.dict_h,self.dict_nui)
         self.SetFillColorAlphaOnly("allmc/allmc",1,0.3)
     def SetHistograms(self,mainp,nui,structure,isEffTool):
         if isEffTool:
@@ -147,7 +148,7 @@ class HistoReader:
             "type":"stat",
         }
 
-        
+    '''        
     def MakeProcDivideShape(self,_name,_nume,_deno, fix_deno_uncertainty=True):
         ## -proc whose name is _name is _nume/_deno
         self.dict_h[_name]={}
@@ -216,9 +217,9 @@ class HistoReader:
         self.dict_h[_name]["total"]["Up"],self.dict_h[_name]["total"]["Down"]=self.GetTotalUpDownShape(_name,sorted(self.dict_nui))
         
         self.dict_grerr[_name]={}
-        self.dict_grerr[_name]["allsys"]=self.Convert_HistToGraphAsymErr(self.dict_h[_name]["nominal"], self.dict_h[_name]["allsys"]["Up"],self.dict_h[_name]["allsys"]["Down"])
-        self.dict_grerr[_name]["total"]=self.Convert_HistToGraphAsymErr(self.dict_h[_name]["nominal"], self.dict_h[_name]["total"]["Up"],self.dict_h[_name]["total"]["Down"])
-        
+    self.dict_grerr[_name]["allsys"]=self.Convert_HistToGraphAsymErr(self.dict_h[_name]["nominal"], self.dict_h[_name]["allsys"]["Up"],self.dict_h[_name]["allsys"]["Down"])
+    self.dict_grerr[_name]["total"]=self.Convert_HistToGraphAsymErr(self.dict_h[_name]["nominal"], self.dict_h[_name]["total"]["Up"],self.dict_h[_name]["total"]["Down"])
+    '''
     def MakeBkgSubShape(self,_name,_dataname,_bkgname,_coeff=-1):
         ##---
         #data - bkg
@@ -482,6 +483,173 @@ class HistoReader:
     def GetGrErrDict(self):
         return self.dict_grerr
 
+##[ToDo]  change with these global functions ...
+def IsEffTool_(_nui,_dict_nui):
+    _IsEffTool=False
+    if "type" in _dict_nui[_nui]:
+        if _dict_nui[_nui]["type"]=="EffTool": _IsEffTool=True
+    return _IsEffTool
+def IsStatType_(_nui,_dict_nui):
+    _IsStatType=False
+    if "type" in _dict_nui[_nui]:
+        if _dict_nui[_nui]["type"]=="stat": _IsStatType=True
+    return _IsStatType
+
+def SortVariationGroup_(_nui,_dict_nui):
+    _dict_group={}
+    for iset in _dict_nui[_nui]["structure"]:
+        _HasGroup=False
+        if "type" in _dict_nui[_nui]["structure"][iset]:
+            if _dict_nui[_nui]["structure"][iset]["type"]=="group":
+                _HasGroup=True
+        _groupname=""
+        if _HasGroup:
+            _groupname=_dict_nui[_nui]["structure"][iset]["group"]
+
+        else:
+            _groupname=iset
+        if not _groupname in _dict_group: _dict_group[_groupname]=[]
+        _dict_group[_groupname].append(iset)
+    return _dict_group
+
+def Convert_HistToGraphAsymErr_(_h,_hup,_hdown):
+    N=_h.GetNbinsX()
+    gr=ROOT.TGraphAsymmErrors(N+1)
+
+    for i in range(1,N+1):
+        x1=_h.GetBinLowEdge(i)
+        x2=x1+_h.GetBinWidth(i)
+        x=(x1+x2)/2
+        y=_h.GetBinContent(i)
+        yup=_hup.GetBinContent(i)
+        dyup=yup-y
+        ydown=_hdown.GetBinContent(i)
+        dydown=y-ydown
+        #if y>0:
+        #    print dyup/y
+        #    print dydown/y
+        #print x1,x2
+        gr.SetPoint(i-1,x,y)
+        gr.SetPointError(i-1,x-x1,x2-x,dydown,dyup)
+    return ROOT.TGraphAsymmErrors(gr)
+
+def GetTotalUpDownShape_(_name,_dict_h,_nuilist,_dict_nui,sysonly=False):
+    _h_combiner=JHHist(_dict_h[_name]["nominal"])
+    for nui in _nuilist:
+        #isEffTool=self.dict_nui[nui]["EffTool"]
+        if sysonly:
+            if IsStatType_(nui,_dict_nui): continue
+        isEffTool=IsEffTool_(nui,_dict_nui)
+        if isEffTool:
+            _dict_group=SortVariationGroup_(nui,_dict_nui)
+            for group in _dict_group:
+                isReplicaType=False
+                list_iset=_dict_group[group]
+                if "type" in _dict_nui[nui]["structure"][list_iset[0]]:
+                    _this_type= _dict_nui[nui]["structure"][list_iset[0]]["type"]
+                    if _this_type=="replica":isReplicaType=True
+                if isReplicaType:
+                    _hlist=[]
+                    for iset in list_iset:
+                        nmem=_dict_nui[nui]["structure"][iset]["nmem"]
+                        for imem in range(nmem):
+                            #_h_combiner.AddSys([_dict_h[_name][nui][iset][imem]])
+                            _hlist.append(_dict_h[_name][nui][iset][imem])
+                    _hup,_hdown=_h_combiner.GetShapeReplicaAsym(_hlist)
+                    _h_combiner.AddSys([_hup,_hdown])
+                else:##Envelop among all elements
+                    _hlist=[]
+                    for iset in list_iset:
+                        nmem=_dict_nui[nui]["structure"][iset]["nmem"]
+                        for imem in range(nmem):
+                            _hlist.append(_dict_h[_name][nui][iset][imem])
+                    _h_combiner.AddSys(_hlist)
+
+        else:##--if not efftool
+            ##--envelop among variations
+            _hlist=[]
+            for var in _dict_nui[nui]["structure"]:
+                _hlist.append(_dict_h[_name][nui][var])
+            _h_combiner.AddSys(_hlist)
+            
+
+    return _h_combiner.hup.Clone(), _h_combiner.hdown.Clone()
+
+
+def MakeProcDivideShape(_nume,_dict_h_nume,_deno,_dict_h_deno,_dict_nui,fix_deno_uncertainty=True):
+    _newname="dummy"
+    ## -proc whose name is _newname is _nume/_deno
+    newdict_h={}
+    newdict_h[_newname]={}
+    ##--nominal--##
+    newdict_h[_newname]["nominal"]=_dict_h_nume[_nume]["nominal"].Clone()
+    newdict_h[_newname]["nominal"].SetDirectory(0)
+    ##--nominal=h_deno_with_no_staterr--##
+    h_deno_with_no_staterr=_dict_h_deno[_deno]["nominal"].Clone()
+    h_deno_with_no_staterr.SetDirectory(0)
+    for i in range(1,h_deno_with_no_staterr.GetNbinsX()+1):
+        h_deno_with_no_staterr.SetBinError(i,0)
+
+    newdict_h[_newname]["nominal"].Divide(h_deno_with_no_staterr)
+    ##--nuiance--##
+    for nui in sorted(_dict_nui):
+        if not nui in newdict_h[_newname] : newdict_h[_newname][nui]={}
+        ##[if efftool type]
+        #if self.dict_nui[nui]["EffTool"]:
+        if IsEffTool_(nui,_dict_nui):            
+            ## dict_h[_newname][nui][iset][imem]----->histogram
+            for iset in _dict_nui[nui]["structure"]:
+                if not iset in newdict_h[_newname][nui]: 
+                    newdict_h[_newname][nui][iset]={}
+                nmem=_dict_nui[nui]["structure"][iset]["nmem"]
+                for imem in range(nmem):
+                    ##--if numerator has this variation
+                    if nui in _dict_h_nume[_nume]:
+                        newdict_h[_newname][nui][iset][imem]=_dict_h_nume[_nume][nui][iset][imem].Clone()
+                        newdict_h[_newname][nui][iset][imem].SetDirectory(0)
+                    else: ##if not has this var
+                        newdict_h[_newname][nui][iset][imem]=_dict_h_nume[_nume]["nominal"].Clone()
+                        newdict_h[_newname][nui][iset][imem].SetDirectory(0)
+
+                    if fix_deno_uncertainty:
+                        newdict_h[_newname][nui][iset][imem].Divide(_dict_h_deno[_deno]["nominal"])
+                    else:
+                        if nui in _dict_h_deno[_deno]:##if denominator has this variation
+                            newdict_h[_newname][nui][iset][imem].Divide(_dict_h_deno[_deno][nui][iset][imem])
+                        else:##if not deno has the var 
+                            newdict_h[_newname][nui][iset][imem].Divide(_dict_h_deno[_deno]["nominal"])
+                            
+        else:
+            ##---NOT efftool type
+            ## dict_h[_newname][nui][var]
+            for var in _dict_nui[nui]["structure"]:
+                if nui in _dict_h_nume[_nume]: ##if numerator has this var
+                    newdict_h[_newname][nui][var]=_dict_h_nume[_nume][nui][var].Clone()
+                    newdict_h[_newname][nui][var].SetDirectory(0)
+                else:##if not has this var
+                    newdict_h[_newname][nui][var]=_dict_h_nume[_nume]["nominal"].Clone()
+                    newdict_h[_newname][nui][var].SetDirectory(0)
+                if fix_deno_uncertainty:
+                    newdict_h[_newname][nui][var].Divide(_dict_h_deno[_deno]["nominal"])
+                else:
+                    if nui in _dict_h_deno[_deno]:##if deno has this var
+                        newdict_h[_newname][nui][var].Divide(_dict_h_deno[_deno][nui][var])
+                    else:##if deno does not have this var
+                        newdict_h[_newname][nui][var].Divide(_dict_h_deno[_deno]["nominal"])
+
+    ##--Make TotalSysUpDown
+    #def GetTotalUpDownShape_(_name,_dict_h,_nuilist,_dict_nui,sysonly=False):
+    newdict_h[_newname]["allsys"]={}
+    newdict_h[_newname]["allsys"]["Up"],newdict_h[_newname]["allsys"]["Down"]=GetTotalUpDownShape_(_newname,newdict_h,sorted(_dict_nui),_dict_nui,True) 
+    newdict_h[_newname]["total"]={}
+    newdict_h[_newname]["total"]["Up"],newdict_h[_newname]["total"]["Down"]=GetTotalUpDownShape_(_newname,newdict_h,sorted(_dict_nui),_dict_nui,False) 
+
+    newdict_grerr={}
+    newdict_grerr[_newname]={}
+    newdict_grerr[_newname]["allsys"]=Convert_HistToGraphAsymErr_(newdict_h[_newname]["nominal"], newdict_h[_newname]["allsys"]["Up"],newdict_h[_newname]["allsys"]["Down"])
+    newdict_grerr[_newname]["total"]=Convert_HistToGraphAsymErr_(newdict_h[_newname]["nominal"], newdict_h[_newname]["total"]["Up"],newdict_h[_newname]["total"]["Down"])
+
+    return newdict_h[_newname],newdict_grerr[_newname]
 if __name__ == '__main__':
     from config.TTsemilep_ChargeReliability.input import dict_input
     from config.TTsemilep_ChargeReliability.nuisance import dict_nui
