@@ -502,6 +502,7 @@ if __name__ == '__main__':
     ##---test plotter
     from Plotter import Plotter
     plotter=Plotter("test")
+    plotter.SetDir("test/")
     plotter.SetHistDict(tester.GetHistDict())
     plotter.SetStackDict(tester.GetStackDict())
     plotter.SetGrErrDict(tester.GetGrErrDict())
