@@ -12,54 +12,62 @@ class Plotter:
         self.canvas = ROOT.TCanvas()
         self.DirToSave="./"
         self.dict_stack=OrderedDict()
-        self.dict_h_mc=OrderedDict()
-        self.dict_h_data=OrderedDict()
-        self.dict_h_ratio=OrderedDict()
-        
-        self.dict_gr_mc=OrderedDict()
-        self.dict_gr_ratio=OrderedDict()
+        self.dict_h=OrderedDict()
+        self.dict_grerr=OrderedDict()
+
+
+        self.THStackToDrawPad1=[]
+        self.HistToDrawPad1=[]
+        self.HistToDrawWithErrPad1=[]
+
+        self.HistToDrawPad2=[]
+        self.HistToDrawWithErrPad2=[]
+
         self.h_stack=ROOT.THStack("","")
+        self.line=ROOT.TLine(0,0,0,0)
         self.leg=ROOT.TLegend(0.1,0.75,0.35,0.95)#x1,y1,x2,y2
         self.ymax=-9999999.
         self.ymin= 9999999.
+        self.xmax=-9999999.
+        self.xmin= 9999999.
         self.lumi=41.5
         self.sqrtS=13
-    def SetDataHist(self,_h):
-        self.dict_h_data["nominal"]=_h.Clone()
-        self.dict_h_data["nominal"].SetStats(0)
-        if self.h_data.GetMaximum() > self.ymax: self.ymax=self.dict_h_data["nominal"].GetMaximum()
-        if self.h_data.GetMinimum() < self.ymin: self.ymin=self.dict_h_data["nominal"].GetMinimum()
-    def SetMCHist(self,_h):
-        self.dict_h_mc["nominal"]=_h.Clone()
-        self.dict_h_mc["nominal"].SetStats(0)
-        
-        if self.h_mc.GetMaximum() > self.ymax: self.ymax=self.dict_h_mc["nominal"].GetMaximum()
-        if self.h_mc.GetMinimum() < self.ymin: self.ymin=self.dict_h_mc["nominal"].GetMinimum()
-        self.SetMCstatUpDown()
-    def SetMCstatUpDown(self):
-        self.dict_h_mc["statup"]=self.dict_h_mc["nominal"].Clone()
-        self.dict_h_mc["statup"].Reset()
-        self.dict_h_mc["statdown"]=self.dict_h_mc["nominal"].Clone()
-        self.dict_h_mc["statdown"].Reset()
-        for i in range(1,self.dict_h_mc["nominal"].GetNbinsX()+1):
-            y=self.dict_h_mc["nominal"].GetBinContent(i)
-            yerr=self.dict_h_mc["nominal"].GetBinError(i)
-            self.dict_h_mc["statup"].SetBinContent(i,y+yerr)
-            self.dict_h_mc["statdown"].SetBinContent(i,y-yerr)
 
-        self.dict_gr_mc["stat"]=self.Convert_HistToGraphAsymErr(self.dict_h_mc["nominal"],self.dict_h_mc["statup"],self.dict_h_mc["statdown"])
-    
-    def AddProcMCStack(self,_h,name):
-        self.dict_stack[name]=_h
-    def SetRatio(self):
-        self.h_ratio=self.h_data.Clone()
-        self.h_ratio.Divide(self.h_mc)
+        self.c_ymax=1.6
+        self.MinMaxDone=False
+    def SetHistDict(self,_dict_h):
+        self.dict_h=_dict_h
+    def SetStackDict(self,_dict_hstack):
+        self.dict_hstack=_dict_hstack
+    def SetGrErrDict(self,_dict_grerr):
+        self.dict_grerr=_dict_grerr
+    def SetLegendList(self,_leglist):
+        self.leglist=_leglist
+        #print "<SetLegendList>self.leglist"
+        #print self.leglist
+    def AddHistToPad1(self,_name,_witherr,_drawoption):
+        if _witherr:
+            self.HistToDrawWithErrPad1.append((_name,_drawoption))
+        else:
+            self.HistToDrawPad1       .append((_name,_drawoption))
+    def AddTHStackToPad1(self,_name,_drawoption):
+        self.THStackToDrawPad1.append((_name,_drawoption))
+    def AddHistToPad2(self,_name,_witherr,_drawoption):
+        if _witherr:
+            self.HistToDrawWithErrPad2.append((_name,_drawoption))
+        else:
+            self.HistToDrawPad2       .append((_name,_drawoption))
+
+
+
+        #self.h_ratio=self.h_data.Clone()
+        #self.h_ratio.Divide(self.h_mc)
         ###Set TLine
-        x1=self.h_ratio.GetBinLowEdge(1)
-        N=self.h_ratio.GetNbinsX()
-        x2=self.h_ratio.GetBinLowEdge(N+1)
-        self.line=ROOT.TLine(x1,1,x2,1)#TLine(Double_t x1,Double_t y1,Double_t x2,Double_t y2)
-        self.line.SetLineStyle(2)
+        #x1=self.h_ratio.GetBinLowEdge(1)
+        #N=self.h_ratio.GetNbinsX()
+        #x2=self.h_ratio.GetBinLowEdge(N+1)
+        #self.line=ROOT.TLine(x1,1,x2,1)#TLine(Double_t x1,Double_t y1,Double_t x2,Double_t y2)
+        #self.line.SetLineStyle(2)
     def InitDraw(self):
         ##---------From TDR style ---------##
         tdrstyle.setTDRStyle()
@@ -110,32 +118,146 @@ class Plotter:
         self.canvas.SetBottomMargin( B/H )
         self.canvas.SetTickx(0)
         self.canvas.SetTicky(0)
+
+        self.SetMinMaxXY()
+        
+    def SetMinMaxXY(self):
+        if self.MinMaxDone : return
+        for name,option in self.THStackToDrawPad1:
+            if self.dict_hstack[name].GetMaximum() > self.ymax: self.ymax=self.dict_hstack[name].GetMaximum()
+            if self.dict_hstack[name].GetMinimum() < self.ymin: self.ymin=self.dict_hstack[name].GetMinimum()
+
+        for name,option in self.HistToDrawPad1:
+            ##--ymin/max
+            if self.dict_h[name]["nominal"].GetMaximum() > self.ymax: self.ymax=self.dict_h[name]["nominal"].GetMaximum()   
+            if self.dict_h[name]["nominal"].GetMinimum() < self.ymin: self.ymin=self.dict_h[name]["nominal"].GetMinimum()   
+            ##--xmin/max
+            if self.dict_h[name]["nominal"].GetBinLowEdge(1) < self.xmin : self.xmin=self.dict_h[name]["nominal"].GetBinLowEdge(1)
+            _this_xmax=self.dict_h[name]["nominal"].GetBinLowEdge(self.dict_h[name]["nominal"].GetNbinsX()+1)
+            if _this_xmax > self.xmax : self.xmax = _this_xmax
+
+
+        for name,option in self.HistToDrawWithErrPad1:
+            ##--ymin/max
+            if self.dict_h[name]["nominal"].GetMaximum() > self.ymax: self.ymax=self.dict_h[name]["nominal"].GetMaximum()   
+            if self.dict_h[name]["nominal"].GetMinimum() < self.ymin: self.ymin=self.dict_h[name]["nominal"].GetMinimum()   
+            ##--xmin/max
+            if self.dict_h[name]["nominal"].GetBinLowEdge(1) < self.xmin : self.xmin=self.dict_h[name]["nominal"].GetBinLowEdge(1)
+            _this_xmax=self.dict_h[name]["nominal"].GetBinLowEdge(self.dict_h[name]["nominal"].GetNbinsX()+1)
+            if _this_xmax > self.xmax : self.xmax = _this_xmax
+
+
+        self.line=ROOT.TLine(self.xmin,1,self.xmax,1)
+        #TLine(Double_t x1,Double_t y1,Double_t x2,Double_t y2)
+        self.line.SetLineStyle(2)
+        self.MinMaxDone=True
+        
+
+
     def SetDir(self,_dirpath):
         self.DirToSave=_dirpath
-    def Draw(self):
-        self.InitDraw()
-        self.DrawStack("hist")
-        self.DrawData("E1sames")
-        self.DrawError("sames")
-        self.DrawLegend()
+    def DrawPad1Objects(self):
+        ##---Draw---##
+        ip=0
+        ##---stack---##
+        for name,option in self.THStackToDrawPad1:
+
+            if ip==0:
+                self.dict_hstack[name].Draw(option)
+                self.dict_hstack[name].GetXaxis().SetLabelSize(0)
+            else:
+                self.dict_hstack[name].Draw(option+"sames")
+            ip+=1
+            #self.dict_hstack[name].GetYaxis().SetRangeUser(self.ymin,self.ymax*self.c_ymax)
+            #
+            self.dict_hstack[name].SetMaximum(self.ymax*self.c_ymax)        
+            self.dict_hstack[name].SetMinimum(self.ymin)        
+
+        for name,option in self.HistToDrawPad1:
+            if ip==0:
+                self.dict_h[name]["nominal"].Draw(option)
+                self.dict_h[name]["nominal"].GetXaxis().SetLabelSize(0)
+            else:
+                self.dict_h[name]["nominal"].Draw(option+"sames")
+
+            ip+=1
+            #self.dict_h[name]["nominal"].GetYaxis().SetRangeUser(self.ymin,self.ymax*self.c_ymax)
+            self.dict_h[name]["nominal"].SetMaximum(self.ymax*self.c_ymax)        
+            self.dict_h[name]["nominal"].SetMinimum(self.ymin)        
+
+
+        for name,option in self.HistToDrawWithErrPad1:
+            if ip==0:
+                self.dict_h[name]["nominal"].Draw("hist")
+                self.dict_grerr[name]["total"].Draw(option)
+                self.dict_h[name]["nominal"].GetXaxis().SetLabelSize(0)
+                self.dict_grerr[name]["total"].GetXaxis().SetLabelSize(0)
+            else:
+                self.dict_h[name]["nominal"].Draw("histsames")
+                self.dict_grerr[name]["total"].Draw(option+"sames")
+            ip+=1
+            #self.dict_h[name]["nominal"].GetYaxis().SetRangeUser(self.ymin,self.ymax*self.c_ymax)
+            self.dict_h[name]["nominal"].SetMaximum(self.ymax*self.c_ymax)        
+            self.dict_h[name]["nominal"].SetMinimum(self.ymin)        
+
+    def DrawPad2Objects(self):
+        ##---Draw---##
+        ip=0
+        for name,option in self.HistToDrawPad2:
+            if ip==0:
+                self.dict_h[name]["nominal"].Draw(option)
+            else:
+                self.dict_h[name]["nominal"].Draw(option+"sames")
+            self.dict_h[name]["nominal"].SetMinimum(0.5)        
+            self.dict_h[name]["nominal"].SetMaximum(1.5)
+            self.dict_h[name]["nominal"].GetYaxis().SetLabelSize(0.1)
+            self.dict_h[name]["nominal"].GetXaxis().SetLabelSize(0.1)
+            self.dict_h[name]["nominal"].GetYaxis().SetNdivisions(505)
+            self.dict_h[name]["nominal"].GetXaxis().SetTitleOffset(1)
+            self.dict_h[name]["nominal"].GetXaxis().SetTitleSize(0.09)
+
+
+            ip+=1
+
+        for name,option in self.HistToDrawWithErrPad2:
+            if ip==0:
+                self.dict_h[name]["nominal"].Draw("hist")
+                self.dict_grerr[name]["total"].Draw(option)
+            else:
+                self.dict_h[name]["nominal"].Draw("histsames")
+                self.dict_grerr[name]["total"].Draw(option+"sames")
+            self.dict_h[name]["nominal"].SetMinimum(0.5)        
+            self.dict_h[name]["nominal"].SetMaximum(1.5)
+            self.dict_h[name]["nominal"].GetYaxis().SetLabelSize(0.1)
+            self.dict_h[name]["nominal"].GetXaxis().SetLabelSize(0.1)
+            self.dict_h[name]["nominal"].GetYaxis().SetNdivisions(505)
+            self.dict_h[name]["nominal"].GetXaxis().SetTitleOffset(1)
+            self.dict_h[name]["nominal"].GetXaxis().SetTitleSize(0.09)
+            ip+=1
+        self.line.Draw("sames")
+    def SetCMSStyle(self):
         CMS_lumi.CMS_lumi(self.canvas, self.iPeriod, self.iPos)
         self.canvas.cd()
         self.canvas.Update()
         self.canvas.RedrawAxis()
+    def Draw(self):
+        self.DrawNoRatio()
+        self.DrawWithRatio()
+    def DrawNoRatio(self):
+        self.InitDraw()
+        self.DrawPad1Objects()
+        self.DrawLegend()
+        self.SetCMSStyle()
         os.system("mkdir -p "+self.DirToSave+"/c/")
         self.canvas.SaveAs(self.DirToSave+"/c/c__"+self.name+".pdf")
-    def DrawRatio(self):
-        self.InitDraw()
+    def DrawPad1(self):
         self.pad1=ROOT.TPad("pad1", "pad1", 0, 0.3, 1, 1) ##x1,y1,x2,y2
         self.pad1.SetTopMargin(0.1)
         self.pad1.SetBottomMargin(0.02)
         self.pad1.SetGridx()
         self.pad1.Draw()
         self.pad1.cd()
-        self.DrawStack("hist")
-        self.DrawData("E1sames")
-        self.DrawError("sames")
-        self.DrawLegend()
+    def DrawPad2(self):
         self.canvas.cd()
         ##---ratio pad
         self.pad2=ROOT.TPad("pad2", "pad2", 0, 0.0, 1, 0.3)
@@ -144,39 +266,22 @@ class Plotter:
         self.pad2.SetGridx()
         self.pad2.Draw()
         self.pad2.cd()
-        self.DrawRatioAndError()
-        CMS_lumi.CMS_lumi(self.canvas, self.iPeriod, self.iPos)
-        self.canvas.cd()
-        self.canvas.Update()
-        self.canvas.RedrawAxis()
-        os.system("mkdir -p "+self.DirToSave+"/cratio/")
-        self.canvas.SaveAs(self.DirToSave+"/cratio/cratio__"+self.name+".pdf")        
-    def DrawRatioAndError(self):
-        ##TODO::handle this with input args
-        self.h_ratio.SetMinimum(0.5)        
-        self.h_ratio.SetMaximum(1.5)
-        self.h_ratio.GetYaxis().SetLabelSize(0.1)
-        self.h_ratio.GetXaxis().SetLabelSize(0.1)
-        self.h_ratio.GetYaxis().SetNdivisions(505)
-        #self.hratio.GetXaxis().SetTitle(self.xtitle)
-        self.h_ratio.GetXaxis().SetTitleOffset(1)
-        self.h_ratio.GetXaxis().SetTitleSize(0.09)
-        self.h_ratio.Draw('E1sames')
-        self.gr_ratio.Draw('E2sames')
-        self.line.Draw("sames")
-        #self.leg.Draw()
-    def DrawStack(self,option=""):
-        del self.h_stack
-        self.h_stack=ROOT.THStack("","")
-        for name in self.dict_stack:
-            self.h_stack.Add(self.dict_stack[name])
-        self.h_stack.Draw(option)
+    def DrawWithRatio(self):
+        self.InitDraw()
 
-        self.h_stack.SetMaximum(self.ymax*1.5)
-        self.h_stack.SetMinimum(self.ymin*1.5)
+        self.DrawPad1()
+        self.DrawPad1Objects()
+        self.DrawLegend()
+
+        self.DrawPad2()
+        self.DrawPad2Objects()
+        self.SetCMSStyle()
+        os.system("mkdir -p "+self.DirToSave+"/cratio/")
+        self.canvas.SaveAs(self.DirToSave+"/cratio/cratio__"+self.name+".pdf")
+
     def DrawLegend(self):
         del self.leg
-        nproc=len(self.dict_stack)
+        nproc=len(self.leglist)
         ncolomns=(nproc)/4 +1
         x1=0.39
         x2=0.34+0.2*ncolomns
@@ -184,117 +289,23 @@ class Plotter:
         y2=0.89
         self.leg=ROOT.TLegend(x1,y1,x2,y2)
         self.leg.SetShadowColor(0)
-        for name in self.dict_stack:
-            self.leg.AddEntry(self.dict_stack[name],name)
-        self.leg.AddEntry(self.h_data,"Data")
+        for name in self.leglist:
+            if name=="Data" : continue
+            #print "[DrawLegend.AddEntry]->",name
+            self.leg.AddEntry(self.dict_h[name]["nominal"],name)
+        if "Data" in self.dict_h:
+            self.leg.AddEntry(self.dict_h["Data"]["nominal"],"Data")
         self.leg.SetNColumns(ncolomns)
         self.leg.Draw()
-    def DrawData(self,option=""):
-        self.h_data.Draw(option)
-        self.h_data.SetMaximum(self.ymax*2.)
-        self.h_data.SetMinimum(self.ymin*2.)
-    def DrawStatUpDown(self,option=""):
-        self.h_mc_statup.Draw(option)
-        self.h_mc_statdown.Draw(option)
-    def DrawUpDown(self,option=""):
-        self.h_mc_up.Draw(option)
-        self.h_mc_down.Draw(option)
-        
-    def DrawError(self,option=""):
-        
-        self.gr_mc.Draw(option+"e2")
-        #self.gr_mc_stat.Draw(option+"e2")
-        #self.gr_mc_stat.SetLineStyle(0)
-        #self.gr_mc_stat.SetMarkerStyle(0)
-        #self.gr_mc_stat.SetFillColor(1)
-        #self.gr_mc_stat.SetFillStyle(3144)
+    def SetMarkerStyle(self,_name,_style):
+        self.dict_h[_name]["nominal"].SetMarkerStyle(_style)
+    def SetNominalLineColor(self,_name,_color):
+        self.dict_h[_name]["nominal"].SetLineColor(_color)
+    def SetNominalFillColor(self,_name,_color):
+        self.dict_h[_name]["nominal"].SetFillColor(_color)
+    def SetFillColorAlpha(self,_name,_color,_alpha):
+        if "total" in self.dict_grerr[_name]:
+            self.dict_grerr[_name]["total"].SetFillColorAlpha(_color,_alpha)
+        if "allsys" in self.dict_grerr[_name]:
+            self.dict_grerr[_name]["allsys"].SetFillColorAlpha(_color,_alpha)
 
-        self.gr_mc.SetLineStyle(0)
-        self.gr_mc.SetMarkerStyle(0)
-        self.gr_mc.SetFillColorAlpha(1,0.3)
-        
-    def SaveAs(self):
-        True
-    def AddMCnuisance(self,_sysname,var,_h):
-        if not _sysname in self.dict_h_mc: self.dict_h_mc[_sysname]={}
-        self.dict_h_mc[_sysname][var]=_h.Clone()
-        if not _sysname in self.dict_h_ratio : self.dict_h_ratio[_sysname]={}
-        self.dict_h_ratio[_sysname][var]=self.dict_h_data["nominal"].Clone()
-        self.dict_h_ratio[_sysname][var].Divide(self.dict_h_mc[_sysname][var])
-    def CombineUncertainties(self,_dict_nui):
-        True
-    def SetMCtotalUpDown(self):
-        self.h_mc_up=self.h_mc.Clone()
-        self.h_mc_up.SetStats(0)
-        self.h_mc_up.Reset()
-        self.h_mc_down=self.h_mc.Clone()
-        self.h_mc_down.SetStats(0)
-        self.h_mc_down.Reset()
-        for i in range(1,self.h_mc.GetNbinsX()+1):
-            ynom=self.h_mc.GetBinContent(i)
-
-            ysysup=self.h_mc_sysup.GetBinContent(i)
-            ystatup=self.h_mc_statup.GetBinContent(i)
-
-            ysysdown=self.h_mc_sysdown.GetBinContent(i)
-            ystatdown=self.h_mc_statdown.GetBinContent(i)
-
-            dysysup=ysysup-ynom
-            dystatup=ystatup-ynom
-            dyup=sqrt(dysysup**2 + dystatup**2)
-
-            dysysdown=ysysdown-ynom
-            dystatdown=ystatdown-ynom
-            dydown=sqrt(dysysdown**2 + dystatdown**2)
-
-            yup=ynom+dyup
-            ydown=ynom-dydown
-
-            self.h_mc_up.SetBinContent(i,yup)
-            self.h_mc_down.SetBinContent(i,ydown)
-        ##--gr
-        self.gr_mc=self.Convert_HistToGraphAsymErr(self.h_mc,self.h_mc_up,self.h_mc_down)
-        ##--ratio one
-        self.h_ratio_one=self.h_mc.Clone()
-        self.h_ratio_one.Divide(self.h_mc)
-        ##--ratio stat
-        self.h_ratio_statup=self.h_mc_statup.Clone()
-        self.h_ratio_statup.Divide(self.h_mc)
-        self.h_ratio_statdown=self.h_mc_statdown.Clone()
-        self.h_ratio_statdown.Divide(self.h_mc)
-        self.gr_ratio_stat=self.Convert_HistToGraphAsymErr(self.h_ratio_one,self.h_ratio_statup,self.h_ratio_statdown)
-
-        ##--ratio
-
-        self.h_ratio_up=self.h_mc_up.Clone()
-        self.h_ratio_up.Divide(self.h_mc)
-        self.h_ratio_down=self.h_mc_down.Clone()
-        self.h_ratio_down.Divide(self.h_mc)
-        self.gr_ratio=self.Convert_HistToGraphAsymErr(self.h_ratio_one,self.h_ratio_up,self.h_ratio_down)
-        self.gr_ratio.SetFillColorAlpha(1,0.3)
-        self.gr_ratio.SetLineStyle(0)
-        self.gr_ratio.SetMarkerStyle(0)
-
-
-    def Convert_HistToGraphAsymErr(self,_h,_hup,_hdown):
-        N=_h.GetNbinsX()
-        gr=ROOT.TGraphAsymmErrors(N+1)
-
-        for i in range(1,N+1):
-            x1=_h.GetBinLowEdge(i)
-            x2=x1+_h.GetBinWidth(i)
-            x=(x1+x2)/2
-            y=_h.GetBinContent(i)
-            yup=_hup.GetBinContent(i)
-            dyup=yup-y
-            ydown=_hdown.GetBinContent(i)
-            dydown=y-ydown
-            #if y>0:
-            #    print dyup/y
-            #    print dydown/y
-            #print x1,x2
-            gr.SetPoint(i-1,x,y)
-            gr.SetPointError(i-1,x-x1,x2-x,dydown,dyup)
-
-
-        return gr

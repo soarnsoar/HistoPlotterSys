@@ -5,6 +5,7 @@ for p in dict_proc:
         if dict_proc[p]["IsData"] : continue
     allmc+=dict_proc[p]["procs"]
 allmc=list(set(allmc))   
+
 dict_nui={
     ##----
     "electronid":{
@@ -269,3 +270,9 @@ dict_nui={
 
     
 }
+
+#for p in dict_proc:
+#    dict_nui["stat_"+p]={
+#            "structure":["Up","Down"],
+#            "type":"stat",
+#    }
