@@ -43,6 +43,8 @@ class Plotter:
         self.dict_grerr=_dict_grerr
     def SetLegendList(self,_leglist):
         self.leglist=_leglist
+        #print "<SetLegendList>self.leglist"
+        #print self.leglist
     def AddHistToPad1(self,_name,_witherr,_drawoption):
         if _witherr:
             self.HistToDrawWithErrPad1.append((_name,_drawoption))
@@ -162,6 +164,7 @@ class Plotter:
 
             if ip==0:
                 self.dict_hstack[name].Draw(option)
+                self.dict_hstack[name].GetXaxis().SetLabelSize(0)
             else:
                 self.dict_hstack[name].Draw(option+"sames")
             ip+=1
@@ -173,6 +176,7 @@ class Plotter:
         for name,option in self.HistToDrawPad1:
             if ip==0:
                 self.dict_h[name]["nominal"].Draw(option)
+                self.dict_h[name]["nominal"].GetXaxis().SetLabelSize(0)
             else:
                 self.dict_h[name]["nominal"].Draw(option+"sames")
 
@@ -184,10 +188,12 @@ class Plotter:
 
         for name,option in self.HistToDrawWithErrPad1:
             if ip==0:
-                self.dict_h[name]["nominal"].Draw()
+                self.dict_h[name]["nominal"].Draw("hist")
                 self.dict_grerr[name]["total"].Draw(option)
+                self.dict_h[name]["nominal"].GetXaxis().SetLabelSize(0)
+                self.dict_grerr[name]["total"].GetXaxis().SetLabelSize(0)
             else:
-                self.dict_h[name]["nominal"].Draw("sames")
+                self.dict_h[name]["nominal"].Draw("histsames")
                 self.dict_grerr[name]["total"].Draw(option+"sames")
             ip+=1
             #self.dict_h[name]["nominal"].GetYaxis().SetRangeUser(self.ymin,self.ymax*self.c_ymax)
@@ -215,10 +221,10 @@ class Plotter:
 
         for name,option in self.HistToDrawWithErrPad2:
             if ip==0:
-                self.dict_h[name]["nominal"].Draw()
+                self.dict_h[name]["nominal"].Draw("hist")
                 self.dict_grerr[name]["total"].Draw(option)
             else:
-                self.dict_h[name]["nominal"].Draw("sames")
+                self.dict_h[name]["nominal"].Draw("histsames")
                 self.dict_grerr[name]["total"].Draw(option+"sames")
             self.dict_h[name]["nominal"].SetMinimum(0.5)        
             self.dict_h[name]["nominal"].SetMaximum(1.5)
@@ -285,13 +291,18 @@ class Plotter:
         self.leg.SetShadowColor(0)
         for name in self.leglist:
             if name=="Data" : continue
+            #print "[DrawLegend.AddEntry]->",name
             self.leg.AddEntry(self.dict_h[name]["nominal"],name)
         if "Data" in self.dict_h:
             self.leg.AddEntry(self.dict_h["Data"]["nominal"],"Data")
         self.leg.SetNColumns(ncolomns)
         self.leg.Draw()
-    def SetLineColor(self,_name,_color):
+    def SetMarkerStyle(self,_name,_style):
+        self.dict_h[_name]["nominal"].SetMarkerStyle(_style)
+    def SetNominalLineColor(self,_name,_color):
         self.dict_h[_name]["nominal"].SetLineColor(_color)
+    def SetNominalFillColor(self,_name,_color):
+        self.dict_h[_name]["nominal"].SetFillColor(_color)
     def SetFillColorAlpha(self,_name,_color,_alpha):
         if "total" in self.dict_grerr[_name]:
             self.dict_grerr[_name]["total"].SetFillColorAlpha(_color,_alpha)
