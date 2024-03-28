@@ -15,24 +15,19 @@
         "color":7,
         "stack":1,
     },
-    "TTLL":{
-        "procs":["TTLL_powheg"],
-        "name":"TTLL",
-        "color":6,
-    },
     "SingleTop":{
-        "procs":["SingleTop_sch_Lep","SingleTop_tch_antitop_incl","SingleTop_tch_top_incl","SingleTop_tW_antitop_NoFullyHad","SingleTop_tW_top_NoFullyHad",""],
+        "procs":["SingleTop_sch_Lep","SingleTop_tch_antitop_Incl","SingleTop_tch_top_Incl","SingleTop_tW_antitop_NoFullyHad","SingleTop_tW_top_NoFullyHad"],
         "color":3,
         "name":"SingleTop"
     },
     "TT":{
-        "procs":["TTLJ_powheg","TTLL"],
-        "name":"TTLJ No b-flv matching",
+        "procs":["TTLJ_powheg","TTLL_powheg"],
+        "name":"TT",
         "color":5,
     },
     
     "Data":{
-        "proc":["Data"],
+        "procs":["Data"],
         "name":"Data",
         "IsData":True,
         "color":1,
