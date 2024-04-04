@@ -1,3 +1,4 @@
+#!/usr/bin/env python                                                                                                                                        
 import os
 import ROOT
 import json
@@ -6,11 +7,18 @@ maindir=os.getenv("GIT_HistoPlotterSys")
 
 
 class Parser:
-    def __init__(self, AnaName,YEAR):
+    def __init__(self, AnaName,YEAR,suffix):
         #self.inputpath=inputpath
         self.AnaName=AnaName
         self.YEAR=str(YEAR)
-        self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/runSys__/combine.root"
+        self.suffix=suffix
+        #self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/runSys__/combine.root"
+        #if runsys :
+        #    self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/runSys__/combine.root"
+        #else:
+        #    self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/combine.root"
+        self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/combine.root"
+        self.nui_dict={}
     def Parse(self):
         self.OpenFile()
         self.ScanNominal()
@@ -49,6 +57,7 @@ class Parser:
 
     def ScanSystematics(self):
         self.nui_dict=OrderedDict()
+        if not self.tfile.Get("SYS"): return
         keylist=self.tfile.Get("SYS").GetListOfKeys()
         for cut in self.cut_x:
             #classname=key.GetClassName()
@@ -91,10 +100,7 @@ class Parser:
 
 
     def SaveConfig(self):
-
-
-
-        savedir=maindir+"/config/"+self.AnaName+"/"+self.YEAR
+        savedir=maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix
         os.system("mkdir -p "+savedir)
         ##---Nuisance
         savepath=savedir+"/nuisances.py"
@@ -111,5 +117,7 @@ class Parser:
 
 YEAR=2017
 AnaName="DiLeptonAnalyzer"
-myparser=Parser(AnaName,YEAR)
+#myparser=Parser(AnaName,YEAR,0)
+#myparser=Parser(AnaName,YEAR,"checksf__")
+myparser=Parser(AnaName,YEAR,"runSys__")
 myparser.Parse()

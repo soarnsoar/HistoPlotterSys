@@ -4,3 +4,4 @@
 SKFlatOutput
 *.tar
 *#
+ws/*/plot/*

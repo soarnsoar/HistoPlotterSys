@@ -7,8 +7,9 @@ from OpenDictFile import OpenDictFile
 from GetBinsX import GetBinsX 
 maindir=os.getenv("GIT_HistoPlotterSys")
 class Reader:
-    def __init__(self,AnaName,YEAR):
+    def __init__(self,AnaName,YEAR,suffix):
         self.Verbose=0
+        self.suffix=suffix
         self.AnaName=AnaName
         self.YEAR=str(YEAR)
         self.SetPath()
@@ -17,7 +18,11 @@ class Reader:
     def SetVerbose(self,_v):
         self.Verbose=_v
     def SetPath(self):
-        self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/runSys__/combine.root"        
+        #if self.runsys:
+        #    self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/runSys__/combine.root"
+        #else:
+        #    self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/combine.root"
+        self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/combine.root"
     def ReadInput(self):
         self.tfile=ROOT.TFile.Open(self.inputpath)
     def ReadConf(self):
@@ -31,8 +36,12 @@ class Reader:
     def ReadNuiConf(self):
         _path=self.GetNuiConfPath()
         self.NuiConf=OpenDictFile(_path)
+        _path=self.GetEffToolConfPath()
+        self.EffToolConf=OpenDictFile(_path)
     def GetNuiConfPath(self):
-        return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/nuisances.py"
+        return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/nuisances.py"
+    def GetEffToolConfPath(self):
+        return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/nuisances_efftool.py"
     def CheckIsData(self,p):
         return 1 if "IsData" in self.ProcConf[p] and self.ProcConf[p]["IsData"] else 0
     
@@ -68,6 +77,8 @@ class Reader:
                             for idx2 in self.NuiConf[nui][idx1]:
                                 this_sys=self.ReadNuisanceShape(cut,x,subp,nui,idx1,idx2)
                                 this_h.SetHist(deepcopy(this_sys),nui,idx1,idx2)
+                    this_h.MakeStatNuiShapes()
+                    this_h.SetEffTool(self.EffToolConf)
                 ##--Store JHProcHist--##
                 this_container[subp]=this_h
 
@@ -76,8 +87,12 @@ class Reader:
                     this_container[p].Clone(this_h)
                 else:
                     this_container[p]=this_container[p].Combine(this_h)
-
-
+            ###--SetColor--##
+            #_color=self.ProcConf[p]["color"]
+            #print _color
+            #this_container[p].SetLineColor(_color)
+            #this_container[p].SetFillColor(_color)
+            
             
 
         return this_container
@@ -119,13 +134,13 @@ class Reader:
     def CloseFile(self):
         self.tfile.Close()
 
-def ReadCutAndX(AnaName,YEAR):
+def ReadCutAndX(AnaName,YEAR,suffix=""):
     YEAR=str(YEAR)
-    _path=GetCutAndXConfPath(AnaName,YEAR)
+    _path=GetCutAndXConfPath(AnaName,YEAR,suffix)
     CutAndX=OpenDictFile(_path)
     return CutAndX
-def GetCutAndXConfPath(AnaName,YEAR):
-    return maindir+"/config/"+AnaName+"/"+YEAR+"/cut_and_x.py"
+def GetCutAndXConfPath(AnaName,YEAR,suffix=""):
+    return maindir+"/config/"+AnaName+"/"+YEAR+"/"+suffix+"/cut_and_x.py"
 
 if __name__ == '__main__':
     import time

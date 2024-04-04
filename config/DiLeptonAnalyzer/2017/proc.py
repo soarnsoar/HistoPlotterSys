@@ -13,11 +13,11 @@
         "procs":["WJets_Sherpa"],
         "name":"W+jets",
         "color":7,
-        "stack":1,
     },
     "SingleTop":{
         "procs":["SingleTop_sch_Lep","SingleTop_tch_antitop_Incl","SingleTop_tch_top_Incl","SingleTop_tW_antitop_NoFullyHad","SingleTop_tW_top_NoFullyHad"],
-        "color":3,
+        #"color":3,
+        "color":6,
         "name":"SingleTop"
     },
     "TT":{
