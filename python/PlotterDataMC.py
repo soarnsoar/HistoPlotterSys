@@ -6,6 +6,7 @@ import os
 from collections import OrderedDict 
 from OpenDictFile import OpenDictFile
 
+import time
 maindir=os.getenv("GIT_HistoPlotterSys")
 
 class PlotterDataMC(PlotterBase):
@@ -22,11 +23,16 @@ class PlotterDataMC(PlotterBase):
         self.x=x
         self.SetLumi()
         self.sqrtS=13
+        
+
         self.ReadData()
+                
         ##--
         self.legendlist=OrderedDict()
         ##--
         self.MakeCombinedObject()
+        
+
 
         ##---not logy
         self.logy=0
@@ -42,17 +48,21 @@ class PlotterDataMC(PlotterBase):
         self.Save(0)
         self.Draw(1)
         self.Save(1)
-    
     def SetLumi(self):
         ##https://twiki.cern.ch/twiki/bin/view/CMS/LumiRecommendationsRun2#Quick_summary_table
         if str(self.Year)=="2016":
             self.lumi=35.9
+        elif str(self.Year)=="2016preVFP" or str(self.Year)=="2016a":
+            self.lumi=19.5
+        elif str(self.Year)=="2016postVFP" or str(self.Year)=="2016b":
+            self.lumi=16.8
         elif str(self.Year)=="2017":
             self.lumi=41.5
         elif str(self.Year)=="2018":
             self.lumi=59.8
         else:
             print "Year must be 2016/7/8"
+            print "self.Year","=",self.Year
             1/0
     def DrawObjectPad1(self):
         self.hstack.Draw("hist")
@@ -70,8 +80,11 @@ class PlotterDataMC(PlotterBase):
         self.hstack=ROOT.THStack()
         self.hp_mc=JHProcHist(self.cut,self.x,"mc")
 
+
+
         i_mc=0
         for i,proc in enumerate(self.myreader.ProcConf):
+            _h=self.HistColl[proc].GetHist().Clone()
             if proc=="Data" :
                 self.legendlist[proc]=_h.Clone() 
                 continue
@@ -85,7 +98,6 @@ class PlotterDataMC(PlotterBase):
                 #self.hmc.Add(self.HistColl[proc].GetHist())
                 self.hp_mc=self.hp_mc.Combine(self.HistColl[proc],self.cut,self.x,"mc")
             ##-------
-            _h=self.HistColl[proc].GetHist().Clone()
             _color=self.myreader.ProcConf[proc]["color"]
             _h.SetFillColor(_color)
             _h.SetLineColor(_color)
@@ -93,8 +105,10 @@ class PlotterDataMC(PlotterBase):
             self.hstack.Add(_h)
             self.legendlist[proc]=_h.Clone()
             i_mc+=1
-        self.hp_mc.SetEffTool(self.myreader.EffToolConf)
+        #self.hp_mc.SetEffTool(self.myreader.EffToolConf)
+        self.hp_mc.MakeStatNuiShapes()
         self.grerr=self.hp_mc.GetErrorGraph()
+        
         #for i in range(self.grerr.GetN()):
         #    #if self.grerr.GetPointY(i) > 0:
         #    #    print self.grerr.GetErrorY(i)/self.grerr.GetPointY(i)
@@ -102,16 +116,18 @@ class PlotterDataMC(PlotterBase):
         #    #    print 0
         self.grerr.SetFillColorAlpha(1,0.3)
         #self.grerr.SetFillColor(5)
-        ##---Set hmc and staterr to zero ##
+        ##---Make StatNuisance for hmc
+        
+        ##---Then, Set hmc and staterr to zero ##
         self.hmc=self.hp_mc.GetHist()
         Nbins=self.hmc.GetNbinsX()
         for ibin in range(Nbins+2):
             self.hmc.SetBinError(i,0)
-
+            
         self.hp_mc_nosys=JHProcHist(self.cut,self.x,"mc_nosys")        
         self.hp_mc_nosys.SetHist(self.hmc)
         self.hp_ratio_sys=self.hp_mc.Divide(self.hp_mc_nosys)
-        self.hp_ratio_sys.SetEffTool(self.myreader.EffToolConf)
+        #self.hp_ratio_sys.SetEffTool(self.myreader.EffToolConf)
         self.grerr_ratio=self.hp_ratio_sys.GetErrorGraph()
         self.grerr_ratio.SetFillColorAlpha(1,0.3)
         ##---Make hratio--##
@@ -129,6 +145,7 @@ class PlotterDataMC(PlotterBase):
         self.hratio.GetXaxis().SetTitleSize(0.09)
         self.hratio.SetMarkerStyle(20)
         self.hratio.SetMarkerSize(0.5)
+        
         #--Make Tline
         xmin=self.hdata.GetBinLowEdge(1)
         xmax=self.hdata.GetBinLowEdge(Nbins+2)

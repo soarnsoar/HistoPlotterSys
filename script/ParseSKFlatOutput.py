@@ -29,12 +29,14 @@ class Parser:
     def ScanNominal(self):
         self.proclist=[]
         self.cut_x=OrderedDict()
+        self.cut_x_N_1=OrderedDict()
         keylist=self.tfile.GetListOfKeys()
         for key in keylist:
             classname=key.GetClassName()
             name=key.GetName()
             if not "TDirectory" in classname : continue
             if "SYS" == name : continue
+            #if "N-1" == name : self.Read_N_1()
             if "OutTree" == name : continue
             #print key.GetName(),key.GetClassName()
             cut=key.GetName()
@@ -54,6 +56,7 @@ class Parser:
                     if not "TH" in classname : continue
                     proc=name
                     if not proc in self.proclist: self.proclist.append(proc)
+
 
     def ScanSystematics(self):
         self.nui_dict=OrderedDict()
@@ -105,19 +108,32 @@ class Parser:
         ##---Nuisance
         savepath=savedir+"/nuisances.py"
         with open(savepath,"w") as json_file:
-            json.dump(myparser.nui_dict,json_file,indent=4)
+            json.dump(self.nui_dict,json_file,indent=4)
             print "[ParseSKFlatOutput] Make nui->"
             print savepath
         ##---cut and x
         savepath=savedir+"/cut_and_x.py"
         with open(savepath,"w") as json_file:
-            json.dump(myparser.cut_x,json_file,indent=4)
+            json.dump(self.cut_x,json_file,indent=4)
             print "[ParseSKFlatOutput] Make cut and x->"
             print savepath
 
-YEAR=2017
-AnaName="DiLeptonAnalyzer"
+
+import argparse
+parser = argparse.ArgumentParser(description='ParseSKFlatOutput, make configs')
+parser.add_argument('-a', dest='AnalyzerName', default="")
+parser.add_argument('-y', dest='year', default="")
+parser.add_argument('-s', dest='suffix', default="")
+args = parser.parse_args()
+
+
+#YEAR=2017
+YEAR=args.year
+#AnaName="DiLeptonAnalyzer"
+AnaName=args.AnalyzerName
+suffix=args.suffix
 #myparser=Parser(AnaName,YEAR,0)
 #myparser=Parser(AnaName,YEAR,"checksf__")
-myparser=Parser(AnaName,YEAR,"runSys__")
+#myparser=Parser(AnaName,YEAR,"runSys__")
+myparser=Parser(AnaName,YEAR,suffix)
 myparser.Parse()

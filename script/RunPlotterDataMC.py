@@ -11,6 +11,7 @@ def Run(Year,AnalyzerName,cut,x,dirname,outname,suffix):
     #print 'runsys',runsys
     print "suffix",suffix
     myplotter=PlotterDataMC(Year,AnalyzerName,cut,x,dirname,outname,suffix)    
+    del myplotter
 def SubmitCut(Year,AnalyzerName,cut,xlist,dirname,outname,suffix):
     for x in xlist:
         myplotter=PlotterDataMC(Year,AnalyzerName,cut,x,dirname,outname,suffix)
@@ -38,20 +39,17 @@ if __name__ == '__main__':
     cut_and_x_path=maindir+"/config/"+AnalyzerName+"/"+year+"/"+suffix+"/cut_and_x.py"
     cut_and_x=OpenDictFile(cut_and_x_path)
     ncut=len(cut_and_x)
-    print "ncut=",len(cut_and_x)
-    if ncut <10 :
-        icut=0
-        for cut in cut_and_x:
-            print icut+1,'/',ncut
-            for x in cut_and_x[cut]:
-                print "-----------"
-                print cut,x
-                thisdir=directory+"/"+cut
-                name=x
-                Run(year,AnalyzerName,cut,x,thisdir,name,suffix)
+    icut=0
+    for cut in cut_and_x:
+        print icut+1,'/',ncut
+        for x in cut_and_x[cut]:
+            print "-----------"
+            print cut,x
+            thisdir=directory+"/"+cut
+            name=x
+            Run(year,AnalyzerName,cut,x,thisdir,name,suffix)
+            
 
+        icut+=1
 
-            icut+=1
-    else:
-        for cut in cut_and_x:
             

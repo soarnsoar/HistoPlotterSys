@@ -6,6 +6,9 @@ from JHProcHist import JHProcHist
 from OpenDictFile import OpenDictFile
 from GetBinsX import GetBinsX 
 maindir=os.getenv("GIT_HistoPlotterSys")
+##
+import time
+##
 class Reader:
     def __init__(self,AnaName,YEAR,suffix):
         self.Verbose=0
@@ -31,17 +34,22 @@ class Reader:
     def ReadProcConf(self):
         _path=self.GetProcConfPath()
         self.ProcConf=OpenDictFile(_path)
+        print "--input:",_path
     def GetProcConfPath(self):
         return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/proc.py"
     def ReadNuiConf(self):
         _path=self.GetNuiConfPath()
+        print "--nui:",_path
         self.NuiConf=OpenDictFile(_path)
-        _path=self.GetEffToolConfPath()
-        self.EffToolConf=OpenDictFile(_path)
+
+        #_path=self.GetEffToolConfPath()
+        #print "--effnui:",_path
+        #self.EffToolConf=OpenDictFile(_path)
+
     def GetNuiConfPath(self):
         return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/nuisances.py"
-    def GetEffToolConfPath(self):
-        return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/nuisances_efftool.py"
+    #def GetEffToolConfPath(self):
+    #    return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/nuisances_efftool.py"
     def CheckIsData(self,p):
         return 1 if "IsData" in self.ProcConf[p] and self.ProcConf[p]["IsData"] else 0
     
@@ -58,6 +66,8 @@ class Reader:
 
         raise ValueError("No Histogram in "+_cut_x)
     def MakeHistContainer(self,cut,x):
+        print "<MakeHistContainer>"
+        start_time = time.time()
         this_container={}
         ##---Before Start, Make Empty Hist---##
         self._h_empty=self.GetEmptyHist(cut,x)
@@ -77,8 +87,8 @@ class Reader:
                             for idx2 in self.NuiConf[nui][idx1]:
                                 this_sys=self.ReadNuisanceShape(cut,x,subp,nui,idx1,idx2)
                                 this_h.SetHist(deepcopy(this_sys),nui,idx1,idx2)
-                    this_h.MakeStatNuiShapes()
-                    this_h.SetEffTool(self.EffToolConf)
+                    #this_h.MakeStatNuiShapes()
+                    #this_h.SetEffTool(self.EffToolConf)
                 ##--Store JHProcHist--##
                 this_container[subp]=this_h
 
@@ -93,7 +103,9 @@ class Reader:
             #this_container[p].SetLineColor(_color)
             #this_container[p].SetFillColor(_color)
             
-            
+        end_time = time.time()
+        execution_time = end_time - start_time
+        print "time=",execution_time
 
         return this_container
     def ReadNominalShape(self,cut,x,proc):

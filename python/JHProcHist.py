@@ -11,7 +11,8 @@ class JHProcHist:## Hists Container of a proc
         self.hdict={}
         self.hsys_dict={}
         self.IsErrorSet=False
-
+        self.nmin_replica=10 ## # of members for replica sys.
+        self.nmaxprint=5
     def SetX(self,x):
         self.x=x
     def SetProc(self,proc):
@@ -156,53 +157,55 @@ class JHProcHist:## Hists Container of a proc
         ynom=self.GetHist().GetBinContent(ibin)
         return ysys-ynom
     def GetReplicaError(self,ynom,ibin,sys,idx1):
-        #ynom=self.GetHist().GetBinContent(ibin)
-
-        Nrep=len(self.hdict[sys][idx1])
-        #print Nrep
-        sum_dy2=0
+        ##---Split them into plus/minus error
+        Nrep_plus=0
+        Nrep_minus=0
+        sum_dyplus2=0
+        sum_dyminus2=0
+        xvalue=self.hdict[sys][idx1]["0"].GetBinLowEdge(ibin)
         for idx2 in self.hdict[sys][idx1]:
             ysys=self.hdict[sys][idx1][idx2].GetBinContent(ibin)
             this_dy=ysys-ynom
-            sum_dy2+=(this_dy**2)
-        variance=sum_dy2/Nrep
-        std_dev=sqrt(variance)
-        return std_dev
-    def GetDiffError(self,ynom,ibin,sys,idx1):
-        dylist=[]
-        for idx2 in self.hdict[sys][idx1]:
-            ysys=self.hdict[sys][idx1][idx2].GetBinContent(ibin)
-            this_dy=ysys-ynom
-            #if this_dy > ynom :
-            #    print "------"
-            #    print "(sys,idx1,idx2)"
-            #    print sys,idx1,idx2
-            #    print "ynom,ysys"
-            #    print ynom,ysys
-            #if ynom>0:
-            #    #if this_dy/ynom > 1:
-            #    if sys=="jer":
-            #        #print "---to large err---"
-            #        print "---"
-            #        print sys,idx1,idx2
-            #        print ynom,this_dy
-            dylist.append(this_dy)
-        #up=ynom+max(dylist)
-        #down=ynom+min(dylist)
-        maxdy=max(dylist)
-        mindy=min(dylist)
-        return maxdy
-    def GetSysError(self,ynom,ibin,sys):
-        sum_err2=0
-        for idx1 in self.hdict[sys]:
-            if sys in self.dict_efftool and idx1 in self.dict_efftool[sys]:
-                this_err=self.GetReplicaError(ynom,ibin,sys,idx1)
-                #if ynom > 0 :print this_err/ynom
+            if this_dy > 0:
+                sum_dyplus2+=(this_dy**2)
+                Nrep_plus+=1
             else:
-                this_err=self.GetDiffError(ynom,ibin,sys,idx1)
-            sum_err2+=this_err**2
-        total_err=sqrt(sum_err2)
-        return total_err
+                sum_dyminus2+=(this_dy**2)
+                Nrep_minus+=1
+            #sum_dy2+=(this_dy**2)
+        
+        variance_plus=sum_dyplus2/Nrep_plus if Nrep_plus else 0.
+        variance_minus=sum_dyminus2/Nrep_minus if Nrep_minus else 0.
+        std_dev_plus=sqrt(variance_plus)
+        std_dev_minus=sqrt(variance_minus)
+        return std_dev_plus,std_dev_minus
+    def GetDiffError(self,ynom,ibin,sys,idx1):
+        dylist_plus=[0]
+        dylist_minus=[0]
+        for idx2 in self.hdict[sys][idx1]:
+            ysys=self.hdict[sys][idx1][idx2].GetBinContent(ibin)
+            this_dy=ysys-ynom
+            if this_dy > 0:
+                dylist_plus.append(this_dy)
+            else:
+                dylist_minus.append(this_dy)
+        #maxdy=max(dylist)
+        #mindy=min(dylist)
+        return max(dylist_plus),min(dylist_minus)
+    def GetSysError(self,ynom,ibin,sys):
+        sum_err2_plus=0
+        sum_err2_minus=0
+        for idx1 in self.hdict[sys]:
+            #if sys in self.dict_efftool and idx1 in self.dict_efftool[sys]:
+            if len(self.hdict[sys][idx1]) > self.nmin_replica :##if number of mem > 10 -> replica
+                this_err_plus, this_err_minus=self.GetReplicaError(ynom,ibin,sys,idx1)
+            else:
+                this_err_plus, this_err_minus=self.GetDiffError(ynom,ibin,sys,idx1)
+            sum_err2_plus+= (this_err_plus**2)
+            sum_err2_minus+= (this_err_minus**2)
+        total_err_plus=sqrt(sum_err2_plus)
+        total_err_minus=sqrt(sum_err2_minus)
+        return total_err_plus,total_err_minus
 
     
 
@@ -210,27 +213,51 @@ class JHProcHist:## Hists Container of a proc
         self.gr_sys=ROOT.TGraphAsymmErrors()
         hnom=self.GetHist()
         Nbin=hnom.GetNbinsX()
+        dict_err_plus={}
+        dict_err_minus={}
+        integral_total=0
         for ibin in range(1,Nbin+1):
             x1=hnom.GetBinLowEdge(ibin)
             x2=hnom.GetBinWidth(ibin)+x1
             x=(x1+x2)/2
             ynom=hnom.GetBinContent(ibin)
-            dy2sum=0
+            integral_total+=ynom
+            dy2sum_plus=0
+            dy2sum_minus=0
             #print "----"
             #print ynom
             for sys in self.hdict:
-                dy=self.GetSysError(ynom,ibin,sys)
-                #relerr=dy/ynom if ynom!=0 else 0
-                #print sys,dy,relerr
-                dy2sum+=(dy*dy)
-            dytotal=sqrt(dy2sum)
-            #yup=ynom+dytotal
-            #ydown=ynom-dytotal
-            #if ynom>0 : print dytotal/ynom 
+                dy_plus,dy_minus=self.GetSysError(ynom,ibin,sys)
+                dy2sum_plus+=(dy_plus**2)
+                dy2sum_minus+=(dy_minus**2)
+                if sys not in dict_err_plus: 
+                    dict_err_plus[sys]=0
+                if sys not in dict_err_minus: 
+                    dict_err_minus[sys]=0
+                dict_err_plus[sys]+=dy_plus
+                dict_err_minus[sys]+=dy_minus
+            dytotal_plus=sqrt(dy2sum_plus)
+            dytotal_minus=sqrt(dy2sum_minus)
             self.gr_sys.SetPoint(ibin-1,x,ynom)
-            self.gr_sys.SetPointError(ibin-1,x-x1,x2-x,dytotal,dytotal)
+            self.gr_sys.SetPointError(ibin-1,x-x1,x2-x,dytotal_plus,dytotal_minus)
+        ##----Print 
+        print "----[Plus Error Rank]---"
+        self.PrintSysRank(dict_err_plus,integral_total)
+        print "----[Minus Error Rank]---"
+        self.PrintSysRank(dict_err_minus,integral_total)
         self.IsErrorSet=1
     def GetErrorGraph(self):
         #if not self.IsErrorSet: self.SetErrorBand()
         self.SetErrorBand()
         return self.gr_sys
+    def PrintSysRank(self,dict_err,integral_total):
+        sorted_keys = sorted(dict_err, key=dict_err.get, reverse=True)
+        #sorted_dict = {key: dict_err[key] for key in sorted_keys}
+        idx_sys=0
+        for sys in sorted_keys:
+            idx_sys+=1
+            dy=dict_err[sys]
+            relerr=dy/integral_total*100
+            print '[',idx_sys,']',sys,relerr,"(%)"
+            if idx_sys>self.nmaxprint:break
+
