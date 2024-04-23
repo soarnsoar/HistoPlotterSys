@@ -79,15 +79,26 @@ class PlotterDataMC(PlotterBase):
     def MakeCombinedObject(self):
         self.hstack=ROOT.THStack()
         self.hp_mc=JHProcHist(self.cut,self.x,"mc")
-
-
-
+        self.hp_data=JHProcHist(self.cut,self.x,"Data")
+        self.hp_data.Clone(self.HistColl["Data"])
+        ##as data has leptonscale variations, propagate them to mc sys.
+        ##e.g)mc_up_new = mc_up_old/data_up*data_nom
+        ##then data_nom/mc_up_new = data_nom/mc_up_old*data_up/data_nom = data_up/mc_up //good
+        ## divide mc by data_var/data
+        self.hp_data_nosys=JHProcHist(self.cut,self.x,"data_nosys")
+        self.hp_data_nosys.SetHist(self.HistColl["Data"].GetHist().Clone()) ## add only nominal
+        self.hp_norm_data_sys=self.hp_data.Divide(self.hp_data_nosys)
+        ##---Need to make each binerror to zero for self.hp_norm_data_sys(it disturbs mcstat variation)
+        self.hp_norm_data_sys.MakeBinErrorZero()
+        ##now divide all mc with self.hp_norm_data_sys
         i_mc=0
         for i,proc in enumerate(self.myreader.ProcConf):
             _h=self.HistColl[proc].GetHist().Clone()
             if proc=="Data" :
                 self.legendlist[proc]=_h.Clone() 
                 continue
+            ##--systematic norm with data var
+            self.HistColl[proc]=self.HistColl[proc].Divide(self.hp_norm_data_sys)
             ##---hmc
             if i_mc==0:
                 #    def Combine(self,h2,cut="",x="",proc=""):

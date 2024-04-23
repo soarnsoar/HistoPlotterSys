@@ -7,6 +7,7 @@ StartTime=$(date +%s)
 #    parser.add_argument('-y', dest='year', default="")
 #    parser.add_argument('-d', dest=dirctory, default="")
 ARR_YEAR=(2016preVFP 2016postVFP 2017 2018)
+#ARR_YEAR=(2017)
 Ana=DiLeptonAnalyzer
 #YEAR=2016preVFP
 #YEAR=2016postVFP

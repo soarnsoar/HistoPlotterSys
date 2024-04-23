@@ -80,13 +80,15 @@ class Reader:
                 ##-----NominalShape-----#
                 this_nominal=self.ReadNominalShape(cut,x,subp)
                 this_h.SetHist(deepcopy(this_nominal))
-                if not IsData :
-                    ##----NuisanceShape-----#
-                    for nui in self.NuiConf:
-                        for idx1 in self.NuiConf[nui]:
-                            for idx2 in self.NuiConf[nui][idx1]:
-                                this_sys=self.ReadNuisanceShape(cut,x,subp,nui,idx1,idx2)
-                                this_h.SetHist(deepcopy(this_sys),nui,idx1,idx2)
+                #if not IsData :
+                ##----NuisanceShape-----#
+                for nui in self.NuiConf:
+                    if IsData :
+                        if nui!="electronscale" and nui!="muonscale" : continue
+                    for idx1 in self.NuiConf[nui]:
+                        for idx2 in self.NuiConf[nui][idx1]:
+                            this_sys=self.ReadNuisanceShape(cut,x,subp,nui,idx1,idx2)
+                            this_h.SetHist(deepcopy(this_sys),nui,idx1,idx2)
                     #this_h.MakeStatNuiShapes()
                     #this_h.SetEffTool(self.EffToolConf)
                 ##--Store JHProcHist--##

@@ -67,7 +67,9 @@ class Parser:
             #name=key.GetName()
             #if not "TDirectory" in classname : continue
             #print key.GetName(),key.GetClassName()
-            key2list=self.tfile.Get("SYS/"+cut).GetListOfKeys()
+            cutdir=self.tfile.Get("SYS/"+cut)
+            if not cutdir : continue
+            key2list=cutdir.GetListOfKeys()
             for x in self.cut_x[cut]:
                 #classname=key2.GetClassName()
                 #name=key2.GetName()

@@ -9,7 +9,6 @@ class JHProcHist:## Hists Container of a proc
         self.x=x
         self.proc=proc
         self.hdict={}
-        self.hsys_dict={}
         self.IsErrorSet=False
         self.nmin_replica=10 ## # of members for replica sys.
         self.nmaxprint=5
@@ -73,7 +72,11 @@ class JHProcHist:## Hists Container of a proc
                     this_shape.Divide(h2.GetHist(this_sys,this_idx1,this_idx2))
                     h_over_h2.SetHist(this_shape,this_sys,this_idx1,this_idx2)
         return h_over_h2
-    
+    def MakeBinErrorZero(self):
+        Nbins=self.hdict["nom"]['0']['0'].GetNbinsX()
+        for i in range(Nbins+2):
+            self.hdict["nom"]['0']['0'].SetBinError(i,0.0)
+
     def Subtract(self,h2,cut="",x="",proc=""):
         h_minus_h2=JHProcHist(cut,x,proc)
         this_syslist=self.GetCombinedList(self.GetSysList(),h2.GetSysList())
@@ -254,10 +257,11 @@ class JHProcHist:## Hists Container of a proc
         sorted_keys = sorted(dict_err, key=dict_err.get, reverse=True)
         #sorted_dict = {key: dict_err[key] for key in sorted_keys}
         idx_sys=0
+        print "Proc=",self.proc
         for sys in sorted_keys:
             idx_sys+=1
             dy=dict_err[sys]
             relerr=dy/integral_total*100
-            print '[',idx_sys,']',sys,relerr,"(%)"
+            print '[',idx_sys,']',sys,round(relerr,3),"(%)"
             if idx_sys>self.nmaxprint:break
 
