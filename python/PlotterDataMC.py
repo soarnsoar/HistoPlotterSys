@@ -130,13 +130,14 @@ class PlotterDataMC(PlotterBase):
         ##---Make StatNuisance for hmc
         
         ##---Then, Set hmc and staterr to zero ##
-        self.hmc=self.hp_mc.GetHist()
-        Nbins=self.hmc.GetNbinsX()
+        self.hmc_nosys=self.hp_mc.GetHist()
+        Nbins=self.hmc_nosys.GetNbinsX()
         for ibin in range(Nbins+2):
-            self.hmc.SetBinError(i,0)
-            
+            self.hmc_nosys.SetBinError(ibin,0.)
+            #print "self.hmc_nosys.GetBinError(i)=",self.hmc_nosys.GetBinError(i)
         self.hp_mc_nosys=JHProcHist(self.cut,self.x,"mc_nosys")        
-        self.hp_mc_nosys.SetHist(self.hmc)
+        self.hp_mc_nosys.SetHist(self.hmc_nosys)
+
         self.hp_ratio_sys=self.hp_mc.Divide(self.hp_mc_nosys)
         #self.hp_ratio_sys.SetEffTool(self.myreader.EffToolConf)
         self.grerr_ratio=self.hp_ratio_sys.GetErrorGraph()
@@ -146,7 +147,9 @@ class PlotterDataMC(PlotterBase):
         self.hdata.SetMarkerStyle(20)
         self.hdata.SetMarkerSize(0.5)
         self.hratio=self.hdata.Clone()
-        self.hratio.Divide(self.hmc)
+        Nbins=self.hmc_nosys.GetNbinsX()
+        self.hratio.Divide(self.hmc_nosys)
+
         self.hratio.SetMinimum(0.5)
         self.hratio.SetMaximum(1.5)
         self.hratio.GetYaxis().SetLabelSize(0.1)
@@ -167,7 +170,7 @@ class PlotterDataMC(PlotterBase):
         ##--GetAndSetMaximum
         self.ymax=-999999999999999999
         self.ymin=99999999999999999
-        for h in [self.hdata,self.hmc]:
+        for h in [self.hdata,self.hmc_nosys]:
             _ymax=h.GetMaximum()
             _ymin=h.GetMinimum()
             if _ymax>self.ymax : self.ymax=_ymax
@@ -177,13 +180,13 @@ class PlotterDataMC(PlotterBase):
 
         
         print "dataintegral->",self.hdata.Integral()
-        print "mcintegral->",self.hmc.Integral()
+        print "mcintegral->",self.hmc_nosys.Integral()
     def SetMaximum(self):
         if self.logy:
-            for h in [self.hdata,self.hmc,self.hstack,self.grerr]:
+            for h in [self.hdata,self.hmc_nosys,self.hstack,self.grerr]:
                 h.SetMaximum(self.ymax*50)
         else:
-            for h in [self.hdata,self.hmc,self.hstack,self.grerr]:
+            for h in [self.hdata,self.hmc_nosys,self.hstack,self.grerr]:
                 h.SetMaximum(self.ymax*2)
     def SetLegend(self):
         nproc=len(self.myreader.ProcConf)
