@@ -9,8 +9,11 @@ class PlotterBase:
     def Draw(self,isRatio=0):
         ##---------From TDR style ---------##
         tdrstyle.setTDRStyle()
-        #change the CMS_lumi variables (see CMS_lumi.py)          
-        CMS_lumi.lumi_13TeV = str(self.lumi)+" fb^{-1}"
+        #change the CMS_lumi variables (see CMS_lumi.py)
+        if self.lumi==None:
+            CMS_lumi.lumi_13TeV =""
+        else:
+            CMS_lumi.lumi_13TeV = str(self.lumi)+" fb^{-1}"
         CMS_lumi.writeExtraText = 1
         CMS_lumi.extraText = "Preliminary"
         CMS_lumi.lumi_sqrtS = self.sqrtS # used with iPeriod = 0, e.g. for simulation-only plots (default is an empty string)

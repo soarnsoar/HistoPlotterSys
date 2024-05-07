@@ -134,8 +134,11 @@ class JHProcHist:## Hists Container of a proc
         self.hdict["nom"]['0']['0'].SetFillColor(_color)
     def SetLineColor(self,_color):
         self.hdict["nom"]['0']['0'].SetLineColor(_color)
-    def MakeStatNuiShapes(self):
-        nui_name_base="__".join(["stat",self.GetCut(),self.GetX(),self.GetProc()])
+    def MakeStatNuiShapes(self,add_suffix=""):
+        print "self.GetCut()",self.GetCut()
+        print "self.GetX()",self.GetX()
+        print "self.GetProc()",self.GetProc()
+        nui_name_base="__".join(["stat",self.GetCut(),self.GetX(),self.GetProc(),add_suffix])
         ##--Get NuisanceShape
         h=self.GetHist()
         Nbin=h.GetNbinsX()
@@ -261,7 +264,8 @@ class JHProcHist:## Hists Container of a proc
         for sys in sorted_keys:
             idx_sys+=1
             dy=dict_err[sys]
-            relerr=dy/integral_total*100
+            relerr=0
+            if not integral_total == 0 : relerr=dy/integral_total*100
             print '[',idx_sys,']',sys,round(relerr,3),"(%)"
             if idx_sys>self.nmaxprint:break
 

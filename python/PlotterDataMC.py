@@ -24,16 +24,11 @@ class PlotterDataMC(PlotterBase):
         self.SetLumi()
         self.sqrtS=13
         
-
         self.ReadData()
-                
         ##--
         self.legendlist=OrderedDict()
         ##--
         self.MakeCombinedObject()
-        
-
-
         ##---not logy
         self.logy=0
         self.SetMaximum()
@@ -65,16 +60,22 @@ class PlotterDataMC(PlotterBase):
             print "self.Year","=",self.Year
             1/0
     def DrawObjectPad1(self):
+        
         self.hstack.Draw("hist")
         #self.hmc.Draw("sames")
         self.hdata.Draw("e1sames")
         self.grerr.Draw("e2sames")
         self.leg.Draw()
+        self.hstack.GetXaxis().SetTitle(self.x)
+        self.hdata.GetXaxis().SetTitle(self.x)
+        self.grerr.GetXaxis().SetTitle(self.x)
         #self.HistColl["TT"].GetHist().Draw()
     def DrawObjectPad2(self):
         self.hratio.Draw("e1")
         self.line.Draw("sames")
         self.grerr_ratio.Draw("e2sames")
+        self.hratio.GetXaxis().SetTitle(self.x)
+        self.grerr_ratio.GetXaxis().SetTitle(self.x)
         #self.HistColl["TT"].GetHist().Draw()
     def MakeCombinedObject(self):
         self.hstack=ROOT.THStack()
@@ -113,11 +114,12 @@ class PlotterDataMC(PlotterBase):
             _h.SetFillColor(_color)
             _h.SetLineColor(_color)
             _h.SetMarkerColor(_color)
+            print "Stack->",proc
             self.hstack.Add(_h)
             self.legendlist[proc]=_h.Clone()
             i_mc+=1
         #self.hp_mc.SetEffTool(self.myreader.EffToolConf)
-        self.hp_mc.MakeStatNuiShapes()
+        self.hp_mc.MakeStatNuiShapes(str(self.Year))
         self.grerr=self.hp_mc.GetErrorGraph()
         
         #for i in range(self.grerr.GetN()):

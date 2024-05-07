@@ -71,6 +71,7 @@ class Reader:
         this_container={}
         ##---Before Start, Make Empty Hist---##
         self._h_empty=self.GetEmptyHist(cut,x)
+        print "sorted(self.ProcConf)=",sorted(self.ProcConf)
         for p in self.ProcConf:
             subplist=self.ProcConf[p]["procs"]
             IsData=self.CheckIsData(p)
@@ -98,13 +99,13 @@ class Reader:
                 if isubp==0:
                     this_container[p].Clone(this_h)
                 else:
-                    this_container[p]=this_container[p].Combine(this_h)
+                    this_container[p]=this_container[p].Combine(this_h,cut,x,p)
             ###--SetColor--##
             #_color=self.ProcConf[p]["color"]
             #print _color
             #this_container[p].SetLineColor(_color)
             #this_container[p].SetFillColor(_color)
-            
+
         end_time = time.time()
         execution_time = end_time - start_time
         print "time=",execution_time
