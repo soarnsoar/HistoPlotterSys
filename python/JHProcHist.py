@@ -135,9 +135,6 @@ class JHProcHist:## Hists Container of a proc
     def SetLineColor(self,_color):
         self.hdict["nom"]['0']['0'].SetLineColor(_color)
     def MakeStatNuiShapes(self,add_suffix=""):
-        print "self.GetCut()",self.GetCut()
-        print "self.GetX()",self.GetX()
-        print "self.GetProc()",self.GetProc()
         nui_name_base="__".join(["stat",self.GetCut(),self.GetX(),self.GetProc(),add_suffix])
         ##--Get NuisanceShape
         h=self.GetHist()

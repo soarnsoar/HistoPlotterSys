@@ -71,7 +71,6 @@ class Reader:
         this_container={}
         ##---Before Start, Make Empty Hist---##
         self._h_empty=self.GetEmptyHist(cut,x)
-        print "sorted(self.ProcConf)=",sorted(self.ProcConf)
         for p in self.ProcConf:
             subplist=self.ProcConf[p]["procs"]
             IsData=self.CheckIsData(p)

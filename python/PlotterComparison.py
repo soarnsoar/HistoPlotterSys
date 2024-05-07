@@ -52,6 +52,13 @@ class PlotterComparison(PlotterBase):
             
             if self.Nobj==len(this_list) : continue
             print "!!!! Length of input lists are not sync. EXIT"
+            print "len(self.analist)=",len(self.analist)
+            print "len(self.cutlist)=",len(self.cutlist)
+            print "len(self.xlist)=",len(self.xlist)
+            print "len(self.proclist)=",len(self.proclist)
+            print "len(self.labellist)=",len(self.labellist)
+            print "len(self.suffixlist)=",len(self.suffixlist)
+            print "len(self.colorlist)=",len(self.colorlist)
             1/0
 
     def SetLumi(self):
@@ -85,11 +92,12 @@ class PlotterComparison(PlotterBase):
             this_x=self.GetX(i)
             this_proc=self.GetProc(i)
             this_color=self.GetColor(i)
+            self.HistColls[i][this_proc].GetHist().SetTitle(self.title)
             if i==0:
                 self.HistColls[i][this_proc].GetHist().Draw()
             else:
                 self.HistColls[i][this_proc].GetHist().Draw("sames")
-            self.HistColls[i][this_proc].GetHist().SetTitle(self.title)
+            
             self.HistColls[i][this_proc].GetHist().SetLineColor(self.colorlist[i])
             ## error band
             self.HistColls[i][this_proc].gr_sys.Draw("e2sames")
@@ -172,6 +180,7 @@ class PlotterComparison(PlotterBase):
             this_HistColl=this_reader.MakeHistContainer(this_cut,this_x)
             this_HistColl[this_proc].MakeStatNuiShapes(str(this_year))
             self.SetBinErrorZero(this_HistColl[this_proc].GetHist())
+            this_HistColl[this_proc].GetHist().GetXaxis().SetLabelSize(0)
             this_HistColl[this_proc].SetErrorBand()
             self.myreaders.append(this_reader)
             self.HistColls.append(this_HistColl)
