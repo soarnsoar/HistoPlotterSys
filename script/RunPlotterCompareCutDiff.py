@@ -76,6 +76,7 @@ if __name__ == '__main__':
             #Run(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,True)
             if not "indexToCompare" in this_dict: continue
             indexToCompare=this_dict["indexToCompare"]
+            print "indexToCompare=",indexToCompare
             Run(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,indexToCompare)
 
 

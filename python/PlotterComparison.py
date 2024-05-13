@@ -90,12 +90,12 @@ class PlotterComparison(PlotterBase):
             1/0
 
 
-    def SetLine1(self):
+    def SetLine1(self,_index=0):
         Nbins=self.HistColls[0][self.GetProc(0)].GetHist().GetNbinsX()
         xmin=self.HistColls[0][self.GetProc(0)].GetHist().GetBinLowEdge(1)
         xmax=self.HistColls[0][self.GetProc(0)].GetHist().GetBinLowEdge(Nbins+2)
         self.line=ROOT.TLine(xmin,1,xmax,1)
-        self.line.SetLineColor(self.colorlist[0])
+        self.line.SetLineColor(self.colorlist[_index])
     def DrawObjectPad1(self):
         for i in range(self.Nobj):
             this_cut=self.GetCut(i)

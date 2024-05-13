@@ -13,6 +13,7 @@ maindir=os.getenv("GIT_HistoPlotterSys")
 class PlotterComparisonDiff_vs_Element(PlotterComparison):
     def __init__(self,title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext="Preliminary",indexToCompare=0):
         self.extratext=extratext
+        self.indexToCompare=indexToCompare## histo that "b" in a-b
         PlotterComparison.__init__(self,title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,doNorm=False,doDiff=True)
         ###---Now Data-Reading is done..
         ## For "indexToCompare"
@@ -20,7 +21,7 @@ class PlotterComparisonDiff_vs_Element(PlotterComparison):
         # For the others
         ##Use -> self.HP_Ratios
 
-        self.indexToCompare=indexToCompare## histo that "b" in a-b
+
         
     def DrawAll(self):
         ##--
@@ -51,11 +52,18 @@ class PlotterComparisonDiff_vs_Element(PlotterComparison):
             this_color=self.GetColor(i)
             if i == self.indexToCompare:
                 this_hp_ratio2=self.HistColls[i][this_proc].Divide(self.HistColls[self.indexToCompare][self.GetProc(self.indexToCompare)])
-
             else:
                 this_hp_ratio2=self.HP_Ratios[i].Divide(self.HistColls[self.indexToCompare][self.GetProc(self.indexToCompare)])
             this_hp_ratio2.SetErrorBand()
             self.HP_Ratios2.append(this_hp_ratio2)
+            this_hp_ratio2.GetHist().GetYaxis().SetLabelSize(0.1)
+            this_hp_ratio2.GetHist().GetXaxis().SetLabelSize(0.1)
+            this_hp_ratio2.GetHist().GetYaxis().SetNdivisions(505)
+            this_hp_ratio2.GetHist().GetXaxis().SetTitleOffset(1)
+            this_hp_ratio2.GetHist().GetXaxis().SetTitleSize(0.09)
+            this_hp_ratio2.GetHist().GetXaxis().SetTitle(self.GetXName(this_x))
+            this_hp_ratio2.GetHist().SetMarkerStyle(20)
+            this_hp_ratio2.GetHist().SetMarkerSize(0.5)
 
 
     def DrawObjectPad1(self):
@@ -68,12 +76,12 @@ class PlotterComparisonDiff_vs_Element(PlotterComparison):
             sameoption=""
             if i!=0: sameoption="sames"
             ##--Draw
-            if i==self.indexToCompare :
+            if i==self.indexToCompare :##Draw the shape itself
                 self.HistColls[i][this_proc].GetHist().Draw(sameoption)
                 self.HistColls[i][this_proc].gr_sys.Draw("e2"+sameoption)
                 self.HistColls[i][this_proc].GetHist().SetLineColor(self.colorlist[i])
                 self.HistColls[i][this_proc].gr_sys.SetFillColorAlpha(self.colorlist[i],0.3)
-            else:
+            else: ##Draw subtracted shape
                 self.HP_Ratios[i].GetHist().Draw(sameoption)
                 self.HP_Ratios[i].gr_sys.Draw("e2"+sameoption)
                 self.HP_Ratios[i].GetHist().SetLineColor(self.colorlist[i])
@@ -84,7 +92,8 @@ class PlotterComparisonDiff_vs_Element(PlotterComparison):
         self.leg.Draw()
         
     def DrawObjectPad2(self):
-        for i in range(1,self.Nobj):
+        for i in range(0,self.Nobj):
+            if i == self.indexToCompare:continue
             this_cut=self.GetCut(i)
             this_x=self.GetX(i)
             this_proc=self.GetProc(i)
@@ -93,6 +102,7 @@ class PlotterComparisonDiff_vs_Element(PlotterComparison):
                 self.HP_Ratios2[i].GetHist().Draw()
             else:
                 self.HP_Ratios2[i].GetHist().Draw("sames")
+            self.HP_Ratios2[i].GetHist().SetLineColor(self.colorlist[i])
             self.HP_Ratios2[i].gr_sys.Draw("e2sames")
             self.HP_Ratios2[i].gr_sys.SetLineColor(self.colorlist[i])
             self.HP_Ratios2[i].gr_sys.SetFillColorAlpha(self.colorlist[i],0.3)
@@ -101,9 +111,11 @@ class PlotterComparisonDiff_vs_Element(PlotterComparison):
         if self.logy:
             for i in range(self.Nobj):
                 self.HistColls[i][self.GetProc(i)].GetHist().SetMaximum(self.ymax*50)
+                self.HP_Ratios[i].GetHist().SetMaximum(self.ymax*50)
         else:
             for i in range(self.Nobj):
                 self.HistColls[i][self.GetProc(i)].GetHist().SetMaximum(self.ymax*2)
+                self.HP_Ratios[i].GetHist().SetMaximum(self.ymax*2)
     def SetLegend(self):
         nproc=self.Nobj
         ncolomns=(nproc)/4 +1
@@ -163,49 +175,24 @@ class PlotterComparisonDiff_vs_Element(PlotterComparison):
             this_reader=Reader(this_ana,this_year,this_suffix)
             this_HistColl=this_reader.MakeHistContainer(this_cut,this_x)
             this_HistColl[this_proc].MakeStatNuiShapes(str(this_year))
-            if self.doNorm : 
-                this_norm=this_HistColl[this_proc].GetHist().Integral()
-                if this_norm!=0: this_HistColl[this_proc].Scale(1/this_norm)
             self.SetBinErrorZero(this_HistColl[this_proc].GetHist())
             #this_HistColl[this_proc].GetHist().GetXaxis().SetLabelSize(0)
             this_HistColl[this_proc].SetErrorBand()
             self.myreaders.append(this_reader)
             self.HistColls.append(this_HistColl)
             this_reader.CloseFile()
+        for i in range(self.Nobj):
             ##--Ratio/Diff
-            if i==0:
-                if not self.doDiff:
-                    ##--ratio
-                    this_hp_ratio=this_HistColl[this_proc].Divide(this_HistColl[this_proc],this_cut,this_x,this_proc)                
-                else: ##do diff
-                    this_hp_ratio=this_HistColl[this_proc].Subtract(this_HistColl[this_proc],this_cut,this_x,this_proc)                
-                this_hp_ratio.SetErrorBand()
-                self.HP_Ratios.append(this_hp_ratio)
-            else:
-                if not self.doDiff:
-                    ##--ratio
-                    this_hp_ratio=this_HistColl[this_proc].Divide(self.HistColls[0][self.GetProc(0)],this_proc+"__"+self.GetCut(0),this_x+"__"+self.GetX(0),this_proc+"__"+self.GetProc(0))##divide by 1st element
-                else:
-                    ##--diff
-                    this_hp_ratio=this_HistColl[this_proc].Subtract(self.HistColls[0][self.GetProc(0)],this_proc+"__"+self.GetCut(0),this_x+"__"+self.GetX(0),this_proc+"__"+self.GetProc(0))##subtract by 1st element
-                this_hp_ratio.SetErrorBand()
-                self.HP_Ratios.append(this_hp_ratio)
-
-            if not self.doDiff:
-                this_hp_ratio.GetHist().SetMinimum(0)
-                this_hp_ratio.GetHist().SetMaximum(2)
-            this_hp_ratio.GetHist().GetYaxis().SetLabelSize(0.1)
-            this_hp_ratio.GetHist().GetXaxis().SetLabelSize(0.1)
-            this_hp_ratio.GetHist().GetYaxis().SetNdivisions(505)
-            this_hp_ratio.GetHist().GetXaxis().SetTitleOffset(1)
-            this_hp_ratio.GetHist().GetXaxis().SetTitleSize(0.09)
-            this_hp_ratio.GetHist().GetXaxis().SetTitle(self.GetXName(this_x))
-            this_hp_ratio.GetHist().SetMarkerStyle(20)
-            this_hp_ratio.GetHist().SetMarkerSize(0.5)
+            this_proc=self.GetProc(i)
+            this_x=self.GetX(i)
+            this_hp_ratio=self.HistColls[i][this_proc].Subtract(self.HistColls[self.indexToCompare][self.GetProc(self.indexToCompare)],self.GetCut(self.indexToCompare),self.GetX(self.indexToCompare),self.GetProc(self.indexToCompare))#self.HistColls[0][self.GetProc(0)]
+            this_hp_ratio.SetErrorBand()
+            self.HP_Ratios.append(this_hp_ratio)
+            
 
 
         self.FindMaximum()
-        self.SetLine1()
+        self.SetLine1(self.indexToCompare)
     def FindMaximum(self):
         ##--GetAndSetMaximum
         self.ymax=-999999999999999999
@@ -217,7 +204,13 @@ class PlotterComparisonDiff_vs_Element(PlotterComparison):
             _ymax=self.HistColls[i][this_proc].GetHist().GetMaximum()
             _ymin=self.HistColls[i][this_proc].GetHist().GetMinimum()
             if _ymax>self.ymax : self.ymax=_ymax
-            if _ymin>self.ymin : self.ymin=_ymin
+            if _ymin<self.ymin : self.ymin=_ymin
+
+
+            _ymax=self.HP_Ratios[i].GetHist().GetMaximum()
+            _ymin=self.HP_Ratios[i].GetHist().GetMinimum()
+            if _ymax>self.ymax : self.ymax=_ymax
+            if _ymin<self.ymin : self.ymin=_ymin
 
     def Save(self,isRatio):
         prefix="cDiff_vs_sub"
