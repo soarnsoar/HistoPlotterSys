@@ -46,7 +46,7 @@ class PlotterDataMC(PlotterBase):
     def SetLumi(self):
         ##https://twiki.cern.ch/twiki/bin/view/CMS/LumiRecommendationsRun2#Quick_summary_table
         if str(self.Year)=="2016":
-            self.lumi=35.9
+            self.lumi="35.9"
         elif str(self.Year)=="2016preVFP" or str(self.Year)=="2016a":
             self.lumi=19.5
         elif str(self.Year)=="2016postVFP" or str(self.Year)=="2016b":
@@ -59,6 +59,8 @@ class PlotterDataMC(PlotterBase):
             print "Year must be 2016/7/8"
             print "self.Year","=",self.Year
             1/0
+
+        self.lumi+=" fb{-1}"
     def DrawObjectPad1(self):
         
         self.hstack.Draw("hist")

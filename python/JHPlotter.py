@@ -6,16 +6,13 @@ class PlotterBase:
         self.canvas = ROOT.TCanvas()
         self.name=name
 
-    def Draw(self,isRatio=0):
+    def Draw(self,isRatio=0,extratext="Preliminary"):
         ##---------From TDR style ---------##
         tdrstyle.setTDRStyle()
         #change the CMS_lumi variables (see CMS_lumi.py)
-        if self.lumi==None:
-            CMS_lumi.lumi_13TeV =""
-        else:
-            CMS_lumi.lumi_13TeV = str(self.lumi)+" fb^{-1}"
+        CMS_lumi.lumi_13TeV = str(self.lumi)
         CMS_lumi.writeExtraText = 1
-        CMS_lumi.extraText = "Preliminary"
+        CMS_lumi.extraText = extratext
         CMS_lumi.lumi_sqrtS = self.sqrtS # used with iPeriod = 0, e.g. for simulation-only plots (default is an empty string)
         self.iPos = 11
         CMS_lumi.relPosX    = 0.08

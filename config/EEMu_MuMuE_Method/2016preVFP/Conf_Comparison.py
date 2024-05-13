@@ -7,7 +7,9 @@
         "cut":["MuMu__bMinus__electronPlus","MuMu__bMinus__electronMinus"],
         "color":[2,4],
         "proc":["DY_MiNNLO"]*2,
-        "label":["e+ in Z->#mu#mu b-","e- in Z->#mu#mu b-" ]
+        "label":["e+ in Z->#mu#mu b-","e- in Z->#mu#mu b-" ],
+        "title":"Z->#mu#mu b-",
+        "extratext":"simulation"
     },
     
     
@@ -16,8 +18,9 @@
         "cut":["MuMu__bPlus__electronPlus","MuMu__bPlus__electronMinus"],
         "color":[2,4],
         "proc":["DY_MiNNLO"]*2,
-        "label":["e+ in Z->#mu#mu b+","e- in Z->#mu#mu b+" ]
-        
+        "label":["e+ in Z->#mu#mu b+","e- in Z->#mu#mu b+" ],
+        "title":"Z->#mu#mu b+",
+        "extratext":"simulation"
     },
     
     
@@ -26,7 +29,9 @@
         "cut":["EE__bMinus__muonPlus","EE__bMinus__muonMinus"],
         "color":[2,4],
         "proc":["DY_MiNNLO"]*2,
-        "label":["#mu+ in Z->ee b-","#mu- in Z->ee b-" ]
+        "label":["#mu+ in Z->ee b-","#mu- in Z->ee b-" ],
+        "title":"Z->ee b-",
+        "extratext":"simulation"
     },
     
     
@@ -35,7 +40,9 @@
         "cut":["EE__bPlus__muonPlus","EE__bPlus__muonMinus"],
         "color":[2,4],
         "proc":["DY_MiNNLO"]*2,
-        "label":["#mu+ in Z->ee b+","#mu- in Z->ee b+" ]
+        "label":["#mu+ in Z->ee b+","#mu- in Z->ee b+" ],
+        "title":"Z->ee b+",
+        "extratext":"simulation"
     },
     
     

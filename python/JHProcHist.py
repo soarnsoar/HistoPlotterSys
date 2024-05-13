@@ -12,6 +12,12 @@ class JHProcHist:## Hists Container of a proc
         self.IsErrorSet=False
         self.nmin_replica=10 ## # of members for replica sys.
         self.nmaxprint=5
+    def Scale(self,norm):
+        for sys in self.hdict:
+            for idx1 in self.hdict[sys]:
+                for idx2 in self.hdict[sys][idx1]:
+                    self.hdict[sys][idx1][idx2].Scale(norm)
+        True
     def SetX(self,x):
         self.x=x
     def SetProc(self,proc):

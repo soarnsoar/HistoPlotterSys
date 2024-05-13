@@ -2,13 +2,15 @@
 import os
 maindir=os.getenv("GIT_HistoPlotterSys")
 import argparse
-from PlotterComparison import PlotterComparison
+from PlotterComparisonDiff_vs_Element import PlotterComparisonDiff_vs_Element
 from OpenDictFile import OpenDictFile
 
-def Run(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,doNorm=False,doDiff=False):
+
+
+def Run(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,indexToCompare):
     print "suffix",suffix
-    #def __init__(self,title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist):
-    myplotter=PlotterComparison(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,doNorm,doDiff)
+    #    def __init__(self,title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext="Preliminary",indexToCompare):
+    myplotter=PlotterComparisonDiff_vs_Element(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,indexToCompare)
     myplotter.DrawAll()
     del myplotter
 
@@ -70,9 +72,11 @@ if __name__ == '__main__':
             print cutlist
             print x
             outname=conf+"__"+x
-            Run(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext)
-            Run(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,True)
-            Run(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,False,True)##doNorm,doDiff
+            #Run(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext)
+            #Run(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,True)
+            if not "indexToCompare" in this_dict: continue
+            indexToCompare=this_dict["indexToCompare"]
+            Run(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,0)##doNorm,doDiff
 
 
     

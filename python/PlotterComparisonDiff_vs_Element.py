@@ -2,6 +2,7 @@ import ROOT
 from JHProcHist import JHProcHist
 from JHReader import Reader
 from JHPlotter import PlotterBase
+from PlotterComparison import PlotterComparison
 import os
 from collections import OrderedDict 
 from OpenDictFile import OpenDictFile
@@ -9,33 +10,24 @@ from OpenDictFile import OpenDictFile
 import time
 maindir=os.getenv("GIT_HistoPlotterSys")
 
-class PlotterComparison(PlotterBase):
-    def __init__(self,title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext="Preliminary",doNorm=False,doDiff=False):
-        self.title=title
-        self.dirname=dirname
-        self.outname=outname
-        PlotterBase.__init__(self,title)
-        self.lumi=title+lumi
-        self.sqrtS=13
-
-        self.yearlist=yearlist
-        self.analist=analist
-        self.cutlist=cutlist
-        self.xlist=xlist
-        self.proclist=proclist
-        self.labellist=labellist
-        self.suffixlist=suffixlist
-        self.colorlist=colorlist
-        self.dict_xname=dict_xname
+class PlotterComparisonDiff_vs_Element(PlotterComparison):
+    def __init__(self,title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext="Preliminary",indexToCompare=0):
         self.extratext=extratext
-        self.doNorm=doNorm
-        self.doDiff=doDiff
-        self.CheckLengthOfLists()
+        PlotterComparison.__init__(self,title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,doNorm=False,doDiff=True)
+        ###---Now Data-Reading is done..
+        ## For "indexToCompare"
+        #Use -> self.HistColls
+        # For the others
+        ##Use -> self.HP_Ratios
 
-        self.ReadData()
+        self.indexToCompare=indexToCompare## histo that "b" in a-b
+        
     def DrawAll(self):
         ##--
         self.SetLegend()
+        ###Need to Make Ratio to indexToCompare -->let's call it ratio2
+        self.MakeRatio2()
+
         ##---not logy
         self.logy=0
         self.SetMaximum()
@@ -50,52 +42,22 @@ class PlotterComparison(PlotterBase):
         self.Save(0)
         self.Draw(1,self.extratext)
         self.Save(1)
-    def CheckLengthOfLists(self):
-        self.Nobj=len(self.yearlist)
-        mylists=[self.analist, self.cutlist,self.xlist,self.proclist,self.labellist,self.suffixlist,self.colorlist]
-        for i,this_list in enumerate(mylists):
-            
-            if self.Nobj==len(this_list) : continue
-            print "!!!! Length of input lists are not sync. EXIT"
-            print "len(self.analist)=",len(self.analist)
-            print "len(self.cutlist)=",len(self.cutlist)
-            print "len(self.xlist)=",len(self.xlist)
-            print "len(self.proclist)=",len(self.proclist)
-            print "len(self.labellist)=",len(self.labellist)
-            print "len(self.suffixlist)=",len(self.suffixlist)
-            print "len(self.colorlist)=",len(self.colorlist)
-            1/0
-        
+    def MakeRatio2(self):
+        self.HP_Ratios2=[]
+        for i in range(self.Nobj):
+            this_cut=self.GetCut(i)
+            this_x=self.GetX(i)
+            this_proc=self.GetProc(i)
+            this_color=self.GetColor(i)
+            if i == self.indexToCompare:
+                this_hp_ratio2=self.HistColls[i][this_proc].Divide(self.HistColls[self.indexToCompare][self.GetProc(self.indexToCompare)])
 
-    def GetXName(self,x):
-        if x in self.dict_xname:
-            return self.dict_xname[x]
-        else:
-            return x
-    def SetLumi(self):
-        ##https://twiki.cern.ch/twiki/bin/view/CMS/LumiRecommendationsRun2#Quick_summary_table
-        if str(self.Year)=="2016":
-            self.lumi=35.9
-        elif str(self.Year)=="2016preVFP" or str(self.Year)=="2016a":
-            self.lumi=19.5
-        elif str(self.Year)=="2016postVFP" or str(self.Year)=="2016b":
-            self.lumi=16.8
-        elif str(self.Year)=="2017":
-            self.lumi=41.5
-        elif str(self.Year)=="2018":
-            self.lumi=59.8
-        else:
-            print "Year must be 2016/7/8"
-            print "self.Year","=",self.Year
-            1/0
+            else:
+                this_hp_ratio2=self.HP_Ratios[i].Divide(self.HistColls[self.indexToCompare][self.GetProc(self.indexToCompare)])
+            this_hp_ratio2.SetErrorBand()
+            self.HP_Ratios2.append(this_hp_ratio2)
 
 
-    def SetLine1(self):
-        Nbins=self.HistColls[0][self.GetProc(0)].GetHist().GetNbinsX()
-        xmin=self.HistColls[0][self.GetProc(0)].GetHist().GetBinLowEdge(1)
-        xmax=self.HistColls[0][self.GetProc(0)].GetHist().GetBinLowEdge(Nbins+2)
-        self.line=ROOT.TLine(xmin,1,xmax,1)
-        self.line.SetLineColor(self.colorlist[0])
     def DrawObjectPad1(self):
         for i in range(self.Nobj):
             this_cut=self.GetCut(i)
@@ -103,15 +65,22 @@ class PlotterComparison(PlotterBase):
             this_proc=self.GetProc(i)
             this_color=self.GetColor(i)
             self.HistColls[i][this_proc].GetHist().SetTitle(self.title)
-            if i==0:
-                self.HistColls[i][this_proc].GetHist().Draw()
+            sameoption=""
+            if i!=0: sameoption="sames"
+            ##--Draw
+            if i==self.indexToCompare :
+                self.HistColls[i][this_proc].GetHist().Draw(sameoption)
+                self.HistColls[i][this_proc].gr_sys.Draw("e2"+sameoption)
+                self.HistColls[i][this_proc].GetHist().SetLineColor(self.colorlist[i])
+                self.HistColls[i][this_proc].gr_sys.SetFillColorAlpha(self.colorlist[i],0.3)
             else:
-                self.HistColls[i][this_proc].GetHist().Draw("sames")
-            
-            self.HistColls[i][this_proc].GetHist().SetLineColor(self.colorlist[i])
+                self.HP_Ratios[i].GetHist().Draw(sameoption)
+                self.HP_Ratios[i].gr_sys.Draw("e2"+sameoption)
+                self.HP_Ratios[i].GetHist().SetLineColor(self.colorlist[i])
+                self.HP_Ratios[i].gr_sys.SetFillColorAlpha(self.colorlist[i],0.3)
             ## error band
-            self.HistColls[i][this_proc].gr_sys.Draw("e2sames")
-            self.HistColls[i][this_proc].gr_sys.SetFillColorAlpha(self.colorlist[i],0.3)
+
+
         self.leg.Draw()
         
     def DrawObjectPad2(self):
@@ -121,12 +90,12 @@ class PlotterComparison(PlotterBase):
             this_proc=self.GetProc(i)
             this_color=self.GetColor(i)
             if i==0:
-                self.HP_Ratios[i].GetHist().Draw()
+                self.HP_Ratios2[i].GetHist().Draw()
             else:
-                self.HP_Ratios[i].GetHist().Draw("sames")
-            self.HP_Ratios[i].gr_sys.Draw("e2sames")
-            self.HP_Ratios[i].gr_sys.SetLineColor(self.colorlist[i])
-            self.HP_Ratios[i].gr_sys.SetFillColorAlpha(self.colorlist[i],0.3)
+                self.HP_Ratios2[i].GetHist().Draw("sames")
+            self.HP_Ratios2[i].gr_sys.Draw("e2sames")
+            self.HP_Ratios2[i].gr_sys.SetLineColor(self.colorlist[i])
+            self.HP_Ratios2[i].gr_sys.SetFillColorAlpha(self.colorlist[i],0.3)
         self.line.Draw("sames")
     def SetMaximum(self):
         if self.logy:
@@ -139,7 +108,8 @@ class PlotterComparison(PlotterBase):
         nproc=self.Nobj
         ncolomns=(nproc)/4 +1
         x1=0.39
-        x2=0.34+0.2*ncolomns
+        #x2=0.34+0.2*ncolomns
+        x2=0.34+0.4*ncolomns
         y1=0.69
         y2=0.89
         self.leg=ROOT.TLegend(x1,y1,x2,y2)
@@ -152,7 +122,10 @@ class PlotterComparison(PlotterBase):
             this_proc=self.GetProc(i)
             this_color=self.GetColor(i)
             self.HistColls[i][this_proc].GetHist().SetLineColor(this_color)
-            self.leg.AddEntry(self.HistColls[i][this_proc].GetHist(),self.labellist[i])
+            if i==self.indexToCompare:
+                self.leg.AddEntry(self.HistColls[i][this_proc].GetHist(),self.labellist[i])
+            else:
+                self.leg.AddEntry(self.HP_Ratios[i].GetHist(),"["+self.labellist[i]+"] - ["+self.labellist[self.indexToCompare]+"]")
 
 
     def GetYear(self,i):
@@ -223,9 +196,6 @@ class PlotterComparison(PlotterBase):
             if not self.doDiff:
                 this_hp_ratio.GetHist().SetMinimum(0)
                 this_hp_ratio.GetHist().SetMaximum(2)
-                this_hp_ratio.GetHist().GetYaxis().SetTitle("Diff")
-            else:
-                this_hp_ratio.GetHist().GetYaxis().SetTitle("Ratio")
             this_hp_ratio.GetHist().GetYaxis().SetLabelSize(0.1)
             this_hp_ratio.GetHist().GetXaxis().SetLabelSize(0.1)
             this_hp_ratio.GetHist().GetYaxis().SetNdivisions(505)
@@ -252,27 +222,11 @@ class PlotterComparison(PlotterBase):
             if _ymin>self.ymin : self.ymin=_ymin
 
     def Save(self,isRatio):
-        prefix="c"
-        if self.doNorm : 
-            prefix+="norm"
+        prefix="cDiff_vs_sub"
         if self.logy:
-            if len(prefix)==1:
-                prefix+="logy"
-            else:
-                prefix+="_logy"
-        #"clogy_ratio"
+            prefix+="_logy"
         if isRatio:
-            if len(prefix)==1:
-                if not self.doDiff:
-                    prefix+="ratio"
-                else:
-                    prefix+="diff"
-            else:
-                if not self.doDiff:
-                    prefix+="_ratio"
-                else:
-                    prefix+="_diff"
-
+            prefix+="_ratio"
 
         if self.dirname!="" : 
             os.system("mkdir -p "+self.dirname+"/"+prefix)
