@@ -177,21 +177,19 @@ class PlotterComparisonDiff_vs_Element(PlotterComparison):
                 if not self.doDiff:
                     ##--ratio
                     this_hp_ratio=this_HistColl[this_proc].Divide(this_HistColl[this_proc],this_cut,this_x,this_proc)                
-                    self.HP_Ratios.append(this_hp_ratio)
                 else: ##do diff
                     this_hp_ratio=this_HistColl[this_proc].Subtract(this_HistColl[this_proc],this_cut,this_x,this_proc)                
-                    self.HP_Ratios.append(this_hp_ratio)
+                this_hp_ratio.SetErrorBand()
+                self.HP_Ratios.append(this_hp_ratio)
             else:
                 if not self.doDiff:
                     ##--ratio
                     this_hp_ratio=this_HistColl[this_proc].Divide(self.HistColls[0][self.GetProc(0)],this_proc+"__"+self.GetCut(0),this_x+"__"+self.GetX(0),this_proc+"__"+self.GetProc(0))##divide by 1st element
-                    this_hp_ratio.SetErrorBand()
-                    self.HP_Ratios.append(this_hp_ratio)
                 else:
                     ##--diff
                     this_hp_ratio=this_HistColl[this_proc].Subtract(self.HistColls[0][self.GetProc(0)],this_proc+"__"+self.GetCut(0),this_x+"__"+self.GetX(0),this_proc+"__"+self.GetProc(0))##subtract by 1st element
-                    this_hp_ratio.SetErrorBand()
-                    self.HP_Ratios.append(this_hp_ratio)
+                this_hp_ratio.SetErrorBand()
+                self.HP_Ratios.append(this_hp_ratio)
 
             if not self.doDiff:
                 this_hp_ratio.GetHist().SetMinimum(0)
