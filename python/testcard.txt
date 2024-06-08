@@ -1,0 +1,18 @@
+imax 1  number of channels
+jmax 3  number of processes minus 1
+kmax *  number of nuisance parameters (sources of systematical uncertainties
+-------------
+bin         testcard
+observation         117241
+-------------
+bin              testcard  testcard  testcard  testcard
+process          DYbbar  DYbevt  DYothers  Bkg
+process          -1  0  1  2
+rate             18476.6155959  32185.2180621  60585.6027818  5993.5849478
+mcstat__testcard__DYbbar  gmN 41811   0.441908004972  -  -  -
+mcstat__testcard__DYbevt  gmN 72890   -  0.441558760627  -  -
+mcstat__testcard__DYothers  gmN 135532   -  -  0.447020650339  -
+mcstat__testcard__Bkg  gmN 172592   -  -  -  0.0347268989745
+QCDscale  lnN   1.1  1.1  1.1  1.1
+BkgNorm  lnN   -  -  -  1.2
+Efficiency  lnN   1.05  1.05  1.05  1.05

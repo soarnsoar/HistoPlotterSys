@@ -130,17 +130,30 @@ class PlotterComparison(PlotterBase):
         self.line.Draw("sames")
     def SetMaximum(self):
         if self.logy:
-            for i in range(self.Nobj):
-                self.HistColls[i][self.GetProc(i)].GetHist().SetMaximum(self.ymax*50)
+            if self.ymax<=0. : return
+            for h in [self.hdata,self.hmc_nosys,self.hstack,self.grerr]:
+                h.SetMaximum(self.ymax*50)
+                if self.ymin > 0:
+                    _ymin=self.ymin/50
+                    h.SetMinimum(_ymin)
+                    h.SetMaximum(self.ymax*self.ymax/_ymin)
+                else:
+                    _ymin=min(self.ymax/100000.,0.1)
+                    h.SetMinimum(_ymin)
+                    h.SetMaximum(self.ymax*self.ymax/_ymin)
         else:
-            for i in range(self.Nobj):
-                self.HistColls[i][self.GetProc(i)].GetHist().SetMaximum(self.ymax*2)
+            for h in [self.hdata,self.hmc_nosys,self.hstack,self.grerr]:
+                h.SetMaximum(self.ymax*2)
+                h.SetMinimum(self.ymin)
+
     def SetLegend(self):
         nproc=self.Nobj
         ncolomns=(nproc)/4 +1
+        nrows=(nproc)/3 +1
         x1=0.39
         x2=0.34+0.2*ncolomns
-        y1=0.69
+        #y1=0.89-nrows*0.12 ##initially 0.69
+        y1=0.69 ##initially 0.69
         y2=0.89
         self.leg=ROOT.TLegend(x1,y1,x2,y2)
         self.leg.SetShadowColor(0)
@@ -249,7 +262,7 @@ class PlotterComparison(PlotterBase):
             _ymax=self.HistColls[i][this_proc].GetHist().GetMaximum()
             _ymin=self.HistColls[i][this_proc].GetHist().GetMinimum()
             if _ymax>self.ymax : self.ymax=_ymax
-            if _ymin>self.ymin : self.ymin=_ymin
+            if _ymin<self.ymin : self.ymin=_ymin
 
     def Save(self,isRatio):
         prefix="c"

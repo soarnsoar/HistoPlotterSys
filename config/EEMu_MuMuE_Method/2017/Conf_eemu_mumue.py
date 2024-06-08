@@ -196,8 +196,74 @@
         "cut":["bPlus","bMinus"],
         "color":[2,4],
         "proc":["DY_MiNNLO"]*2,
-        "label":["Z->ee b+","Z->ee b-"],
-        "title":"Z->ee",
+        "label":["Z->ll b+","Z->ll b-"],
+        "title":"Z->ll",
+        "extratext":"simulation",
+        
+    },
+
+    ##---Jet to b+ vs b-  ---##bPlus_nlepm1
+    "bPlus_vs_bMinus_MiNNLO_nlepm1":{
+        "cut":["bPlus_nlepm1","bMinus_nlepm1"],
+        "color":[2,4],
+        "proc":["DY_MiNNLO"]*2,
+        "label":["Z->ll b+","Z->ll b-"],
+        "title":"Z->ll if n(lep-)==1 in bjet ",
+        "extratext":"simulation",
+        
+    },
+
+    ##---Jet to b+ vs b-  ---##bPlus_nlepm1
+    "bPlus_vs_bMinus_MiNNLO_nmum1":{
+        "cut":["bPlus_nmum1","bMinus_nmum1"],
+        "color":[2,4],
+        "proc":["DY_MiNNLO"]*2,
+        "label":["Z->ll b+","Z->ll b-"],
+        "title":"Z->ll if n(mu-)==1 in bjet ",
+        "extratext":"simulation",
+        
+    },
+
+    ##---Jet to b+ vs b-  ---##bPlus_nlepm1
+    "bPlus_vs_bMinus_MiNNLO_nem1":{
+        "cut":["bPlus_nem1","bMinus_nem1"],
+        "color":[2,4],
+        "proc":["DY_MiNNLO"]*2,
+        "label":["Z->ll b+","Z->ll b-"],
+        "title":"Z->ll if n(e-)==1 in bjet ",
+        "extratext":"simulation",
+        
+    },
+
+    ##---Jet to b+ vs b-  ---##bPlus_nlepp1
+    "bPlus_vs_bMinus_MiNNLO_nlepp1":{
+        "cut":["bPlus_nlepp1","bMinus_nlepp1"],
+        "color":[2,4],
+        "proc":["DY_MiNNLO"]*2,
+        "label":["Z->ll b+","Z->ll b-"],
+        "title":"Z->ll if n(lep+)==1 in bjet ",
+        "extratext":"simulation",
+        
+    },
+
+    ##---Jet to b+ vs b-  ---##bPlus_nmup1
+    "bPlus_vs_bMinus_MiNNLO_nmup1":{
+        "cut":["bPlus_nmup1","bMinus_nmup1"],
+        "color":[2,4],
+        "proc":["DY_MiNNLO"]*2,
+        "label":["Z->ll b+","Z->ll b-"],
+        "title":"Z->ll if n(mu+)==1 in bjet ",
+        "extratext":"simulation",
+        
+    },
+
+    ##---Jet to b+ vs b-  ---##bPlus_nep1
+    "bPlus_vs_bMinus_MiNNLO_nep1":{
+        "cut":["bPlus_nep1","bMinus_nep1"],
+        "color":[2,4],
+        "proc":["DY_MiNNLO"]*2,
+        "label":["Z->ll b+","Z->ll b-"],
+        "title":"Z->ll if n(e+)==1 in bjet ",
         "extratext":"simulation",
         
     },

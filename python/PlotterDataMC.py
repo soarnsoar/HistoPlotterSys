@@ -59,8 +59,8 @@ class PlotterDataMC(PlotterBase):
             print "Year must be 2016/7/8"
             print "self.Year","=",self.Year
             1/0
-
-        self.lumi+=" fb{-1}"
+        self.lumi=str(self.lumi)
+        self.lumi+=" fb^{-1}"
     def DrawObjectPad1(self):
         
         self.hstack.Draw("hist")
@@ -178,7 +178,7 @@ class PlotterDataMC(PlotterBase):
             _ymax=h.GetMaximum()
             _ymin=h.GetMinimum()
             if _ymax>self.ymax : self.ymax=_ymax
-            if _ymin>self.ymin : self.ymin=_ymin
+            if _ymin<self.ymin : self.ymin=_ymin
 
         self.SetLegend()
 
@@ -187,26 +187,38 @@ class PlotterDataMC(PlotterBase):
         print "mcintegral->",self.hmc_nosys.Integral()
     def SetMaximum(self):
         if self.logy:
+            if self.ymax<=0. : return
             for h in [self.hdata,self.hmc_nosys,self.hstack,self.grerr]:
                 h.SetMaximum(self.ymax*50)
+                if self.ymin > 0:
+                    _ymin=self.ymin/50
+                    h.SetMinimum(_ymin)
+                    h.SetMaximum(self.ymax*self.ymax/_ymin)
+                else:
+                    _ymin=min(self.ymax/100000.,0.1)
+                    h.SetMinimum(_ymin)
+                    h.SetMaximum(self.ymax*self.ymax/_ymin)
         else:
             for h in [self.hdata,self.hmc_nosys,self.hstack,self.grerr]:
                 h.SetMaximum(self.ymax*2)
+                h.SetMinimum(self.ymin)
     def SetLegend(self):
         nproc=len(self.myreader.ProcConf)
         ncolomns=(nproc)/4 +1
+        nrows=(nproc)/3+1
         x1=0.39
         x2=0.34+0.2*ncolomns
-        y1=0.69
+        y1=min(0.69, 0.89 - nrows*0.08) #0.69
         y2=0.89
         self.leg=ROOT.TLegend(x1,y1,x2,y2)
         self.leg.SetShadowColor(0)
         self.leg.SetNColumns(ncolomns)
-        self.leg.AddEntry(self.legendlist["Data"],"Data","E")
-        for i,proc in enumerate(self.myreader.ProcConf):
+        self.leg.SetLineColor(0)
+
+        for i,proc in enumerate(reversed(self.myreader.ProcConf)):
             if proc=="Data" : continue
             self.leg.AddEntry(self.legendlist[proc],proc)
-
+        self.leg.AddEntry(self.legendlist["Data"],"Data","E")
     def ReadData(self):
         self.myreader=Reader(self.AnaName,self.Year,self.suffix)
         self.HistColl=self.myreader.MakeHistContainer(self.cut,self.x)

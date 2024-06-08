@@ -33,8 +33,9 @@ class Reader:
         self.ReadNuiConf()
     def ReadProcConf(self):
         _path=self.GetProcConfPath()
-        self.ProcConf=OpenDictFile(_path)
         print "--input:",_path
+        self.ProcConf=OpenDictFile(_path)
+
     def GetProcConfPath(self):
         return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/proc.py"
     def ReadNuiConf(self):

@@ -109,13 +109,22 @@ class PlotterComparisonDiff_vs_Element(PlotterComparison):
         self.line.Draw("sames")
     def SetMaximum(self):
         if self.logy:
-            for i in range(self.Nobj):
-                self.HistColls[i][self.GetProc(i)].GetHist().SetMaximum(self.ymax*50)
-                self.HP_Ratios[i].GetHist().SetMaximum(self.ymax*50)
+            if self.ymax<=0. : return
+            for h in [self.hdata,self.hmc_nosys,self.hstack,self.grerr]:
+                h.SetMaximum(self.ymax*50)
+                if self.ymin > 0:
+                    _ymin=self.ymin/50
+                    h.SetMinimum(_ymin)
+                    h.SetMaximum(self.ymax*self.ymax/_ymin)
+                else:
+                    _ymin=min(self.ymax/100000.,0.1)
+                    h.SetMinimum(_ymin)
+                    h.SetMaximum(self.ymax*self.ymax/_ymin)
         else:
-            for i in range(self.Nobj):
-                self.HistColls[i][self.GetProc(i)].GetHist().SetMaximum(self.ymax*2)
-                self.HP_Ratios[i].GetHist().SetMaximum(self.ymax*2)
+            for h in [self.hdata,self.hmc_nosys,self.hstack,self.grerr]:
+                h.SetMaximum(self.ymax*2)
+                h.SetMinimum(self.ymin)
+
     def SetLegend(self):
         nproc=self.Nobj
         ncolomns=(nproc)/4 +1

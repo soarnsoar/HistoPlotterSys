@@ -15,13 +15,18 @@ Ana=DiLeptonAnalyzer
 #YEAR=2018
 #RunPlotterDataMC.py -a $Ana -y 2017 -d plot/$Ana --nosys
 #suffix=checksf__
-suffix=runSys__
+#suffix=runSys__
+#suffix=lepveto__
 #suffix="/"
-for YEAR in ${ARR_YEAR[@]};do
-    echo ${YEAR}
-    ParseSKFlatOutput.py -a ${Ana} -y ${YEAR} -s ${suffix}
-    (_StartTime=$(date +%s);RunPlotterDataMC.py -a $Ana -y ${YEAR} -d plot/${YEAR}/${suffix} -s ${suffix};EndTime=$(date +%s);echo "runtime : $(($EndTime - $StartTime)) sec") &> logs/${suffix}${ANA}__${YEAR}.log&
-    EndTime=$(date +%s)
+
+ARR_SUFFIX=("/" "lepveto__" "jetpuid_tight__" "jetpuid_medium__" "jetpuid_loose__" "nojetpuid__")
+for suffix in ${ARR_SUFFIX[@]};do
+    for YEAR in ${ARR_YEAR[@]};do
+	echo ${YEAR}
+	ParseSKFlatOutput.py -a ${Ana} -y ${YEAR} -s ${suffix}
+	(_StartTime=$(date +%s);RunPlotterDataMC.py -a $Ana -y ${YEAR} -d plot/${YEAR}/${suffix} -s ${suffix};EndTime=$(date +%s);echo "runtime : $(($EndTime - $StartTime)) sec") &> logs/${suffix}${ANA}__${YEAR}.log&
+	EndTime=$(date +%s)
+    done
 done
 echo $EndTime
 echo "runtime : $(($EndTime - $StartTime)) sec"

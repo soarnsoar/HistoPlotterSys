@@ -4,6 +4,9 @@ maindir=os.getenv("GIT_HistoPlotterSys")
 import argparse
 from PlotterComparison import PlotterComparison
 from OpenDictFile import OpenDictFile
+import time
+
+
 
 def Run(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,doNorm=False,doDiff=False):
     print "suffix",suffix
@@ -19,6 +22,8 @@ def FindCommonX(cut_and_x,cutlist):
         common_xlist=common_xlist.intersection(this_xlist)
     return list(common_xlist)
 if __name__ == '__main__':
+    start_time = time.time()
+
     parser = argparse.ArgumentParser(description='Plotter configuration')
     parser.add_argument('-a', dest='AnalyzerName', default="")
     parser.add_argument('-y', dest='year', default="")
@@ -78,3 +83,6 @@ if __name__ == '__main__':
     
 
             
+    end_time = time.time()
+    execution_time = end_time - start_time
+    print "execution_time=",execution_time
