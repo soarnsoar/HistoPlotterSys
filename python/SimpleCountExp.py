@@ -6,24 +6,58 @@ class datacard:
         self.dict_sig=OrderedDict()
         self.dict_bkg=OrderedDict()
         self.dict_nuisance=OrderedDict()
+        self.paramlines=[]
     def AddObs(self,ydata):
         self.obs=ydata
-    def AddSignal(self,name,rate,n_unweight,AddMCstat=True):
+    def AddSignal(self,name,rate,err_rate,n_unweight,AddMCstat=True):
         self.dict_sig[name]={"rate":rate,"n_unweight":n_unweight}
         if AddMCstat:
+            #_statnuiname="mcstat__"+self.binname+"__"+name
+            #_nuitype="gmN "+str(n_unweight)
+            #_alpha=rate/n_unweight
+            #if _alpha>1:
+            #    print "!!@@ alpha is large, binname=",self.binname,"proc=",name
+            #_dict_proc_factor={name:_alpha}
+            #self.AddNuisance(_statnuiname,_nuitype,_dict_proc_factor)
+
+            ##----Use Gaussian----##
+            ##---add rate param
+            ##name rateParam bin process formula args
+            ##e.g)
+            ##alpha rateParam A bkg (@0*@1/@2) beta,gamma,delta
             _statnuiname="mcstat__"+self.binname+"__"+name
-            _nuitype="gmN "+str(n_unweight)
-            _alpha=rate/n_unweight
-            _dict_proc_factor={name:_alpha}
-            self.AddNuisance(_statnuiname,_nuitype,_dict_proc_factor)
-    def AddBkg(self,name,rate,n_unweight,AddMCstat=True):
+            _sigmaname="sigma_mcstat__"+self.binname+"__"+name
+            _formula="(1.+"+ str(err_rate/rate)+"*@0)"
+            _args= _sigmaname
+            ##-form in datacard
+            #name rateParam bin process formula args
+            self.paramlines.append(_statnuiname+" rateParam "+self.binname+" "+name+" "+_formula+" "+_args)
+            ##---add sigma param
+            self.paramlines.append(_sigmaname+"  param  0.0   1.0")
+    def AddBkg(self,name,rate,err_rate,n_unweight,AddMCstat=True):
         self.dict_bkg[name]={"rate":rate,"n_unweight":n_unweight}
         if AddMCstat:
+            #_statnuiname="mcstat__"+self.binname+"__"+name
+            #_nuitype="gmN "+str(n_unweight)
+            #_alpha=rate/n_unweight
+            #_dict_proc_factor={name:_alpha}
+            #if _alpha>1:
+            #    print "!!@@ alpha is large, binname=",self.binname,"proc=",name
+            #    print "rate=",rate
+            #    print "n_unweight=",n_unweight
+            #self.AddNuisance(_statnuiname,_nuitype,_dict_proc_factor)        
+
+
+            ##----Use Gaussian----##
+            ##---add rate param
             _statnuiname="mcstat__"+self.binname+"__"+name
-            _nuitype="gmN "+str(n_unweight)
-            _alpha=rate/n_unweight
-            _dict_proc_factor={name:_alpha}
-            self.AddNuisance(_statnuiname,_nuitype,_dict_proc_factor)        
+            _nuitype="rateparam"
+            _sigmaname="sigma_mcstat__"+self.binname+"__"+name
+            _formula="(1.+"+ str(err_rate/rate)+"*@0)"
+            _args= _sigmaname
+            self.paramlines.append(_statnuiname+" rateParam "+self.binname+" "+name+" "+_formula+" "+_args)
+            ##---add sigma param
+            self.paramlines.append(_sigmaname+"  param  0.0   1.0")
     def AddNuisance(self,nuiname,nuitype,dict_proc_factor):
         self.dict_nuisance[nuiname]={
             "type":nuitype,
@@ -78,7 +112,8 @@ class datacard:
                 factorlist.append(str(factor))
             ##--add a line for this nui
             self.lines.append(nui+"  "+nuitype+"   "+"  ".join(factorlist))
-        
+        for paramline in self.paramlines:
+            self.lines.append(paramline)
     def Save(self):
         filename=self.binname+".txt"
         print "CreateCard -->",filename

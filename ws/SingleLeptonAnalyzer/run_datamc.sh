@@ -15,8 +15,8 @@ Ana=SingleLeptonAnalyzer
 #YEAR=2018
 #RunPlotterDataMC.py -a $Ana -y 2017 -d plot/$Ana --nosys
 #suffix=checksf__
-#suffix=runSys__
-suffix="/"
+suffix=runSys__
+#suffix="/"
 for YEAR in ${ARR_YEAR[@]};do
     echo ${YEAR}
     ParseSKFlatOutput.py -a ${Ana} -y ${YEAR} -s ${suffix}

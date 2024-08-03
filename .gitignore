@@ -6,3 +6,4 @@ SKFlatOutput
 *#
 ws/*
 !ws/*/*.sh
+test

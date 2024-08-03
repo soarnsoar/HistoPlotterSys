@@ -87,6 +87,10 @@ class PlotterDataMC(PlotterBase):
         ##as data has leptonscale variations, propagate them to mc sys.
         ##e.g)mc_up_new = mc_up_old/data_up*data_nom
         ##then data_nom/mc_up_new = data_nom/mc_up_old*data_up/data_nom = data_up/mc_up //good
+
+        dosysnorm=True
+        if self.HistColl["Data"].GetHist().Integral()==0:dosysnorm=False
+
         ## divide mc by data_var/data
         self.hp_data_nosys=JHProcHist(self.cut,self.x,"data_nosys")
         self.hp_data_nosys.SetHist(self.HistColl["Data"].GetHist().Clone()) ## add only nominal
@@ -101,8 +105,11 @@ class PlotterDataMC(PlotterBase):
                 self.legendlist[proc]=_h.Clone() 
                 continue
             ##--systematic norm with data var
-            self.HistColl[proc]=self.HistColl[proc].Divide(self.hp_norm_data_sys)
+            if dosysnorm : self.HistColl[proc]=self.HistColl[proc].Divide(self.hp_norm_data_sys)
             ##---hmc
+            print "--cut=",self.cut,"  x=",self.x,"--"
+            print "proc",proc," integral->",_h.Integral()
+            
             if i_mc==0:
                 #    def Combine(self,h2,cut="",x="",proc=""):
                 #self.hp_mc.Combine(HistColl[proc]self.cut,self.x,"mc")
@@ -110,7 +117,9 @@ class PlotterDataMC(PlotterBase):
                 #self.hmc=self.HistColl[proc].GetHist().Clone()
             else:
                 #self.hmc.Add(self.HistColl[proc].GetHist())
+                print "Integral of histo to be added",self.HistColl[proc].GetHist().Integral()
                 self.hp_mc=self.hp_mc.Combine(self.HistColl[proc],self.cut,self.x,"mc")
+                print "self.hp_mc.GetHist().Integral()=",self.hp_mc.GetHist().Integral()
             ##-------
             _color=self.myreader.ProcConf[proc]["color"]
             _h.SetFillColor(_color)
@@ -179,7 +188,9 @@ class PlotterDataMC(PlotterBase):
             _ymin=h.GetMinimum()
             if _ymax>self.ymax : self.ymax=_ymax
             if _ymin<self.ymin : self.ymin=_ymin
-
+        print "--cut=",self.cut,"  x=",self.x,"--"
+        print "self.ymax=",self.ymax
+        print "self.ymin=",self.ymin
         self.SetLegend()
 
         
@@ -201,7 +212,7 @@ class PlotterDataMC(PlotterBase):
         else:
             for h in [self.hdata,self.hmc_nosys,self.hstack,self.grerr]:
                 h.SetMaximum(self.ymax*2)
-                h.SetMinimum(self.ymin)
+                h.SetMinimum(0.)
     def SetLegend(self):
         nproc=len(self.myreader.ProcConf)
         ncolomns=(nproc)/4 +1
@@ -214,7 +225,8 @@ class PlotterDataMC(PlotterBase):
         self.leg.SetShadowColor(0)
         self.leg.SetNColumns(ncolomns)
         self.leg.SetLineColor(0)
-
+        print "self.myreader.ProcConf="
+        print list(self.myreader.ProcConf)
         for i,proc in enumerate(reversed(self.myreader.ProcConf)):
             if proc=="Data" : continue
             self.leg.AddEntry(self.legendlist[proc],proc)
