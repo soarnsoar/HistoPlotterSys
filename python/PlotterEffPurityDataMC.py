@@ -254,8 +254,8 @@ class PlotterEffPurityDataMC(PlotterBase):
             if _ymax>self.ymax : self.ymax=_ymax
             if _ymin<self.ymin : self.ymin=_ymin
 
-        #self.ymax=1.5
-        #self.ymin=0.5
+        self.ymax=1.
+        self.ymin=0.
         if self.logy:
             if self.ymax<=0. : return
             for h in [self.h_sig, self.h_data_sub_bkg]:
