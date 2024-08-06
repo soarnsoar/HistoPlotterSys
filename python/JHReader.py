@@ -37,6 +37,9 @@ class Reader:
         self.ProcConf=OpenDictFile(_path)
 
     def GetProcConfPath(self):
+        if os.path.isfile(maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/proc.py"):
+            return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/proc.py"
+        print "[Use nominal proc.py file]"
         return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/proc.py"
     def ReadNuiConf(self):
         _path=self.GetNuiConfPath()

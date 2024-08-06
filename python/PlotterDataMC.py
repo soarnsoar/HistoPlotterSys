@@ -175,7 +175,7 @@ class PlotterDataMC(PlotterBase):
         
         #--Make Tline
         xmin=self.hdata.GetBinLowEdge(1)
-        xmax=self.hdata.GetBinLowEdge(Nbins+2)
+        xmax=self.hdata.GetBinLowEdge(Nbins+1)
         self.line=ROOT.TLine(xmin,1,xmax,1)
         self.line.SetLineStyle(2)
         #TLine(Double_t x1,Double_t y1,Double_t x2,Double_t y2)
