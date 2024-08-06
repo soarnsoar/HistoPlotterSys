@@ -7,10 +7,10 @@ import argparse
 from PlotterEffPurityDataMC import PlotterEffPurityDataMC
 from OpenDictFile import OpenDictFile
 
-def Run(Year,AnalyzerName,cut,x,dirname,outname,suffix):
+def Run(Year,AnalyzerName,cuts,xs,siglist,bkglist,thisdir,name,suffix):
     #print 'runsys',runsys
     print "suffix",suffix
-    myplotter=PlotterEffPurityDataMC(Year,AnalyzerName,cut,x,dirname,outname,suffix)    
+    myplotter=PlotterEffPurityDataMC(Year,AnalyzerName,cuts,xs,siglist,bkglist,thisdir,name,suffix)    
     del myplotter
 
 
@@ -20,27 +20,42 @@ if __name__ == '__main__':
     parser.add_argument('-y', dest='year', default="")
     parser.add_argument('-d', dest='directory', default="")
     parser.add_argument('-s', dest='suffix', default="")
-    #parser.add_argument('-n', dest='njob', default="1")    
+    parser.add_argument('-f', dest='deffile', default="eff_def.py")    
     args = parser.parse_args()
     AnalyzerName=args.AnalyzerName
     year=args.year
     directory=args.directory
+    if directory=="":directory=os.getcwd()
     suffix=args.suffix
-    
-    cut_and_x_path=maindir+"/config/"+AnalyzerName+"/"+year+"/"+suffix+"/cut_and_x.py"
-    cut_and_x=OpenDictFile(cut_and_x_path)
-    ncut=len(cut_and_x)
-    icut=0
-    for cut in cut_and_x:
-        print icut+1,'/',ncut
-        for x in cut_and_x[cut]:
-            print "-----------"
-            print cut,x
-            thisdir=directory+"/"+cut
-            name=x
-            Run(year,AnalyzerName,cut,x,thisdir,name,suffix)
+    deffile=args.deffile
+    if not deffile.endswith(".py") : deffile+=".py"
+    #cut_and_x_path=maindir+"/config/"+AnalyzerName+"/"+year+"/"+suffix+"/cut_and_x.py"
+    #cut_and_x=OpenDictFile(cut_and_x_path)
+    #ncut=len(cut_and_x)
+    #icut=0
+
+    effpurity_path=maindir+"/config/"+AnalyzerName+"/"+year+"/"+suffix+"/"+deffile
+    dict_effpurity=OpenDictFile(effpurity_path)
+    for name in dict_effpurity:
+        #    def __init__(self,Year,AnalyzerName,cuts,xs,siglist,bkglist,dirname,outname,suffix):
+        cuts_deno=dict_effpurity[name]["deno"]["cut"]
+        cuts_nume=dict_effpurity[name]["nume"]["cut"]
+        cuts=[cuts_deno,cuts_nume]
+
+        x_deno=dict_effpurity[name]["deno"]["x"]
+        x_nume=dict_effpurity[name]["nume"]["x"]
+        
+        xs=[x_deno,x_nume]
+
+
+        siglist=dict_effpurity[name]["sig"]
+        bkglist=dict_effpurity[name]["bkg"]
+
+        thisdir=directory+"/"
+
+        Run(year,AnalyzerName,cuts,xs,siglist,bkglist,thisdir,name,suffix)
             
 
-        icut+=1
+
 
             
