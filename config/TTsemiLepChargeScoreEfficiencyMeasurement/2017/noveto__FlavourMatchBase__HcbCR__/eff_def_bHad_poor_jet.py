@@ -12,7 +12,8 @@
         },
         "sig":["bHadCandFrom bquark","All bCand From bquark"],
         "bkg":["Not From bquark","bLepCandFrom bquark"],
-
+        "ymax":1.0,
+        "xbins":[30,50,70,100,140,200,300],
     },
 
     ##---bHad eta
@@ -27,6 +28,8 @@
         },
         "sig":["bHadCandFrom bquark","All bCand From bquark"],
         "bkg":["Not From bquark","bLepCandFrom bquark"],
+        "ymax":1.0,
+        "xbins":[-2.5,-2,-1.6, -0.8, 0, 0.8, 1.6, 2, 2.5],
     },
 
 

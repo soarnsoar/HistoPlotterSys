@@ -69,12 +69,14 @@ class Reader:
             return _h_empty
 
         raise ValueError("No Histogram in "+_cut_x)
-    def MakeHistContainer(self,cut,x):
+    def MakeHistContainer(self,cut,x,rebin=[]):
         print "<MakeHistContainer>"
         start_time = time.time()
         this_container={}
+        print "[MakeHistContainer] in JHReader.py, rebin=",rebin
         ##---Before Start, Make Empty Hist---##
         self._h_empty=self.GetEmptyHist(cut,x)
+        if len(rebin)!=0 : self._h_empty=self._h_empty.Rebin(len(rebin)-1,self._h_empty.GetName(),rebin)
         for p in self.ProcConf:
             subplist=self.ProcConf[p]["procs"]
             IsData=self.CheckIsData(p)
@@ -83,6 +85,7 @@ class Reader:
                 this_h=JHProcHist(cut,x,subp) ##JHProcHist for this proc
                 ##-----NominalShape-----#
                 this_nominal=self.ReadNominalShape(cut,x,subp)
+                if len(rebin)!=0 : this_nominal=this_nominal.Rebin(len(rebin)-1,this_nominal.GetName(),rebin)
                 this_h.SetHist(deepcopy(this_nominal))
                 #if not IsData :
                 ##----NuisanceShape-----#
@@ -92,6 +95,7 @@ class Reader:
                     for idx1 in self.NuiConf[nui]:
                         for idx2 in self.NuiConf[nui][idx1]:
                             this_sys=self.ReadNuisanceShape(cut,x,subp,nui,idx1,idx2)
+                            if len(rebin)!=0 : this_sys=this_sys.Rebin(len(rebin)-1,this_sys.GetName(),rebin)
                             this_h.SetHist(deepcopy(this_sys),nui,idx1,idx2)
                     #this_h.MakeStatNuiShapes()
                     #this_h.SetEffTool(self.EffToolConf)

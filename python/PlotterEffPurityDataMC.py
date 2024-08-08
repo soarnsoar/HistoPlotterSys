@@ -10,8 +10,10 @@ import time
 maindir=os.getenv("GIT_HistoPlotterSys")
 
 class PlotterEffPurityDataMC(PlotterBase):
-    def __init__(self,Year,AnalyzerName,cuts,xs,siglist,bkglist,dirname,outname,suffix):
+    def __init__(self,Year,AnalyzerName,cuts,xs,siglist,bkglist,dirname,outname,suffix,ymax,rebin=[]):
         ##cuts/xs= [deno,nume]
+        self.rebin=rebin
+        self.ymax=ymax
         self.cuts=cuts
         self.xs=xs
         self.suffix=suffix
@@ -245,16 +247,6 @@ class PlotterEffPurityDataMC(PlotterBase):
         self.line.SetLineStyle(2)
 
 
-        self.ymax=-999999999999999999
-        self.ymin=99999999999999999
-        
-        for h in [self.h_sig, self.h_data_sub_bkg]:
-            _ymax=h.GetMaximum()
-            _ymin=h.GetMinimum()
-            if _ymax>self.ymax : self.ymax=_ymax
-            if _ymin<self.ymin : self.ymin=_ymin
-
-        self.ymax=1.
         self.ymin=0.
         if self.logy:
             if self.ymax<=0. : return
@@ -270,7 +262,7 @@ class PlotterEffPurityDataMC(PlotterBase):
                     h.SetMaximum(self.ymax*self.ymax/_ymin)
         else:
             for h in [self.h_sig, self.h_data_sub_bkg]:
-                h.SetMaximum(self.ymax*2)
+                h.SetMaximum(self.ymax)
                 h.SetMinimum(0.)
     def SetLegend(self):
         nproc=len(self.myreader.ProcConf)
@@ -300,7 +292,7 @@ class PlotterEffPurityDataMC(PlotterBase):
             for i,cut in enumerate(allcuts):
                 print "cut=",cut
                 ##----get this cut and x
-                this_hp_coll=self.myreader.MakeHistContainer(cut,x)
+                this_hp_coll=self.myreader.MakeHistContainer(cut,x,self.rebin)
                 ##----make stat nuisance if it's not data
                 for proc in self.myreader.ProcConf:
                     if proc.lower()=="data":
