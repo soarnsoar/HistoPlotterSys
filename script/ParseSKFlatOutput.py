@@ -120,22 +120,22 @@ class Parser:
             print "[ParseSKFlatOutput] Make cut and x->"
             print savepath
 
-
-import argparse
-parser = argparse.ArgumentParser(description='ParseSKFlatOutput, make configs')
-parser.add_argument('-a', dest='AnalyzerName', default="")
-parser.add_argument('-y', dest='year', default="")
-parser.add_argument('-s', dest='suffix', default="")
-args = parser.parse_args()
-
-
-#YEAR=2017
-YEAR=args.year
-#AnaName="DiLeptonAnalyzer"
-AnaName=args.AnalyzerName
-suffix=args.suffix
-#myparser=Parser(AnaName,YEAR,0)
-#myparser=Parser(AnaName,YEAR,"checksf__")
-#myparser=Parser(AnaName,YEAR,"runSys__")
-myparser=Parser(AnaName,YEAR,suffix)
-myparser.Parse()
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser(description='ParseSKFlatOutput, make configs')
+    parser.add_argument('-a', dest='AnalyzerName', default="")
+    parser.add_argument('-y', dest='year', default="")
+    parser.add_argument('-s', dest='suffix', default="")
+    args = parser.parse_args()
+    
+    
+    #YEAR=2017
+    YEAR=args.year
+    #AnaName="DiLeptonAnalyzer"
+    AnaName=args.AnalyzerName
+    suffix=args.suffix
+    #myparser=Parser(AnaName,YEAR,0)
+    #myparser=Parser(AnaName,YEAR,"checksf__")
+    #myparser=Parser(AnaName,YEAR,"runSys__")
+    myparser=Parser(AnaName,YEAR,suffix)
+    myparser.Parse()
