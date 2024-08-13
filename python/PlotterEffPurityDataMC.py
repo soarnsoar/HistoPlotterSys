@@ -211,7 +211,7 @@ class PlotterEffPurityDataMC(PlotterBase):
         self.h_data_sub_bkg_deno.Add(self.h_bkg_deno,-1)
         ##-divide nume/deno
         self.h_data_sub_bkg=self.h_data_sub_bkg_nume.Clone()
-        self.h_data_sub_bkg.Divide(self.h_data_sub_bkg_deno)
+        self.h_data_sub_bkg=self.h_data_sub_bkg.Divide(self.h_data_sub_bkg_deno)
 
         self.h_data_sub_bkg.SetMarkerStyle(20)
         self.h_data_sub_bkg.SetMarkerSize(0.5)

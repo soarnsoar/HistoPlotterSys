@@ -51,12 +51,12 @@ class ConfMaker:
         return "Use"+self.chargeType+suffix
     def SetSigBkg(self):
         self.sig=[self.bname+"CandFrom bquark","All bCand From bquark"]
-        self.bkg=["Not From bquark",self.GetOtherB()+"CandFrom bquark"]
+        self.bkg=["Not From bquark",self.GetOtherB()+"CandFrom bquark","bkgs"]
     def GetDict(self):
         self.SetSigBkg()
 
         #outdict=OrderedDict()
-        self.plotname=self.bname+"_"+self.x_deno+"__"+self.GetRegionName()
+        self.plotname=self.CH_TTLJ+"_"+self.x_deno+"__"+self.GetRegionName()
         outdict={
             "deno":{
                 "x":self.x_deno,
@@ -83,7 +83,7 @@ CH_TTLJ=["AllLep","Muon","Electron"]
 chargeTypes=["muon","muon-","electron","electron-","jet","poor_jet"]
 
 binnings={
-    "pt":[30,40,50,60,70,80,90,100,120,140,160,180,200,300,1000],
+    "pt":[30,40,50,60,70,80,90,100,120,140,160,180,200,300],
     "eta":[-2.4,-2.2,-2.0,-1.8,-1.6,-1.4,-1.2,-1.0, -0.8,-0.6,-0.4,-0.2, 0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4],
 }
 ymax={

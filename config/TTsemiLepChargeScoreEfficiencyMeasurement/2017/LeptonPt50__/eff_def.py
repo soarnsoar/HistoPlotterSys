@@ -2,7 +2,8 @@
     "Muon_bLep_pt__Usepoor_jetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -42,7 +43,8 @@
     "Electron_bHad_eta__Usemuon-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -93,7 +95,8 @@
     "Electron_bHad_eta__Usepoor_jetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -144,7 +147,8 @@
     "AllLep_bLep_pt__UseelectronCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -185,7 +189,8 @@
     "Electron_bHad_pt__UsejetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -225,7 +230,8 @@
     "AllLep_bLep_pt__Usepoor_jetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -265,7 +271,8 @@
     "Muon_bLep_eta__UsemuonCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -317,7 +324,8 @@
     "Electron_bLep_pt__UseelectronCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -358,7 +366,8 @@
     "Electron_bLep_pt__Usepoor_jetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -398,7 +407,8 @@
     "Electron_bLep_eta__UsemuonCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -450,7 +460,8 @@
     "Electron_bLep_eta__UseelectronCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -502,7 +513,8 @@
     "AllLep_bLep_eta__Usepoor_jetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -553,7 +565,8 @@
     "Muon_bLep_pt__UsejetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -593,7 +606,8 @@
     "AllLep_bHad_eta__Usemuon-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -644,7 +658,8 @@
     "Electron_bLep_eta__Useelectron-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -695,7 +710,8 @@
     "AllLep_bLep_pt__UsemuonCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -736,7 +752,8 @@
     "AllLep_bLep_eta__Useelectron-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -787,7 +804,8 @@
     "AllLep_bHad_eta__UseelectronCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -839,7 +857,8 @@
     "Electron_bHad_pt__Usemuon-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -879,7 +898,8 @@
     "Electron_bHad_pt__UseelectronCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -920,7 +940,8 @@
     "Muon_bLep_eta__UseelectronCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -972,7 +993,8 @@
     "Muon_bLep_eta__Usepoor_jetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -1023,7 +1045,8 @@
     "Electron_bLep_pt__UsemuonCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -1064,7 +1087,8 @@
     "Muon_bHad_eta__UseelectronCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -1116,7 +1140,8 @@
     "Electron_bLep_eta__UsejetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -1167,7 +1192,8 @@
     "AllLep_bLep_pt__Usemuon-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -1207,7 +1233,8 @@
     "Muon_bLep_eta__Useelectron-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -1258,7 +1285,8 @@
     "AllLep_bHad_eta__Useelectron-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -1309,7 +1337,8 @@
     "AllLep_bHad_pt__Usemuon-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -1349,7 +1378,8 @@
     "AllLep_bHad_pt__Usepoor_jetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -1389,7 +1419,8 @@
     "AllLep_bLep_pt__Useelectron-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -1429,7 +1460,8 @@
     "Muon_bHad_eta__Usepoor_jetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -1480,7 +1512,8 @@
     "Muon_bLep_pt__Useelectron-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -1520,7 +1553,8 @@
     "Electron_bHad_eta__UsemuonCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -1572,7 +1606,8 @@
     "AllLep_bHad_eta__UsejetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -1623,7 +1658,8 @@
     "Muon_bHad_pt__UseelectronCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -1664,7 +1700,8 @@
     "AllLep_bHad_pt__UsemuonCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -1705,7 +1742,8 @@
     "Electron_bLep_pt__Useelectron-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -1745,7 +1783,8 @@
     "AllLep_bHad_eta__Usepoor_jetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -1796,7 +1835,8 @@
     "Electron_bHad_eta__UsejetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -1847,7 +1887,8 @@
     "Muon_bLep_pt__UsemuonCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -1888,7 +1929,8 @@
     "Muon_bHad_eta__Useelectron-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -1939,7 +1981,8 @@
     "AllLep_bLep_eta__UsemuonCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -1991,7 +2034,8 @@
     "Muon_bHad_pt__UsemuonCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -2032,7 +2076,8 @@
     "AllLep_bHad_pt__UsejetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -2072,7 +2117,8 @@
     "Muon_bLep_pt__UseelectronCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -2113,7 +2159,8 @@
     "Electron_bLep_pt__Usemuon-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -2153,7 +2200,8 @@
     "AllLep_bLep_eta__Usemuon-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -2204,7 +2252,8 @@
     "Muon_bHad_eta__UsemuonCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -2256,7 +2305,8 @@
     "Muon_bHad_pt__Usepoor_jetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -2296,7 +2346,8 @@
     "Muon_bHad_pt__UsejetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -2336,7 +2387,8 @@
     "Muon_bLep_eta__UsejetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -2387,7 +2439,8 @@
     "Electron_bLep_eta__Usepoor_jetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -2438,7 +2491,8 @@
     "AllLep_bLep_eta__UseelectronCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -2490,7 +2544,8 @@
     "Muon_bLep_pt__Usemuon-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -2530,7 +2585,8 @@
     "Electron_bLep_pt__UsejetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -2570,7 +2626,8 @@
     "Electron_bHad_eta__UseelectronCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -2622,7 +2679,8 @@
     "Electron_bHad_pt__Usepoor_jetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -2662,7 +2720,8 @@
     "Electron_bHad_pt__UsemuonCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -2703,7 +2762,8 @@
     "AllLep_bHad_pt__Useelectron-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -2743,7 +2803,8 @@
     "AllLep_bHad_eta__UsemuonCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -2795,7 +2856,8 @@
     "Muon_bHad_eta__Usemuon-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -2846,7 +2908,8 @@
     "Muon_bHad_pt__Usemuon-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -2886,7 +2949,8 @@
     "Muon_bLep_eta__Usemuon-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -2937,7 +3001,8 @@
     "AllLep_bHad_pt__UseelectronCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.2, 
         "nume": {
@@ -2978,7 +3043,8 @@
     "AllLep_bLep_pt__UsejetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -3018,7 +3084,8 @@
     "Electron_bHad_pt__Useelectron-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -3058,7 +3125,8 @@
     "Muon_bHad_pt__Useelectron-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -3098,7 +3166,8 @@
     "Electron_bLep_eta__Usemuon-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -3149,7 +3218,8 @@
     "Muon_bHad_eta__UsejetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {
@@ -3200,7 +3270,8 @@
     "Electron_bHad_eta__Useelectron-OppositeCharge": {
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
+            "bLepCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 0.05, 
         "nume": {
@@ -3251,7 +3322,8 @@
     "AllLep_bLep_eta__UsejetCharge": {
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
+            "bHadCandFrom bquark", 
+            "bkgs"
         ], 
         "ymax": 1.0, 
         "nume": {

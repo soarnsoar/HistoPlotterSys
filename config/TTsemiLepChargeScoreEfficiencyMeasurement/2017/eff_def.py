@@ -1,10 +1,5 @@
 {
     "Muon_bLep_pt__Usepoor_jetCharge": {
-        "bkg": [
-            "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -15,36 +10,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
                 "Muon_TTLJ__bLepUsingGoodJetCharge", 
                 "Muon_TTLJ__bLep_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
+        }, 
+        "ymax": 1.0, 
+        "bkg": [
+            "Not From bquark", 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
     }, 
     "Electron_bHad_eta__Usemuon-OppositeCharge": {
-        "bkg": [
-            "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -55,47 +35,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
                 "Electron_TTLJ__bHad_FailSoftMuon", 
                 "Electron_TTLJ__bHadUsingSoftMuonChargeUseOpposite"
             ]
-        }
+        }, 
+        "ymax": 0.05, 
+        "bkg": [
+            "Not From bquark", 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
     }, 
     "Electron_bHad_eta__Usepoor_jetCharge": {
-        "bkg": [
-            "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -106,47 +60,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
                 "Electron_TTLJ__bHadUsingGoodJetCharge", 
                 "Electron_TTLJ__bHad_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
+        }, 
+        "ymax": 1.0, 
+        "bkg": [
+            "Not From bquark", 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
     }, 
     "AllLep_bLep_pt__UseelectronCharge": {
-        "bkg": [
-            "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -157,22 +85,6 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
@@ -180,14 +92,15 @@
                 "AllLep_TTLJ__bLep_FailSoftMuon__FailSoftElectron", 
                 "AllLep_TTLJ__bLepUsingSoftElectronChargeUseOpposite"
             ]
-        }
+        }, 
+        "ymax": 0.2, 
+        "bkg": [
+            "Not From bquark", 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
     }, 
     "Electron_bHad_pt__UsejetCharge": {
-        "bkg": [
-            "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -198,36 +111,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
                 "Electron_TTLJ__bHadUsingGoodJetCharge", 
                 "Electron_TTLJ__bHad_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "AllLep_bLep_pt__Usepoor_jetCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bLep_pt__Usepoor_jetCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -238,36 +136,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
                 "AllLep_TTLJ__bLepUsingGoodJetCharge", 
                 "AllLep_TTLJ__bLep_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Muon_bLep_eta__UsemuonCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bLep_eta__UsemuonCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -278,33 +161,6 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
@@ -312,14 +168,15 @@
                 "Muon_TTLJ__bLep_FailSoftMuon", 
                 "Muon_TTLJ__bLepUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "Electron_bLep_pt__UseelectronCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bLep_pt__UseelectronCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -330,22 +187,6 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
@@ -353,14 +194,15 @@
                 "Electron_TTLJ__bLep_FailSoftMuon__FailSoftElectron", 
                 "Electron_TTLJ__bLepUsingSoftElectronChargeUseOpposite"
             ]
-        }
-    }, 
-    "Electron_bLep_pt__Usepoor_jetCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bLep_pt__Usepoor_jetCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -371,36 +213,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
                 "Electron_TTLJ__bLepUsingGoodJetCharge", 
                 "Electron_TTLJ__bLep_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Electron_bLep_eta__UsemuonCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bLep_eta__UsemuonCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -411,33 +238,6 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
@@ -445,14 +245,15 @@
                 "Electron_TTLJ__bLep_FailSoftMuon", 
                 "Electron_TTLJ__bLepUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "Electron_bLep_eta__UseelectronCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bLep_eta__UseelectronCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -463,33 +264,6 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
@@ -497,14 +271,15 @@
                 "Electron_TTLJ__bLep_FailSoftMuon__FailSoftElectron", 
                 "Electron_TTLJ__bLepUsingSoftElectronChargeUseOpposite"
             ]
-        }
-    }, 
-    "AllLep_bLep_eta__Usepoor_jetCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bLep_eta__Usepoor_jetCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -515,47 +290,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
                 "AllLep_TTLJ__bLepUsingGoodJetCharge", 
                 "AllLep_TTLJ__bLep_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Muon_bLep_pt__UsejetCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bLep_pt__UsejetCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -566,36 +315,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
                 "Muon_TTLJ__bLepUsingGoodJetCharge", 
                 "Muon_TTLJ__bLep_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "AllLep_bHad_eta__Usemuon-OppositeCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bHad_eta__Usemuon-OppositeCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -606,47 +340,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
                 "AllLep_TTLJ__bHad_FailSoftMuon", 
                 "AllLep_TTLJ__bHadUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "Electron_bLep_eta__Useelectron-OppositeCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bLep_eta__Useelectron-OppositeCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -657,47 +365,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
                 "Electron_TTLJ__bLepUsingSoftElectronChargeUseOpposite", 
                 "Electron_TTLJ__bLep_FailSoftMuon__FailSoftElectron"
             ]
-        }
-    }, 
-    "AllLep_bLep_pt__UsemuonCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bLep_pt__UsemuonCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -708,22 +390,6 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
@@ -731,14 +397,15 @@
                 "AllLep_TTLJ__bLep_FailSoftMuon", 
                 "AllLep_TTLJ__bLepUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "AllLep_bLep_eta__Useelectron-OppositeCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bLep_eta__Useelectron-OppositeCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -749,47 +416,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
                 "AllLep_TTLJ__bLepUsingSoftElectronChargeUseOpposite", 
                 "AllLep_TTLJ__bLep_FailSoftMuon__FailSoftElectron"
             ]
-        }
-    }, 
-    "AllLep_bHad_eta__UseelectronCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bHad_eta__UseelectronCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -800,33 +441,6 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
@@ -834,14 +448,15 @@
                 "AllLep_TTLJ__bHad_FailSoftMuon__FailSoftElectron", 
                 "AllLep_TTLJ__bHadUsingSoftElectronChargeUseOpposite"
             ]
-        }
-    }, 
-    "Electron_bHad_pt__Usemuon-OppositeCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bHad_pt__Usemuon-OppositeCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -852,36 +467,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
                 "Electron_TTLJ__bHad_FailSoftMuon", 
                 "Electron_TTLJ__bHadUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "Electron_bHad_pt__UseelectronCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bHad_pt__UseelectronCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -892,22 +492,6 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
@@ -915,14 +499,15 @@
                 "Electron_TTLJ__bHad_FailSoftMuon__FailSoftElectron", 
                 "Electron_TTLJ__bHadUsingSoftElectronChargeUseOpposite"
             ]
-        }
-    }, 
-    "Muon_bLep_eta__UseelectronCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bLep_eta__UseelectronCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -933,33 +518,6 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
@@ -967,14 +525,15 @@
                 "Muon_TTLJ__bLep_FailSoftMuon__FailSoftElectron", 
                 "Muon_TTLJ__bLepUsingSoftElectronChargeUseOpposite"
             ]
-        }
-    }, 
-    "Muon_bLep_eta__Usepoor_jetCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bLep_eta__Usepoor_jetCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -985,47 +544,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
                 "Muon_TTLJ__bLepUsingGoodJetCharge", 
                 "Muon_TTLJ__bLep_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Electron_bLep_pt__UsemuonCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bLep_pt__UsemuonCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -1036,22 +569,6 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
@@ -1059,14 +576,15 @@
                 "Electron_TTLJ__bLep_FailSoftMuon", 
                 "Electron_TTLJ__bLepUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "Muon_bHad_eta__UseelectronCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bHad_eta__UseelectronCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -1077,33 +595,6 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
@@ -1111,14 +602,15 @@
                 "Muon_TTLJ__bHad_FailSoftMuon__FailSoftElectron", 
                 "Muon_TTLJ__bHadUsingSoftElectronChargeUseOpposite"
             ]
-        }
-    }, 
-    "Electron_bLep_eta__UsejetCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bLep_eta__UsejetCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -1129,47 +621,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
                 "Electron_TTLJ__bLepUsingGoodJetCharge", 
                 "Electron_TTLJ__bLep_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "AllLep_bLep_pt__Usemuon-OppositeCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bLep_pt__Usemuon-OppositeCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -1180,36 +646,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
                 "AllLep_TTLJ__bLep_FailSoftMuon", 
                 "AllLep_TTLJ__bLepUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "Muon_bLep_eta__Useelectron-OppositeCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bLep_eta__Useelectron-OppositeCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -1220,47 +671,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
                 "Muon_TTLJ__bLepUsingSoftElectronChargeUseOpposite", 
                 "Muon_TTLJ__bLep_FailSoftMuon__FailSoftElectron"
             ]
-        }
-    }, 
-    "AllLep_bHad_eta__Useelectron-OppositeCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bHad_eta__Useelectron-OppositeCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -1271,47 +696,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
                 "AllLep_TTLJ__bHadUsingSoftElectronChargeUseOpposite", 
                 "AllLep_TTLJ__bHad_FailSoftMuon__FailSoftElectron"
             ]
-        }
-    }, 
-    "AllLep_bHad_pt__Usemuon-OppositeCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bHad_pt__Usemuon-OppositeCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -1321,22 +720,6 @@
         "sig": [
             "bHadCandFrom bquark", 
             "All bCand From bquark"
-        ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
         ], 
         "deno": {
             "x": "bHad_pt", 
@@ -1344,14 +727,15 @@
                 "AllLep_TTLJ__bHad_FailSoftMuon", 
                 "AllLep_TTLJ__bHadUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "AllLep_bHad_pt__Usepoor_jetCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bHad_pt__Usepoor_jetCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -1362,36 +746,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
                 "AllLep_TTLJ__bHadUsingGoodJetCharge", 
                 "AllLep_TTLJ__bHad_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "AllLep_bLep_pt__Useelectron-OppositeCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bLep_pt__Useelectron-OppositeCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -1402,36 +771,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
                 "AllLep_TTLJ__bLepUsingSoftElectronChargeUseOpposite", 
                 "AllLep_TTLJ__bLep_FailSoftMuon__FailSoftElectron"
             ]
-        }
-    }, 
-    "Muon_bHad_eta__Usepoor_jetCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bHad_eta__Usepoor_jetCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -1442,47 +796,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
                 "Muon_TTLJ__bHadUsingGoodJetCharge", 
                 "Muon_TTLJ__bHad_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Muon_bLep_pt__Useelectron-OppositeCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bLep_pt__Useelectron-OppositeCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -1493,36 +821,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
                 "Muon_TTLJ__bLepUsingSoftElectronChargeUseOpposite", 
                 "Muon_TTLJ__bLep_FailSoftMuon__FailSoftElectron"
             ]
-        }
-    }, 
-    "Electron_bHad_eta__UsemuonCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bHad_eta__UsemuonCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -1533,33 +846,6 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
@@ -1567,14 +853,15 @@
                 "Electron_TTLJ__bHad_FailSoftMuon", 
                 "Electron_TTLJ__bHadUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "AllLep_bHad_eta__UsejetCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bHad_eta__UsejetCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -1585,47 +872,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
                 "AllLep_TTLJ__bHadUsingGoodJetCharge", 
                 "AllLep_TTLJ__bHad_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Muon_bHad_pt__UseelectronCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bHad_pt__UseelectronCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -1636,22 +897,6 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
@@ -1659,14 +904,15 @@
                 "Muon_TTLJ__bHad_FailSoftMuon__FailSoftElectron", 
                 "Muon_TTLJ__bHadUsingSoftElectronChargeUseOpposite"
             ]
-        }
-    }, 
-    "AllLep_bHad_pt__UsemuonCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bHad_pt__UsemuonCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -1677,22 +923,6 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
@@ -1700,14 +930,15 @@
                 "AllLep_TTLJ__bHad_FailSoftMuon", 
                 "AllLep_TTLJ__bHadUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "Electron_bLep_pt__Useelectron-OppositeCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bLep_pt__Useelectron-OppositeCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -1718,36 +949,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
                 "Electron_TTLJ__bLepUsingSoftElectronChargeUseOpposite", 
                 "Electron_TTLJ__bLep_FailSoftMuon__FailSoftElectron"
             ]
-        }
-    }, 
-    "AllLep_bHad_eta__Usepoor_jetCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bHad_eta__Usepoor_jetCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -1758,47 +974,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
                 "AllLep_TTLJ__bHadUsingGoodJetCharge", 
                 "AllLep_TTLJ__bHad_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Electron_bHad_eta__UsejetCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bHad_eta__UsejetCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -1809,47 +999,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
                 "Electron_TTLJ__bHadUsingGoodJetCharge", 
                 "Electron_TTLJ__bHad_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Muon_bLep_pt__UsemuonCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bLep_pt__UsemuonCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -1860,22 +1024,6 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
@@ -1883,14 +1031,15 @@
                 "Muon_TTLJ__bLep_FailSoftMuon", 
                 "Muon_TTLJ__bLepUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "Muon_bHad_eta__Useelectron-OppositeCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bHad_eta__Useelectron-OppositeCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -1901,47 +1050,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
                 "Muon_TTLJ__bHadUsingSoftElectronChargeUseOpposite", 
                 "Muon_TTLJ__bHad_FailSoftMuon__FailSoftElectron"
             ]
-        }
-    }, 
-    "AllLep_bLep_eta__UsemuonCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bLep_eta__UsemuonCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -1952,33 +1075,6 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
@@ -1986,14 +1082,15 @@
                 "AllLep_TTLJ__bLep_FailSoftMuon", 
                 "AllLep_TTLJ__bLepUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "Muon_bHad_pt__UsemuonCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bHad_pt__UsemuonCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -2004,22 +1101,6 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
@@ -2027,14 +1108,15 @@
                 "Muon_TTLJ__bHad_FailSoftMuon", 
                 "Muon_TTLJ__bHadUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "AllLep_bHad_pt__UsejetCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bHad_pt__UsejetCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -2045,36 +1127,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
                 "AllLep_TTLJ__bHadUsingGoodJetCharge", 
                 "AllLep_TTLJ__bHad_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Muon_bLep_pt__UseelectronCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bLep_pt__UseelectronCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -2085,22 +1152,6 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
@@ -2108,14 +1159,15 @@
                 "Muon_TTLJ__bLep_FailSoftMuon__FailSoftElectron", 
                 "Muon_TTLJ__bLepUsingSoftElectronChargeUseOpposite"
             ]
-        }
-    }, 
-    "Electron_bLep_pt__Usemuon-OppositeCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bLep_pt__Usemuon-OppositeCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -2125,22 +1177,6 @@
         "sig": [
             "bLepCandFrom bquark", 
             "All bCand From bquark"
-        ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
         ], 
         "deno": {
             "x": "bLep_pt", 
@@ -2148,14 +1184,15 @@
                 "Electron_TTLJ__bLep_FailSoftMuon", 
                 "Electron_TTLJ__bLepUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "AllLep_bLep_eta__Usemuon-OppositeCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bLep_eta__Usemuon-OppositeCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -2166,47 +1203,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
                 "AllLep_TTLJ__bLep_FailSoftMuon", 
                 "AllLep_TTLJ__bLepUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "Muon_bHad_eta__UsemuonCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bHad_eta__UsemuonCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -2217,33 +1228,6 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
@@ -2251,14 +1235,15 @@
                 "Muon_TTLJ__bHad_FailSoftMuon", 
                 "Muon_TTLJ__bHadUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "Muon_bHad_pt__Usepoor_jetCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bHad_pt__Usepoor_jetCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -2269,36 +1254,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
                 "Muon_TTLJ__bHadUsingGoodJetCharge", 
                 "Muon_TTLJ__bHad_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Muon_bHad_pt__UsejetCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bHad_pt__UsejetCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -2309,36 +1279,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
                 "Muon_TTLJ__bHadUsingGoodJetCharge", 
                 "Muon_TTLJ__bHad_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Muon_bLep_eta__UsejetCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bLep_eta__UsejetCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -2349,47 +1304,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
                 "Muon_TTLJ__bLepUsingGoodJetCharge", 
                 "Muon_TTLJ__bLep_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Electron_bLep_eta__Usepoor_jetCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bLep_eta__Usepoor_jetCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -2400,47 +1329,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
                 "Electron_TTLJ__bLepUsingGoodJetCharge", 
                 "Electron_TTLJ__bLep_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "AllLep_bLep_eta__UseelectronCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bLep_eta__UseelectronCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -2451,33 +1354,6 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
@@ -2485,14 +1361,15 @@
                 "AllLep_TTLJ__bLep_FailSoftMuon__FailSoftElectron", 
                 "AllLep_TTLJ__bLepUsingSoftElectronChargeUseOpposite"
             ]
-        }
-    }, 
-    "Muon_bLep_pt__Usemuon-OppositeCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bLep_pt__Usemuon-OppositeCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -2503,36 +1380,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
                 "Muon_TTLJ__bLep_FailSoftMuon", 
                 "Muon_TTLJ__bLepUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "Electron_bLep_pt__UsejetCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bLep_pt__UsejetCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -2543,36 +1405,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
                 "Electron_TTLJ__bLepUsingGoodJetCharge", 
                 "Electron_TTLJ__bLep_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Electron_bHad_eta__UseelectronCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bHad_eta__UseelectronCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -2583,33 +1430,6 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
@@ -2617,14 +1437,15 @@
                 "Electron_TTLJ__bHad_FailSoftMuon__FailSoftElectron", 
                 "Electron_TTLJ__bHadUsingSoftElectronChargeUseOpposite"
             ]
-        }
-    }, 
-    "Electron_bHad_pt__Usepoor_jetCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bHad_pt__Usepoor_jetCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -2635,36 +1456,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
                 "Electron_TTLJ__bHadUsingGoodJetCharge", 
                 "Electron_TTLJ__bHad_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Electron_bHad_pt__UsemuonCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bHad_pt__UsemuonCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -2675,22 +1481,6 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
@@ -2698,14 +1488,15 @@
                 "Electron_TTLJ__bHad_FailSoftMuon", 
                 "Electron_TTLJ__bHadUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "AllLep_bHad_pt__Useelectron-OppositeCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bHad_pt__Useelectron-OppositeCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -2716,36 +1507,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
                 "AllLep_TTLJ__bHadUsingSoftElectronChargeUseOpposite", 
                 "AllLep_TTLJ__bHad_FailSoftMuon__FailSoftElectron"
             ]
-        }
-    }, 
-    "AllLep_bHad_eta__UsemuonCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bHad_eta__UsemuonCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -2756,33 +1532,6 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
@@ -2790,14 +1539,15 @@
                 "AllLep_TTLJ__bHad_FailSoftMuon", 
                 "AllLep_TTLJ__bHadUsingSoftMuonChargeUseOpposite"
             ]
-        }
+        }, 
+        "ymax": 0.2, 
+        "bkg": [
+            "Not From bquark", 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
     }, 
     "Muon_bHad_eta__Usemuon-OppositeCharge": {
-        "bkg": [
-            "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -2808,47 +1558,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
                 "Muon_TTLJ__bHad_FailSoftMuon", 
                 "Muon_TTLJ__bHadUsingSoftMuonChargeUseOpposite"
             ]
-        }
+        }, 
+        "ymax": 0.05, 
+        "bkg": [
+            "Not From bquark", 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
     }, 
     "Muon_bHad_pt__Usemuon-OppositeCharge": {
-        "bkg": [
-            "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -2859,36 +1583,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
                 "Muon_TTLJ__bHad_FailSoftMuon", 
                 "Muon_TTLJ__bHadUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "Muon_bLep_eta__Usemuon-OppositeCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bLep_eta__Usemuon-OppositeCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -2899,47 +1608,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
                 "Muon_TTLJ__bLep_FailSoftMuon", 
                 "Muon_TTLJ__bLepUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "AllLep_bHad_pt__UseelectronCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.2, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bHad_pt__UseelectronCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -2950,22 +1633,6 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
@@ -2973,14 +1640,15 @@
                 "AllLep_TTLJ__bHad_FailSoftMuon__FailSoftElectron", 
                 "AllLep_TTLJ__bHadUsingSoftElectronChargeUseOpposite"
             ]
-        }
-    }, 
-    "AllLep_bLep_pt__UsejetCharge": {
+        }, 
+        "ymax": 0.2, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bLep_pt__UsejetCharge": {
         "nume": {
             "x": "bLep_pt", 
             "cut": [
@@ -2991,36 +1659,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bLep_pt", 
             "cut": [
                 "AllLep_TTLJ__bLepUsingGoodJetCharge", 
                 "AllLep_TTLJ__bLep_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Electron_bHad_pt__Useelectron-OppositeCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bHad_pt__Useelectron-OppositeCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -3031,36 +1684,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
                 "Electron_TTLJ__bHadUsingSoftElectronChargeUseOpposite", 
                 "Electron_TTLJ__bHad_FailSoftMuon__FailSoftElectron"
             ]
-        }
-    }, 
-    "Muon_bHad_pt__Useelectron-OppositeCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bHad_pt__Useelectron-OppositeCharge": {
         "nume": {
             "x": "bHad_pt", 
             "cut": [
@@ -3071,36 +1709,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            30, 
-            40, 
-            50, 
-            60, 
-            70, 
-            80, 
-            90, 
-            100, 
-            120, 
-            140, 
-            160, 
-            180, 
-            200, 
-            300
-        ], 
         "deno": {
             "x": "bHad_pt", 
             "cut": [
                 "Muon_TTLJ__bHadUsingSoftElectronChargeUseOpposite", 
                 "Muon_TTLJ__bHad_FailSoftMuon__FailSoftElectron"
             ]
-        }
-    }, 
-    "Electron_bLep_eta__Usemuon-OppositeCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bLep_eta__Usemuon-OppositeCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -3111,47 +1734,21 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
                 "Electron_TTLJ__bLep_FailSoftMuon", 
                 "Electron_TTLJ__bLepUsingSoftMuonChargeUseOpposite"
             ]
-        }
-    }, 
-    "Muon_bHad_eta__UsejetCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Muon_bHad_eta__UsejetCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -3162,47 +1759,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
                 "Muon_TTLJ__bHadUsingGoodJetCharge", 
                 "Muon_TTLJ__bHad_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
-    }, 
-    "Electron_bHad_eta__Useelectron-OppositeCharge": {
+        }, 
+        "ymax": 1.0, 
         "bkg": [
             "Not From bquark", 
-            "bLepCandFrom bquark"
-        ], 
-        "ymax": 0.05, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "Electron_bHad_eta__Useelectron-OppositeCharge": {
         "nume": {
             "x": "bHad_eta", 
             "cut": [
@@ -3213,47 +1784,21 @@
             "bHadCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bHad_eta", 
             "cut": [
                 "Electron_TTLJ__bHadUsingSoftElectronChargeUseOpposite", 
                 "Electron_TTLJ__bHad_FailSoftMuon__FailSoftElectron"
             ]
-        }
-    }, 
-    "AllLep_bLep_eta__UsejetCharge": {
+        }, 
+        "ymax": 0.05, 
         "bkg": [
             "Not From bquark", 
-            "bHadCandFrom bquark"
-        ], 
-        "ymax": 1.0, 
+            "bLepCandFrom bquark", 
+            "bkgs"
+        ]
+    }, 
+    "AllLep_bLep_eta__UsejetCharge": {
         "nume": {
             "x": "bLep_eta", 
             "cut": [
@@ -3264,39 +1809,18 @@
             "bLepCandFrom bquark", 
             "All bCand From bquark"
         ], 
-        "xbins": [
-            -2.4, 
-            -2.2, 
-            -2.0, 
-            -1.8, 
-            -1.6, 
-            -1.4, 
-            -1.2, 
-            -1.0, 
-            -0.8, 
-            -0.6, 
-            -0.4, 
-            -0.2, 
-            0, 
-            0.2, 
-            0.4, 
-            0.6, 
-            0.8, 
-            1.0, 
-            1.2, 
-            1.4, 
-            1.6, 
-            1.8, 
-            2.0, 
-            2.2, 
-            2.4
-        ], 
         "deno": {
             "x": "bLep_eta", 
             "cut": [
                 "AllLep_TTLJ__bLepUsingGoodJetCharge", 
                 "AllLep_TTLJ__bLep_FailSoftMuon__FailSoftElectron__FailGoodBJet"
             ]
-        }
+        }, 
+        "ymax": 1.0, 
+        "bkg": [
+            "Not From bquark", 
+            "bHadCandFrom bquark", 
+            "bkgs"
+        ]
     }
 }
