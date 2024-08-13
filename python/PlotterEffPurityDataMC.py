@@ -180,7 +180,7 @@ class PlotterEffPurityDataMC(PlotterBase):
         ##---subtract bkg from Data
         hp_data_sub_bkg=JHProcHist(cut,x,"Data_sub_bkg"+psuffix)
         hp_data_sub_bkg.Clone(hp_data)
-        hp_data_sub_bkg.Subtract(hp_bkg,cut,x,"Data_sub_bkg"+psuffix)
+        hp_data_sub_bkg=hp_data_sub_bkg.Subtract(hp_bkg,cut,x,"Data_sub_bkg"+psuffix)
 
         self.list_hp_data_sub_bkg[_idx]=hp_data_sub_bkg
         self.list_hp_bkg[_idx]=hp_bkg
@@ -190,7 +190,7 @@ class PlotterEffPurityDataMC(PlotterBase):
 
 
     def MakeEfficiencyObjects(self):
-        ##
+        ##HP of efficiency
         self.hp_effpurity_data_sub_bkg=self.list_hp_data_sub_bkg[1].Divide(self.list_hp_data_sub_bkg[0])
         self.hp_effpurity_sig=self.list_hp_sig[1].Divide(self.list_hp_sig[0])
 
@@ -226,6 +226,9 @@ class PlotterEffPurityDataMC(PlotterBase):
         self.grerr_sig=self.hp_effpurity_sig.GetErrorGraph()
         self.grerr_sig.SetFillColorAlpha(4,0.3)
         
+        
+        
+
 
         ##
         self.hp_ratio_effpurity_data_sub_bkg__over__sig=self.hp_effpurity_data_sub_bkg.Divide(self.hp_effpurity_sig)##measure/expectation considering sys nuisances
@@ -237,8 +240,18 @@ class PlotterEffPurityDataMC(PlotterBase):
         self.grerr_ratio=self.hp_ratio_effpurity_data_sub_bkg__over__sig.GetErrorGraph()
         self.grerr_ratio.SetFillColorAlpha(4,0.3)
 
-
-
+        ###---For DEBUG---##
+        ####explicitly-made eff-hist vs HP eff
+        print "x=",self.xs[0]
+        print "cut=",self.cuts[0]
+        HistFromHP=self.hp_effpurity_data_sub_bkg.GetHist()
+        
+        for i in range(self.h_data_sub_bkg.GetNbinsX()+2):
+            print "[i=",i,"]"
+            print "from HP=",HistFromHP.GetBinContent(i)
+            print "from explicit hist=",self.h_data_sub_bkg.GetBinContent(i)
+            #self.list_hp_data_sub_bkg[1].Divide(self.list_hp_data_sub_bkg[0])
+            print "FromHP/FromHP",0 if self.list_hp_data_sub_bkg[0].GetHist().GetBinContent(i)==0 else self.list_hp_data_sub_bkg[1].GetHist().GetBinContent(i)/self.list_hp_data_sub_bkg[0].GetHist().GetBinContent(i)
     def SetMaximum(self):
         Nbins=self.h_sig.GetNbinsX()
         xmin=self.h_sig.GetBinLowEdge(1)
