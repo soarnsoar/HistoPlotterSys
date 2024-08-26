@@ -273,3 +273,10 @@ class JHProcHist:## Hists Container of a proc
             print '[',idx_sys,']',sys,round(relerr,3),"(%)"
             if idx_sys>self.nmaxprint:break
 
+    def __del__(self):
+        for sys in sorted(self.hdict):
+            for idx1 in sorted(self.hdict[sys]):
+                for idx2 in sorted(self.hdict[sys][idx1]):
+                    del self.hdict[sys][idx1][idx2]
+
+

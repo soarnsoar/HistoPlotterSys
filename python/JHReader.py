@@ -70,10 +70,10 @@ class Reader:
 
         raise ValueError("No Histogram in "+_cut_x)
     def MakeHistContainer(self,cut,x,rebin=[]):
-        print "<MakeHistContainer>"
+        #print "<MakeHistContainer>"
         start_time = time.time()
         this_container={}
-        print "[MakeHistContainer] in JHReader.py, rebin=",rebin
+        #print "[MakeHistContainer] in JHReader.py, rebin=",rebin
         ##---Before Start, Make Empty Hist---##
         self._h_empty=self.GetEmptyHist(cut,x)
         if len(rebin)!=0 : self._h_empty=self._h_empty.Rebin(len(rebin)-1,self._h_empty.GetName(),rebin)
@@ -115,7 +115,7 @@ class Reader:
 
         end_time = time.time()
         execution_time = end_time - start_time
-        print "time=",execution_time
+        #print "time=",execution_time
 
         return this_container
     def ReadNominalShape(self,cut,x,proc):

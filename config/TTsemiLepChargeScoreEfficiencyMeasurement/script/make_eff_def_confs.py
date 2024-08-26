@@ -78,9 +78,13 @@ class ConfMaker:
 
         return outdict
 
+
+
+
 bnames=["bLep","bHad"]
 CH_TTLJ=["AllLep","Muon","Electron"]
-chargeTypes=["muon","muon-","electron","electron-","jet","poor_jet"]
+#chargeTypes=["muon","muon-","electron","electron-","jet","poor_jet"]
+chargeTypes=["muon","muon-"]
 
 binnings={
     "pt":[30,40,50,60,70,80,90,100,120,140,160,180,200,300],
@@ -94,7 +98,10 @@ ymax={
     "electron":0.2,
     "electron-":0.05,
 }
-xlist=["pt","eta"]
+xlist={"pt":chargeTypes,
+       "eta":chargeTypes,
+       #"bmuon_ptwrtjet":["muon","muon-"],
+}
 
 
 total_dict={}
@@ -102,8 +109,10 @@ for bname in bnames:
     for lep in CH_TTLJ:
         for chargeType in chargeTypes:
             for x  in xlist:
+                
                 this_conf=ConfMaker(bname,lep,chargeType)
                 if x in binnings: this_conf.AddRebin(binnings[x])
+                if not chargeType in xlist[x]:continue 
                 this_conf.SetYmax(ymax[chargeType])
                 fullx=bname+"_"+x
 
