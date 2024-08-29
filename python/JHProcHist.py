@@ -3,6 +3,13 @@ from copy import deepcopy
 from OpenDictFile import OpenDictFile
 import ROOT
 from math import sqrt
+
+import psutil
+def get_memory_usage():
+    process = psutil.Process(os.getpid())
+    memory_info = process.memory_info()
+    return memory_info.rss/1024./1024.
+
 class JHProcHist:## Hists Container of a proc
     def __init__(self,cut,x,proc):
         self.cut=cut
@@ -160,7 +167,7 @@ class JHProcHist:## Hists Container of a proc
             hdown.SetBinContent(i,ydown)            
             self.SetHist(hup,nui_name,i,"Up")
             self.SetHist(hdown,nui_name,i,"Down")
-        
+        self.MakeBinErrorZero()
     def Get_dy(self,ibin,sys,idx1,idx2):
         hsys=self.GetHist(sys,idx,idx2)
         ysys=hsys.GetBinContent(ibin)
@@ -256,9 +263,9 @@ class JHProcHist:## Hists Container of a proc
         print "----[Minus Error Rank]---"
         self.PrintSysRank(dict_err_minus,integral_total)
         self.IsErrorSet=1
-    def GetErrorGraph(self):
-        #if not self.IsErrorSet: self.SetErrorBand()
-        self.SetErrorBand()
+    def GetErrorGraph(self,recalerr=0):
+        if not self.IsErrorSet: self.SetErrorBand()
+        if recalerr:self.SetErrorBand()
         return self.gr_sys
     def PrintSysRank(self,dict_err,integral_total):
         sorted_keys = sorted(dict_err, key=dict_err.get, reverse=True)

@@ -256,7 +256,16 @@ class PlotterDataMC(PlotterBase):
             fullpath=prefix+"/"+prefix+"__"+self.outname+".pdf"
         self.canvas.SaveAs(fullpath)
         
+
+import psutil
+def get_memory_usage():
+    process = psutil.Process(os.getpid())
+    memory_info = process.memory_info()
+    return memory_info.rss/1024./1024.
+
 if __name__ == "__main__":
+
+
     Year=2017
     AnayzerName="DiLeptonAnalyzer"
     cut="ll"
@@ -266,3 +275,4 @@ if __name__ == "__main__":
     myplotter=PlotterDataMC(Year,AnayzerName,cut,x,dirname,outname)
 
 
+    print get_memory_usage(),"MB"

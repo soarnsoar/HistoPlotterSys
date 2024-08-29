@@ -1,6 +1,10 @@
 import ROOT
 from collections import OrderedDict
+import os
+
+
 def OpenDictFile(_path):
+    maindir=os.getenv("GIT_HistoPlotterSys")
     ret=OrderedDict()
     alllines=""    
     for line in open(_path,"r").readlines():

@@ -4,21 +4,21 @@ from JHReader import Reader
 import os
 from collections import OrderedDict 
 from OpenDictFile import OpenDictFile
-
+from copy import deepcopy
 import time
 import psutil
 def get_memory_usage():
     process = psutil.Process(os.getpid())
     memory_info = process.memory_info()
-    return memory_info.rss/1024./1024.
+    print memory_info.rss/1024./1024.,"MB"
 
 
 maindir=os.getenv("GIT_HistoPlotterSys")
 
-class JHEffPurity:
-    def __init__(self,effname,Year,AnalyzerName,suffix,rebin=[]):
+class JHEffPurityReader:
+    def __init__(self,effname,path_confdef,Year,AnalyzerName,suffix,rebin=[]):
         
-
+        self.path_confdef=path_confdef
         ##cuts/xs= [deno,nume]
         self.suffix=suffix
         Year=str(Year)
@@ -38,8 +38,8 @@ class JHEffPurity:
 
     def ReadEffPurityDef(self):
         ##eff_def.py
-        _confpath="/".join([maindir,"config",self.AnaName,self.Year,"eff_def.py"])
-        _conf=OpenDictFile(_confpath)
+        #_confpath="/".join([maindir,"config",self.AnaName,self.Year,"eff_def.py"])
+        _conf=OpenDictFile(self.path_confdef)
         self.dict_eff=_conf[self.effname]
     def ReadData(self):
         
@@ -153,14 +153,53 @@ class JHEffPurity:
         self.dict_effobj["eff"]["sig"]=self.dict_effobj["nume"]["sig"].Divide(self.dict_effobj["deno"]["sig"])
 
 
+    def __del__(self):
+        for info in sorted(self.dict_effobj):
+            for proc in sorted(self.dict_effobj[info]):
+                #if proc in ["Data","sig","bkg","Data-bkg"]: continue
+                del self.dict_effobj[info][proc]
 
-        
+    def GetEffHP(self):
+        return self.dict_effobj
+
+
+
+
+
 if __name__ == "__main__":
     Year=2017
     AnayzerName="TTsemiLepChargeScoreEfficiencyMeasurement"
     #class DefineEffPurity:
     #def __init__(self,Year,AnalyzerName,suffix,rebin=[]):
-    testjob=JHEffPurity("Muon_bLep_pt__Usepoor_jetCharge",Year,AnayzerName,"/")
-    testjob=JHEffPurity("Muon_bHad_pt__Usepoor_jetCharge",Year,AnayzerName,"/")
-    mem=get_memory_usage()
-    print mem,"MB"
+    print "Read"
+    testjob=JHEffPurityReader("Muon_bLep_pt__Usepoor_jetCharge",Year,AnayzerName,"/")
+    get_memory_usage()
+    print "Get Obj Dict"
+    myhp=testjob.GetEffHP()
+    get_memory_usage()
+    print "del Reader"
+    del testjob
+    get_memory_usage()
+    print "print HP dict"
+    for key1 in myhp:
+        print "key1=",key1
+        for key2 in myhp[key1]:
+            print "key2=",key2
+    print "Read add one"
+    testjob=JHEffPurityReader("Muon_bHad_pt__Usepoor_jetCharge",Year,AnayzerName,"/")
+    get_memory_usage()
+    print "Get Obj Dict2"
+    myhp2=testjob.GetEffHP()
+    get_memory_usage()
+    print "del 2nd Reader"
+    del testjob
+    get_memory_usage()
+
+
+    print "rm 1st HP dict"
+    del myhp
+    get_memory_usage()
+
+    print "rm 2nd HP dict"
+    del myhp2
+    get_memory_usage()
