@@ -1,4 +1,9 @@
 #!/usr/bin/env python                                                                                                                                         
+import time
+start_time = time.time()
+
+
+
 
 import sys
 import os
@@ -7,39 +12,35 @@ import argparse
 from PlotterDataMC import PlotterDataMC
 from OpenDictFile import OpenDictFile
 
-def Run(Year,AnalyzerName,cut,x,dirname,outname,suffix):
-    #print 'runsys',runsys
+
+
+def Run(Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix):
     print "suffix",suffix
-    myplotter=PlotterDataMC(Year,AnalyzerName,cut,x,dirname,outname,suffix)    
+    myplotter=PlotterDataMC(Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix)
+    myplotter.RunDraw()
     del myplotter
-def SubmitCut(Year,AnalyzerName,cut,xlist,dirname,outname,suffix):
-    for x in xlist:
-        myplotter=PlotterDataMC(Year,AnalyzerName,cut,x,dirname,outname,suffix)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Plotter configuration')
     parser.add_argument('-a', dest='AnalyzerName', default="")
-    #parser.add_argument('-c', dest='cut', default="")
-    #parser.add_argument('-x', dest='x', default="")
     parser.add_argument('-y', dest='year', default="")
     parser.add_argument('-d', dest='directory', default="")
-    #parser.add_argument('--nosys', action='store_true', default=False)
     parser.add_argument('-s', dest='suffix', default="")
-    #parser.add_argument('-n', dest='njob', default="1")    
+    parser.add_argument('-p', dest='procpath', default="")    
     args = parser.parse_args()
     AnalyzerName=args.AnalyzerName
-    #cut=args.cut
-    #x=args.x
     year=args.year
     directory=args.directory
-    #runsys=not args.nosys
     suffix=args.suffix
-    #njob=int(args.njob)
-    #name=args.name
+    procpath=args.procpath
+
     cut_and_x_path=maindir+"/config/"+AnalyzerName+"/"+year+"/"+suffix+"/cut_and_x.py"
     cut_and_x=OpenDictFile(cut_and_x_path)
+
     ncut=len(cut_and_x)
     icut=0
+
     for cut in cut_and_x:
         print icut+1,'/',ncut
         for x in cut_and_x[cut]:
@@ -47,9 +48,10 @@ if __name__ == '__main__':
             print cut,x
             thisdir=directory+"/"+cut
             name=x
-            Run(year,AnalyzerName,cut,x,thisdir,name,suffix)
-            
-
+            Run(year,AnalyzerName,cut,x,procpath,thisdir,name,suffix)
         icut+=1
 
-            
+
+end_time = time.time()
+execution_time = end_time - start_time
+print("Script execution time: {:.6f} seconds".format(execution_time))

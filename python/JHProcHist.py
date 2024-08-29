@@ -103,7 +103,7 @@ class JHProcHist:## Hists Container of a proc
                     h_minus_h2.SetHist(this_shape,this_sys,this_idx1,this_idx2)
         return h_minus_h2
 
-    def Combine(self,h2,cut="",x="",proc=""):
+    def Combine(self,h2,cut="",x="",proc="",w=False):
         h_plus_h2=JHProcHist(cut,x,proc)
         this_syslist=self.GetCombinedList(self.GetSysList(),h2.GetSysList())
         for this_sys in this_syslist:
@@ -112,7 +112,10 @@ class JHProcHist:## Hists Container of a proc
                 this_idx2list=self.GetCombinedList(self.GetSysIdx2List(this_sys,this_idx1),h2.GetSysIdx2List(this_sys,this_idx1))
                 for this_idx2 in this_idx2list:
                     this_shape=deepcopy(self.GetHist(this_sys,this_idx1,this_idx2))
-                    this_shape.Add(h2.GetHist(this_sys,this_idx1,this_idx2))
+                    if w :
+                        this_shape.Add(h2.GetHist(this_sys,this_idx1,this_idx2),w)
+                    else:
+                        this_shape.Add(h2.GetHist(this_sys,this_idx1,this_idx2))
                     h_plus_h2.SetHist(this_shape,this_sys,this_idx1,this_idx2)
 
         ##--Check--##

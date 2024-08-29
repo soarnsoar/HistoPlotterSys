@@ -7,3 +7,4 @@ SKFlatOutput
 ws/*
 !ws/*/*.sh
 test
+*__init__.py

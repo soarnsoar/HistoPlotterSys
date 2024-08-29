@@ -10,10 +10,11 @@ import time
 maindir=os.getenv("GIT_HistoPlotterSys")
 
 class PlotterDataMC(PlotterBase):
-    def __init__(self,Year,AnalyzerName,cut,x,dirname,outname,suffix=""):
+    def __init__(self,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix=""):
         self.suffix=suffix
         self.dirname=dirname
         self.outname=outname
+        self.procpath=procpath
         Year=str(Year)
         name="__".join([Year,AnalyzerName,cut,x])
         PlotterBase.__init__(self,name)
@@ -29,6 +30,7 @@ class PlotterDataMC(PlotterBase):
         self.legendlist=OrderedDict()
         ##--
         self.MakeCombinedObject()
+    def RunDraw(self):
         ##---not logy
         self.logy=0
         self.SetMaximum()
@@ -232,7 +234,7 @@ class PlotterDataMC(PlotterBase):
             self.leg.AddEntry(self.legendlist[proc],proc)
         self.leg.AddEntry(self.legendlist["Data"],"Data","E")
     def ReadData(self):
-        self.myreader=Reader(self.AnaName,self.Year,self.suffix)
+        self.myreader=Reader(self.AnaName,self.Year,self.suffix,self.procpath)
         self.HistColl=self.myreader.MakeHistContainer(self.cut,self.x)
         self.myreader.CloseFile()
 

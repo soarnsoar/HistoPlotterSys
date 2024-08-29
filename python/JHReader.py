@@ -10,11 +10,12 @@ maindir=os.getenv("GIT_HistoPlotterSys")
 import time
 ##
 class Reader:
-    def __init__(self,AnaName,YEAR,suffix):
+    def __init__(self,AnaName,YEAR,suffix,ProcConfPath):
         self.Verbose=0
         self.suffix=suffix
         self.AnaName=AnaName
         self.YEAR=str(YEAR)
+        self.ProcConfPath=ProcConfPath
         self.SetPath()
         self.ReadInput()
         self.ReadConf()
@@ -36,11 +37,16 @@ class Reader:
         print "--input:",_path
         self.ProcConf=OpenDictFile(_path)
 
-    def GetProcConfPath(self):
+    def GetProcConfPath_OLD(self):
         if os.path.isfile(maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/proc.py"):
             return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/proc.py"
         print "[Use nominal proc.py file]"
         return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/proc.py"
+
+    def GetProcConfPath(self):
+        return self.ProcConfPath
+
+
     def ReadNuiConf(self):
         _path=self.GetNuiConfPath()
         print "--nui:",_path
@@ -83,11 +89,19 @@ class Reader:
             this_container[p]=JHProcHist(cut,x,p)
             for isubp,subp in enumerate(sorted(subplist)):
                 this_h=JHProcHist(cut,x,subp) ##JHProcHist for this proc
+                p_weight=False ### For example, Add this subp with p_weight==1 if combined proc is A-B
+                if not isinstance(subplist,list):##if subp info is  not a simple list.(For example it would have "weight"key)
+                    if "weight" in subplist[subp] : p_weight=subplist[subp]["weight"]
                 ##-----NominalShape-----#
                 this_nominal=self.ReadNominalShape(cut,x,subp)
+                
                 if len(rebin)!=0 : this_nominal=this_nominal.Rebin(len(rebin)-1,this_nominal.GetName(),rebin)
+                if p_weight: this_nominal.Scale(p_weight)
+
                 this_h.SetHist(deepcopy(this_nominal))
                 #if not IsData :
+
+
                 ##----NuisanceShape-----#
                 for nui in self.NuiConf:
                     if IsData :
@@ -96,10 +110,11 @@ class Reader:
                         for idx2 in self.NuiConf[nui][idx1]:
                             this_sys=self.ReadNuisanceShape(cut,x,subp,nui,idx1,idx2)
                             if len(rebin)!=0 : this_sys=this_sys.Rebin(len(rebin)-1,this_sys.GetName(),rebin)
+                            if p_weight: this_sys.Scale(p_weight)
                             this_h.SetHist(deepcopy(this_sys),nui,idx1,idx2)
                     #this_h.MakeStatNuiShapes()
                     #this_h.SetEffTool(self.EffToolConf)
-                ##--Store JHProcHist--##
+                ##--Store JHProcHist of this subprocess--##
                 this_container[subp]=this_h
 
                 ##--Combined p = sum(subp)
