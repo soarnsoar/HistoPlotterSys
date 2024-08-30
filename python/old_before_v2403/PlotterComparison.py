@@ -1,302 +1,317 @@
-from numpy import array
-import os
 import ROOT
-from collections import OrderedDict
-from math import sqrt 
-import CMS_lumi, tdrstyle
+from JHProcHist import JHProcHist
+from JHReader import Reader
+from JHPlotter import PlotterBase
+import os
+from collections import OrderedDict 
+from OpenDictFile import OpenDictFile
 
-class Plotter:
-    def __init__(self,name):
-        #self.h_stack=ROOT.THStack("","")
-        self.name=name
-        self.canvas = ROOT.TCanvas()
-        self.DirToSave="./"
-        self.leg=ROOT.TLegend(0.1,0.75,0.35,0.95)#x1,y1,x2,y2
-        self.ymax=-9999999.
-        self.ymin= 9999999.
-        self.lumi=41.5
+import time
+maindir=os.getenv("GIT_HistoPlotterSys")
+
+class PlotterComparison(PlotterBase):
+    def __init__(self,title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext="Preliminary",doNorm=False,doDiff=False):
+        self.title=title
+        self.dirname=dirname
+        self.outname=outname
+        PlotterBase.__init__(self,title)
+        self.lumi=title+lumi
         self.sqrtS=13
-        self.dict_shape=OrderedDict()
 
-    def AddShape(self,_name,_color,_h,_h_sysup,_h_sysdown):
-        if _h.GetMaximum() > self.ymax: self.ymax=_h.GetMaximum()
-        if _h.GetMinimum() < self.ymin: self.ymin=_h.GetMinimum()
-        _h_statup,_h_statdown,_gr_stat=self.GetStatUpDown(self.h_nume)
-        _gr_sys=self.Convert_HistToGraphAsymErr(_h,_h_sysup,_h_sysdown)
-        ##--total error
-        _h_up,_h_down,_gr=self.SumUpDownError(_h,_h_statup,_h_statdown,_h_sysup,_h_sysdown)
-        self.dict_shape[_name]={
-            "nom":_h.Clone(),
-            "statup":_h_statup.Clone(),
-            "statdown":_h_statdown.Clone(),
-            "sysup":_h_sysup,
-            "sysdown":_h_sysdown,
-            "up":_h_up,
-            "down":_h_down,
-            "gr_stat":ROOT.TGraphAsymmErrors(_gr_stat),
-            "gr_sys":ROOT.TGraphAsymmErrors(_gr_sys),
-            "gr_total":ROOT.TGraphAsymmErrors(_gr),
-            "color",_color
-        }
+        self.yearlist=yearlist
+        self.analist=analist
+        self.cutlist=cutlist
+        self.xlist=xlist
+        self.proclist=proclist
+        self.labellist=labellist
+        self.suffixlist=suffixlist
+        self.colorlist=colorlist
+        self.dict_xname=dict_xname
+        self.extratext=extratext
+        self.doNorm=doNorm
+        self.doDiff=doDiff
+        self.CheckLengthOfLists()
 
-    
-    def GetStatUpDown(self,_h):
-        _h_statup=_h.Clone()
-        _h_statup.Reset()
-        _h_statdown=_h.Clone()
-        _h_statdown.Reset()
-        for i in range(1,_h.GetNbinsX()+1):
-            y=_h.GetBinContent(i)
-            yerr=_h.GetBinError(i)
-            _h_statup.SetBinContent(i,y+yerr)
-            _h_statdown.SetBinContent(i,y-yerr)
-
-        _gr_stat=self.Convert_HistToGraphAsymErr(_h,_h_statup,_h_statdown)
-        return _h_statup, h_statdown, _gr_stat
-   
-    def SetDenoName(self,_denoname):
-        self.deno=_denoname
-    def SetRatio(self):
-        #self.h_ratio=self.dict_shape[self.deno].Clone()
-        for name in self.dict_shape:
-            _h_ratio=self.dict_shape[p]['nom'].Clone()
-            _h_ratio.Divide(self.dict_shape[self.deno]['nom'])
-            self.dict_shape[p]["ratio"]=_h_ratio.Clone()
-            ##-ratio up
-            _h_ratio_up=self.dict_shape[p]['up'].Clone()
-            _h_ratio_up.Divide(self.dict_shape[self.deno]['nom'])
-            self.dict_shape[p]["ratio_up"]=_h_ratio_up.Clone()
-            ##-ratio down
-            _h_ratio_down=self.dict_shape[p]['down'].Clone()
-            _h_ratio_down.Divide(self.dict_shape[self.deno]['nom'])
-            self.dict_shape[p]["ratio_down"]=_h_ratio_down.Clone()
-
-            ##--ratio statup
-            _h_ratio_statup=self.dict_shape[p]['statup'].Clone()
-            _h_ratio_statup.Divide(self.dict_shape[self.deno]['nom'])
-            self.dict_shape[p]["ratio_statup"]=_h_ratio_statup.Clone()
-            ##--ratio statdown
-            _h_ratio_statdown=self.dict_shape[p]['statdown'].Clone()
-            _h_ratio_statdown.Divide(self.dict_shape[self.deno]['nom'])
-            self.dict_shape[p]["ratio_statdown"]=_h_ratio_statdown.Clone()
-
-            ##--ratio sysup
-            _h_ratio_sysup=self.dict_shape[p]['sysup'].Clone()
-            _h_ratio_sysup.Divide(self.dict_shape[self.deno]['nom'])
-            self.dict_shape[p]["ratio_sysup"]=_h_ratio_sysup.Clone()
-            ##--ratio sysdown
-            _h_ratio_sysdown=self.dict_shape[p]['sysdown'].Clone()
-            _h_ratio_sysdown.Divide(self.dict_shape[self.deno]['nom'])
-            self.dict_shape[p]["ratio_sysdown"]=_h_ratio_sysdown.Clone()
-        ###Set TLine
-        x1=self.dict_shape[self.deno]["ratio"].GetBinLowEdge(1)
-        N=self.dict_shape[self.deno]["ratio"].GetNbinsX()
-        x2=self.dict_shape[self.deno]["ratio"].GetBinLowEdge(N+1)
-        self.line=ROOT.TLine(x1,1,x2,1)#TLine(Double_t x1,Double_t y1,Double_t x2,Double_t y2)
-        self.line.SetLineStyle(2)
-    def InitDraw(self):
-        ##---------From TDR style ---------##
-        tdrstyle.setTDRStyle()
-        #change the CMS_lumi variables (see CMS_lumi.py)
-        CMS_lumi.lumi_13TeV = str(self.lumi)+" fb^{-1}"
-        CMS_lumi.writeExtraText = 1
-        CMS_lumi.extraText = "Preliminary"
-        CMS_lumi.lumi_sqrtS = self.sqrtS # used with iPeriod = 0, e.g. for simulation-only plots (default is an empty string)
-        self.iPos = 11
-        CMS_lumi.relPosX    = 0.08
-        if( self.iPos==0 ): CMS_lumi.relPosX = 0.12
+        self.ReadData()
+    def DrawAll(self):
+        ##--
+        self.SetLegend()
+        ##---not logy
+        self.logy=0
+        self.SetMaximum()
+        self.Draw(0,self.extratext) ## argument = isratio
+        self.Save(0)
+        self.Draw(1,self.extratext)
+        self.Save(1)
+        ##---set logy
+        self.logy=1
+        self.SetMaximum()
+        self.Draw(0,self.extratext)
+        self.Save(0)
+        self.Draw(1,self.extratext)
+        self.Save(1)
+    def CheckLengthOfLists(self):
+        self.Nobj=len(self.yearlist)
+        mylists=[self.analist, self.cutlist,self.xlist,self.proclist,self.labellist,self.suffixlist,self.colorlist]
+        for i,this_list in enumerate(mylists):
+            
+            if self.Nobj==len(this_list) : continue
+            print "!!!! Length of input lists are not sync. EXIT"
+            print "len(self.analist)=",len(self.analist)
+            print "len(self.cutlist)=",len(self.cutlist)
+            print "len(self.xlist)=",len(self.xlist)
+            print "len(self.proclist)=",len(self.proclist)
+            print "len(self.labellist)=",len(self.labellist)
+            print "len(self.suffixlist)=",len(self.suffixlist)
+            print "len(self.colorlist)=",len(self.colorlist)
+            1/0
         
-        H_ref = 600; 
-        W_ref = 800; 
-        W = W_ref
-        H  = H_ref
-        # 
-        # Simple example of macro: plot with CMS name and lumi text
-        #  (this script does not pretend to work in all configurations)
-        # iPeriod = 1*(0/1 7 TeV) + 2*(0/1 8 TeV)  + 4*(0/1 13 TeV) 
-        # For instance: 
-        #               iPeriod = 3 means: 7 TeV + 8 TeV
-        #               iPeriod = 7 means: 7 TeV + 8 TeV + 13 TeV 
-        #               iPeriod = 0 means: free form (uses lumi_sqrtS)
-        # Initiated by: Gautier Hamel de Monchenault (Saclay)
-        # Translated in Python by: Joshua Hardenbrook (Princeton)
-        # Updated by:   Dinko Ferencek (Rutgers)
-        #
-    
-        self.iPeriod = 4
+
+    def GetXName(self,x):
+        if x in self.dict_xname:
+            return self.dict_xname[x]
+        else:
+            return x
+    def SetLumi(self):
+        ##https://twiki.cern.ch/twiki/bin/view/CMS/LumiRecommendationsRun2#Quick_summary_table
+        if str(self.Year)=="2016":
+            self.lumi=35.9
+        elif str(self.Year)=="2016preVFP" or str(self.Year)=="2016a":
+            self.lumi=19.5
+        elif str(self.Year)=="2016postVFP" or str(self.Year)=="2016b":
+            self.lumi=16.8
+        elif str(self.Year)=="2017":
+            self.lumi=41.5
+        elif str(self.Year)=="2018":
+            self.lumi=59.8
+        else:
+            print "Year must be 2016/7/8"
+            print "self.Year","=",self.Year
+            1/0
+
+
+    def SetLine1(self,_index=0):
+        Nbins=self.HistColls[0][self.GetProc(0)].GetHist().GetNbinsX()
+        xmin=self.HistColls[0][self.GetProc(0)].GetHist().GetBinLowEdge(1)
+        xmax=self.HistColls[0][self.GetProc(0)].GetHist().GetBinLowEdge(Nbins+2)
+        self.line=ROOT.TLine(xmin,1,xmax,1)
+        self.line.SetLineColor(self.colorlist[_index])
+    def DrawObjectPad1(self):
+        for i in range(self.Nobj):
+            this_cut=self.GetCut(i)
+            this_x=self.GetX(i)
+            this_proc=self.GetProc(i)
+            this_color=self.GetColor(i)
+            self.HistColls[i][this_proc].GetHist().SetTitle(self.title)
+            if i==0:
+                self.HistColls[i][this_proc].GetHist().Draw()
+            else:
+                self.HistColls[i][this_proc].GetHist().Draw("sames")
+            
+            self.HistColls[i][this_proc].GetHist().SetLineColor(self.colorlist[i])
+            ## error band
+            self.HistColls[i][this_proc].gr_sys.Draw("e2sames")
+            self.HistColls[i][this_proc].gr_sys.SetFillColorAlpha(self.colorlist[i],0.3)
+        self.leg.Draw()
         
-        # references for T, B, L, R
-        T = 0.08*H_ref
-        B = 0.12*H_ref 
-        L = 0.12*W_ref
-        R = 0.04*W_ref
-        self.canvas.Close()
-        del self.canvas
-        self.canvas = ROOT.TCanvas(self.name,self.name,50,50,W,H)
-
-        self.canvas.SetFillColor(0)
-        self.canvas.SetBorderMode(0)
-        self.canvas.SetFrameFillStyle(0)
-        self.canvas.SetFrameBorderMode(0)
-        self.canvas.SetLeftMargin( L/W )
-        self.canvas.SetRightMargin( R/W )
-        self.canvas.SetTopMargin( T/H )
-        self.canvas.SetBottomMargin( B/H )
-        self.canvas.SetTickx(0)
-        self.canvas.SetTicky(0)
-    def SetDir(self,_dirpath):
-        self.DirToSave=_dirpath
-    def Draw(self):
-        self.InitDraw()
-        self.DrawNominal("hist")
-        self.DrawError("sames")
-        self.DrawLegend()
-        CMS_lumi.CMS_lumi(self.canvas, self.iPeriod, self.iPos)
-        self.canvas.cd()
-        self.canvas.Update()
-        self.canvas.RedrawAxis()
-        os.system("mkdir -p "+self.DirToSave+"/c/")
-        self.canvas.SaveAs(self.DirToSave+"/c/c__"+self.name+".pdf")
-    def DrawRatio(self):
-        self.InitDraw()
-        self.pad1=ROOT.TPad("pad1", "pad1", 0, 0.3, 1, 1) ##x1,y1,x2,y2
-        self.pad1.SetTopMargin(0.1)
-        self.pad1.SetBottomMargin(0.02)
-        self.pad1.SetGridx()
-        self.pad1.Draw()
-        self.pad1.cd()
-        self.DrawNominal("hist")
-        self.DrawError("sames")
-        self.DrawLegend()
-        self.canvas.cd()
-        ##---ratio pad
-        self.pad2=ROOT.TPad("pad2", "pad2", 0, 0.0, 1, 0.3)
-        self.pad2.SetTopMargin(0.02)
-        self.pad2.SetBottomMargin(0.2)
-        self.pad2.SetGridx()
-        self.pad2.Draw()
-        self.pad2.cd()
-        ##TODO::handle this with input args
-        
-        self.dict_shape[self.deno]["ratio"].SetMinimum(0.5)        
-        self.dict_shape[self.deno]["ratio"].SetMaximum(1.5)
-        self.dict_shape[self.deno]["ratio"].GetYaxis().SetLabelSize(0.1)
-        self.dict_shape[self.deno]["ratio"].GetXaxis().SetLabelSize(0.1)
-        self.dict_shape[self.deno]["ratio"].GetYaxis().SetNdivisions(505)
-        #self.hratio.GetXaxis().SetTitle(self.xtitle)
-        self.dict_shape[self.deno]["ratio"].GetXaxis().SetTitleOffset(1)
-        self.dict_shape[self.deno]["ratio"].GetXaxis().SetTitleSize(0.09)
-        self.dict_shape[self.deno]["ratio"].Draw('hist')
-        self.dict_shape[self.deno]["gr_total"].Draw('E2sames')
-        for name in self.dict_shape:
-            if name==self.deno:continue
-
-            self.dict_shape[name]["ratio"].SetMinimum(0.5)        
-            self.dict_shape[name]["ratio"].SetMaximum(1.5)
-            self.dict_shape[name]["ratio"].GetYaxis().SetLabelSize(0.1)
-            self.dict_shape[name]["ratio"].GetXaxis().SetLabelSize(0.1)
-            self.dict_shape[name]["ratio"].GetYaxis().SetNdivisions(505)
-            #self.hratio.GetXaxis().SetTitle(self.xtitle)
-            self.dict_shape[name]["ratio"].GetXaxis().SetTitleOffset(1)
-            self.dict_shape[name]["ratio"].GetXaxis().SetTitleSize(0.09)
-            self.dict_shape[name]["ratio"].Draw('histsames')
-            self.dict_shape[name]["gr_total"].Draw('E2sames')
-
+    def DrawObjectPad2(self):
+        for i in range(1,self.Nobj):
+            this_cut=self.GetCut(i)
+            this_x=self.GetX(i)
+            this_proc=self.GetProc(i)
+            this_color=self.GetColor(i)
+            if i==0:
+                self.HP_Ratios[i].GetHist().Draw()
+            else:
+                self.HP_Ratios[i].GetHist().Draw("sames")
+            self.HP_Ratios[i].gr_sys.Draw("e2sames")
+            self.HP_Ratios[i].gr_sys.SetLineColor(self.colorlist[i])
+            self.HP_Ratios[i].gr_sys.SetFillColorAlpha(self.colorlist[i],0.3)
         self.line.Draw("sames")
-        #self.leg.Draw()
-        CMS_lumi.CMS_lumi(self.canvas, self.iPeriod, self.iPos)
-        self.canvas.cd()
-        self.canvas.Update()
-        self.canvas.RedrawAxis()
-        os.system("mkdir -p "+self.DirToSave+"/cratio/")
-        self.canvas.SaveAs(self.DirToSave+"/cratio/cratio__"+self.name+".pdf")        
-        
-    def DrawLegend(self):
-        del self.leg
-        nproc=len(self.dict_shape)
+    def SetMaximum(self):
+        if self.logy:
+            if self.ymax<=0. : return
+            for h in [self.hdata,self.hmc_nosys,self.hstack,self.grerr]:
+                h.SetMaximum(self.ymax*50)
+                if self.ymin > 0:
+                    _ymin=self.ymin/50
+                    h.SetMinimum(_ymin)
+                    h.SetMaximum(self.ymax*self.ymax/_ymin)
+                else:
+                    _ymin=min(self.ymax/100000.,0.1)
+                    h.SetMinimum(_ymin)
+                    h.SetMaximum(self.ymax*self.ymax/_ymin)
+        else:
+            for h in [self.hdata,self.hmc_nosys,self.hstack,self.grerr]:
+                h.SetMaximum(self.ymax*2)
+                h.SetMinimum(self.ymin)
+
+    def SetLegend(self):
+        nproc=self.Nobj
         ncolomns=(nproc)/4 +1
+        nrows=(nproc)/3 +1
         x1=0.39
         x2=0.34+0.2*ncolomns
-        y1=0.69
+        #y1=0.89-nrows*0.12 ##initially 0.69
+        y1=0.69 ##initially 0.69
         y2=0.89
         self.leg=ROOT.TLegend(x1,y1,x2,y2)
         self.leg.SetShadowColor(0)
-        for name in self.dict_shape:
-            if name==self.deno:continue
-            self.leg.AddEntry(self.dict_shape[name]["nom"],name)
-        self.leg.AddEntry(self.dict_shape[self.deno],self.deno)
         self.leg.SetNColumns(ncolomns)
-        self.leg.Draw()
-
-    def DrawError(self,option=""):
-        self.dict_shape[self.deno]["gr"].Draw(option+"e2")
-        self.dict_shape[self.deno]["gr"].SetLineStyle(0)
-        self.dict_shape[self.deno]["gr"].SetMarkerStyle(0)
-        _color=self.dict_shape[self.deno]["color"]
-        self.dict_shape[self.deno]["gr"].SetFillColorAlpha(_color,0.3)
-        for name in self.dict_shape:
-            if name==self.deno:continue
-            self.dict_shape[name]["gr"].Draw(option+"e2")
-            self.dict_shape[name]["gr"].SetLineStyle(0)
-            self.dict_shape[name]["gr"].SetMarkerStyle(0)
-            _color=self.dict_shape[name]["color"]
-            self.dict_shape[name]["gr"].SetFillColorAlpha(_color,0.3)
-
-    def SumUpDownError(self,_h,_h_up1,_h_down1,_h_up2,_h_down2):
-        _h_up=self._h1.Clone()
-        _h_up.SetStats(0)
-        _h_up.Reset()
-
-        _h_down=self._h1.Clone()
-        _h_down.SetStats(0)
-        _h_down.Reset()
         
-        for i in range(1,_h_up.GetNbinsX()+1):
-            ynom=_h.GetBinContent(i)
-
-            yup1=_h_up1.GetBinContent(i)
-            yup2=_h_up2.GetBinContent(i)
-
-            ydown1=_h_down1.GetBinContent(i)
-            ydown2=_h_down2.GetBinContent(i)
-
-            dyup1=yup1-ynom
-            dyup2=yup2-ynom
-            dyup=sqrt(dyup1**2 + dyup2**2)
-
-            dydown1=ydown1-ynom
-            dydown2=ydown2-ynom
-            dydown=sqrt(dydown1**2 + dydown2**2)
+        for i in range(self.Nobj):
+            this_cut=self.GetCut(i)
+            this_x=self.GetX(i)
+            this_proc=self.GetProc(i)
+            this_color=self.GetColor(i)
+            self.HistColls[i][this_proc].GetHist().SetLineColor(this_color)
+            self.leg.AddEntry(self.HistColls[i][this_proc].GetHist(),self.labellist[i])
 
 
+    def GetYear(self,i):
+        return self.yearlist[i]
+    def GetAna(self,i):
+        return self.analist[i]
+    def GetCut(self,i):
+        return self.cutlist[i]
+    def GetX(self,i):
+        return self.xlist[i]
+    def GetProc(self,i):
+        return self.proclist[i]
+    def GetLabel(self,i):
+        return self.labellist[i]
+    def GetSuffix(self,i):
+        return self.suffixlist[i]
+    def GetColor(self,i):
+        return self.colorlist[i]
+    def SetBinErrorZero(self,hist):
+        for i in range(0,hist.GetNbinsX()+2):
+            hist.SetBinError(i,0)
+    def ReadData(self):
+        self.myreaders=[]
+        self.HistColls=[]
+        self.HP_Ratios=[]
+        
+        for i in range(self.Nobj):
+            this_year=self.GetYear(i)
+            this_ana=self.GetAna(i)
+            this_cut=self.GetCut(i)
+            this_x=self.GetX(i)
+            this_proc=self.GetProc(i)
+            this_label=self.GetLabel(i)
+            this_suffix=self.GetSuffix(i)
+            this_reader=Reader(this_ana,this_year,this_suffix)
+            this_HistColl=this_reader.MakeHistContainer(this_cut,this_x)
+            this_HistColl[this_proc].MakeStatNuiShapes(str(this_year))
+            if self.doNorm : 
+                this_norm=this_HistColl[this_proc].GetHist().Integral()
+                if this_norm!=0: this_HistColl[this_proc].Scale(1/this_norm)
+            self.SetBinErrorZero(this_HistColl[this_proc].GetHist())
+            #this_HistColl[this_proc].GetHist().GetXaxis().SetLabelSize(0)
+            this_HistColl[this_proc].SetErrorBand()
+            self.myreaders.append(this_reader)
+            self.HistColls.append(this_HistColl)
+            this_reader.CloseFile()
+            ##--Ratio/Diff
+            if i==0:
+                if not self.doDiff:
+                    ##--ratio
+                    this_hp_ratio=this_HistColl[this_proc].Divide(this_HistColl[this_proc],this_cut,this_x,this_proc)                
+                    self.HP_Ratios.append(this_hp_ratio)
+                else: ##do diff
+                    this_hp_ratio=this_HistColl[this_proc].Subtract(this_HistColl[this_proc],this_cut,this_x,this_proc)                
+                    self.HP_Ratios.append(this_hp_ratio)
+            else:
+                if not self.doDiff:
+                    ##--ratio
+                    this_hp_ratio=this_HistColl[this_proc].Divide(self.HistColls[0][self.GetProc(0)],this_proc+"__"+self.GetCut(0),this_x+"__"+self.GetX(0),this_proc+"__"+self.GetProc(0))##divide by 1st element
+                    this_hp_ratio.SetErrorBand()
+                    self.HP_Ratios.append(this_hp_ratio)
+                else:
+                    ##--diff
+                    this_hp_ratio=this_HistColl[this_proc].Subtract(self.HistColls[0][self.GetProc(0)],this_proc+"__"+self.GetCut(0),this_x+"__"+self.GetX(0),this_proc+"__"+self.GetProc(0))##subtract by 1st element
+                    this_hp_ratio.SetErrorBand()
+                    self.HP_Ratios.append(this_hp_ratio)
 
-            yup=ynom+dyup
-            ydown=ynom-dydown
-
-            _h_up.SetBinContent(i,yup)
-            _h_down.SetBinContent(i,ydown)
-        ##--gr
-        _gr=self.Convert_HistToGraphAsymErr(_h,_h_up,_h_down)
-        return _h_up,_h_down,_gr
-    def Convert_HistToGraphAsymErr(self,_h,_hup,_hdown):
-        N=_h.GetNbinsX()
-        gr=ROOT.TGraphAsymmErrors(N+1)
-
-        for i in range(1,N+1):
-            x1=_h.GetBinLowEdge(i)
-            x2=x1+_h.GetBinWidth(i)
-            x=(x1+x2)/2
-            y=_h.GetBinContent(i)
-            yup=_hup.GetBinContent(i)
-            dyup=yup-y
-            ydown=_hdown.GetBinContent(i)
-            dydown=y-ydown
-            #if y>0:
-            #    print dyup/y
-            #    print dydown/y
-            #print x1,x2
-            gr.SetPoint(i-1,x,y)
-            gr.SetPointError(i-1,x-x1,x2-x,dydown,dyup)
+            if not self.doDiff:
+                this_hp_ratio.GetHist().SetMinimum(0)
+                this_hp_ratio.GetHist().SetMaximum(2)
+                this_hp_ratio.GetHist().GetYaxis().SetTitle("Diff")
+            else:
+                this_hp_ratio.GetHist().GetYaxis().SetTitle("Ratio")
+            this_hp_ratio.GetHist().GetYaxis().SetLabelSize(0.1)
+            this_hp_ratio.GetHist().GetXaxis().SetLabelSize(0.1)
+            this_hp_ratio.GetHist().GetYaxis().SetNdivisions(505)
+            this_hp_ratio.GetHist().GetXaxis().SetTitleOffset(1)
+            this_hp_ratio.GetHist().GetXaxis().SetTitleSize(0.09)
+            this_hp_ratio.GetHist().GetXaxis().SetTitle(self.GetXName(this_x))
+            this_hp_ratio.GetHist().SetMarkerStyle(20)
+            this_hp_ratio.GetHist().SetMarkerSize(0.5)
 
 
-        return gr
+        self.FindMaximum()
+        self.SetLine1()
+    def FindMaximum(self):
+        ##--GetAndSetMaximum
+        self.ymax=-999999999999999999
+        self.ymin=99999999999999999
+        for i in range(self.Nobj):
+            this_cut=self.GetCut(i)
+            this_x=self.GetX(i)
+            this_proc=self.GetProc(i)
+            _ymax=self.HistColls[i][this_proc].GetHist().GetMaximum()
+            _ymin=self.HistColls[i][this_proc].GetHist().GetMinimum()
+            if _ymax>self.ymax : self.ymax=_ymax
+            if _ymin<self.ymin : self.ymin=_ymin
+
+    def Save(self,isRatio):
+        prefix="c"
+        if self.doNorm : 
+            prefix+="norm"
+        if self.logy:
+            if len(prefix)==1:
+                prefix+="logy"
+            else:
+                prefix+="_logy"
+        #"clogy_ratio"
+        if isRatio:
+            if len(prefix)==1:
+                if not self.doDiff:
+                    prefix+="ratio"
+                else:
+                    prefix+="diff"
+            else:
+                if not self.doDiff:
+                    prefix+="_ratio"
+                else:
+                    prefix+="_diff"
+
+
+        if self.dirname!="" : 
+            os.system("mkdir -p "+self.dirname+"/"+prefix)
+            fullpath=self.dirname+"/"+prefix+"/"+prefix+"__"+self.outname+".pdf"
+
+        else:
+            os.system("mkdir -p "+prefix)
+            fullpath=prefix+"/"+prefix+"__"+self.outname+".pdf"
+        self.canvas.SaveAs(fullpath)
+        
+if __name__ == "__main__":
+    title="Z->#mu#mu, e+ vs. e-, electron_ptwrtjet"
+    dirname="test"
+    outname="compare_test"
+    lumi=""
+    yearlist=[2017,2017]
+    analist=["EEMu_MuMuE_Method","EEMu_MuMuE_Method"]
+    cutlist=["MuMu__bPlus__electronPlus","MuMu__bPlus__electronMinus"]
+    xlist=["electron_ptwrtjet","electron_ptwrtjet"]
+    #xlist=["electron_p_jetrestframe","electron_p_jetrestframe"]
+    proclist=["DY_MiNNLO","DY_MiNNLO"]
+    labellist=["e+","e-"]
+    suffixlist=["/","/"]
+    colorlist=[2,4]
+    
+    #def __init__(self,title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist):
+    myplotter=PlotterComparison(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist)
+
+

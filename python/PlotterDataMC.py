@@ -1,3 +1,5 @@
+###-----
+###To Compare Data vs. MCStack 
 import ROOT
 from JHProcHist import JHProcHist
 from JHReader import Reader
