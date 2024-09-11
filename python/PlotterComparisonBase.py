@@ -205,8 +205,8 @@ if __name__ == "__main__":
 
     hp_muonMinus=HPs_muonMinus[proc]
     hp_muonPlus=HPs_muonPlus[proc]
-    hp_muonMinus.MakeStatNuiShapes()
-    hp_muonPlus.MakeStatNuiShapes()
+    #hp_muonMinus.MakeStatNuiShapes()
+    #hp_muonPlus.MakeStatNuiShapes()
     #def AddHP(self,hp,name,cutname,xname,procname,color):
 
     mytest.AddHP(hp_muonPlus,"muonPlus","DY->ee, b+","ptwrtjet","DY->ee, b-",4)

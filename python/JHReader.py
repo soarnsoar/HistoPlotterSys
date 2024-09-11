@@ -77,7 +77,7 @@ class Reader:
         raise ValueError("No Histogram in "+_cut_x)
     def MakeHistContainer(self,cut,x,rebin=[]):
         #print "<MakeHistContainer>"
-        start_time = time.time()
+        
         this_container={}
         #print "[MakeHistContainer] in JHReader.py, rebin=",rebin
         ##---Before Start, Make Empty Hist---##
@@ -98,9 +98,8 @@ class Reader:
                 if len(rebin)!=0 : this_nominal=this_nominal.Rebin(len(rebin)-1,this_nominal.GetName(),rebin)
                 if p_weight: this_nominal.Scale(p_weight)
 
-                this_h.SetHist(deepcopy(this_nominal))
-                #if not IsData :
-
+                this_h.SetHist(deepcopy(this_nominal))##set only nominal. No sys
+                
 
                 ##----NuisanceShape-----#
                 for nui in self.NuiConf:
@@ -127,10 +126,10 @@ class Reader:
             #print _color
             #this_container[p].SetLineColor(_color)
             #this_container[p].SetFillColor(_color)
+        #if not IsData :
+        #    this_h.MakeStatNuiShapes()
 
-        end_time = time.time()
-        execution_time = end_time - start_time
-        #print "time=",execution_time
+
 
         return this_container
     def ReadNominalShape(self,cut,x,proc):

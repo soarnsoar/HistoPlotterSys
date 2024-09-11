@@ -28,11 +28,9 @@ def GetDirName(path_effplot):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Plotter configuration')
-    #parser.add_argument('-d', dest='path_effdef', default="")
     parser.add_argument('-p', dest='path_effplot', default="")
     
-    args = parser.parse_args()
-    #path_effdef=args.path_effdef
+    args = parser.parse_args()    
     path_effplot=args.path_effplot
 
     ##-----Read effplot
@@ -40,6 +38,7 @@ if __name__ == '__main__':
 
     ##----Get dirname
     dirname=GetDirName(args.path_effplot)
+    dirname="plot/"+dirname
     for plotname in dict_effplot:
         #print "plotname=",plotname
         outname=plotname

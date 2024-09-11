@@ -16,8 +16,8 @@ def get_memory_usage():
 maindir=os.getenv("GIT_HistoPlotterSys")
 
 class JHEffPurityReader:
-    def __init__(self,effname,path_confdef,Year,AnalyzerName,suffix,rebin=[]):
-        
+    def __init__(self,effname,path_confdef,Year,AnalyzerName,suffix,procconfpath,rebin=[]):
+        self.procconfpath=procconfpath
         self.path_confdef=path_confdef
         ##cuts/xs= [deno,nume]
         self.suffix=suffix
@@ -43,7 +43,7 @@ class JHEffPurityReader:
         self.dict_eff=_conf[self.effname]
     def ReadData(self):
         
-        self.myreader=Reader(self.AnaName,self.Year,self.suffix)
+        self.myreader=Reader(self.AnaName,self.Year,self.suffix,self.procconfpath)
         ###----read components one by one----###
         for dn in ["nume","deno"]:
             

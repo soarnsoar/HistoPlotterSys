@@ -133,6 +133,7 @@ class PlotterDataMC(PlotterBase):
             self.hstack.Add(_h)
             self.legendlist[proc]=_h.Clone()
             i_mc+=1
+        #self.hp_mc.SetEffTool(self.myreader.EffToolConf)
         self.hp_mc.MakeStatNuiShapes(str(self.Year))
         self.grerr=self.hp_mc.GetErrorGraph()
         
@@ -221,7 +222,7 @@ class PlotterDataMC(PlotterBase):
         ncolomns=(nproc)/4 +1
         nrows=(nproc)/3+1
         x1=0.39
-        x2=min(0.34+0.2*ncolomns,1.)
+        x2=0.34+0.2*ncolomns
         y1=min(0.69, 0.89 - nrows*0.08) #0.69
         y2=0.89
         self.leg=ROOT.TLegend(x1,y1,x2,y2)

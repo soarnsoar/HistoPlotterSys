@@ -16,7 +16,7 @@ class PlotterEffPurity(PlotterBase):
         self.name=name
         self.Year=Year
         self.list_dicteff=list_dicteff
-        #self.conf_effdef=conf_effdef
+
         self.list_hpdict=[]
         self.effreaders=[]
         self.dirname=dirname
@@ -26,7 +26,6 @@ class PlotterEffPurity(PlotterBase):
         self.SetLumi()
         self.sqrtS=13
 
-        #self.ReadConfig()
         self.ReadObjects()
 
         self.MakeRatios()
@@ -76,17 +75,6 @@ class PlotterEffPurity(PlotterBase):
         for i,hpdict in enumerate(self.list_hpdict):
             this_color=self.list_dicteff[i]["color"]
             proc=self.list_dicteff[i]["proc"] ##sig or Data-bkg
-            #hpdict["eff"][proc].GetHist().SetLineColor(this_color)
-            #hpdict["eff"][proc].GetHist().SetMarkerColor(this_color)
-            #hpdict["eff"][proc].GetHist().SetFillColor(this_color)
-            #hpdict["eff"][proc].GetHist().SetMarkerStyle(20)
-
-            #hpdict["eff"][proc].GetErrorGraph().SetFillColorAlpha(this_color,0.3)#lpha(1,0.3)
-            #hpdict["eff"][proc].GetErrorGraph().SetFillColor(this_color)#lpha(1,0.3)
-            #hpdict["eff"][proc].GetErrorGraph().SetLineColorAlpha(this_color,0.3)
-            #hpdict["eff"][proc].GetErrorGraph().SetMarkerStyle(0)
-            #hpdict["eff"][proc].GetErrorGraph().SetFillColor(this_color)#lpha(1,0.3)
-
             this_h=hpdict["eff"][proc].GetHist()
             this_grerr=hpdict["eff"][proc].GetErrorGraph()
             
@@ -95,75 +83,50 @@ class PlotterEffPurity(PlotterBase):
             this_grerr.SetFillColorAlpha(this_color,0.3)
             if i==0:
                 this_h.Draw("e1")
-                #hpdict["eff"][proc].GetHist().Draw("e1")
-                #hpdict["eff"][proc].GetErrorGraph().Draw("e1")
+
             else:
-                #hpdict["eff"][proc].GetHist().Draw("e1sames")
-                #hpdict["eff"][proc].GetErrorGraph().Draw("e1sames")
+
                 this_h.Draw("e1sames")
-            #hpdict["eff"][proc].GetErrorGraph().Draw("e2sames")
+
             this_grerr.Draw("e2sames")
 
 
-        #self.h_sig.GetXaxis().SetTitle(self.xs[0])
-        #self.grerr_sig.GetXaxis().SetTitle(self.xs[0])
-
-        #self.h_data_sub_bkg.GetXaxis().SetTitle(self.xs[0])
-        #self.grerr_data_sub_bkg.GetXaxis().SetTitle(self.xs[0])
         self.leg.Draw()
     def MakeRatios(self):
         proc_deno=self.list_dicteff[0]["proc"]
-        #print '[Print all under self.list_hpdict[0]["eff"]'
-        #print sorted(self.list_hpdict[0]["eff"])
         hpdeno=self.list_hpdict[0]["eff"][proc_deno]
         self.list_hpratio=[]
         for i,hpdict in enumerate(self.list_hpdict):            
             this_proc=self.list_dicteff[i]["proc"]
-
             this_hp=hpdict["eff"][this_proc].Divide(hpdeno)
             self.list_hpratio.append(this_hp)
     def DrawObjectPad2(self):
         for i,hpratio in enumerate(self.list_hpratio):
-            #self.h_ratio.Draw("e1")
-            #self.line.Draw("sames")
-            #self.grerr_ratio.Draw("e2sames")
-            #self.h_ratio.GetXaxis().SetTitle(self.xs[0])
-            #self.grerr_ratio.GetXaxis().SetTitle(self.xs[0])
             this_color=self.list_dicteff[i]["color"]
-            #hpratio.GetHist().SetLineColor(this_color)
-            #hpratio.GetHist().SetMarkerColor(this_color)
-            #hpratio.GetErrorGraph().SetFillColorAlpha(this_color,0.3)#lpha(1,0.3)
             this_h=hpratio.GetHist()
             this_grerr=hpratio.GetErrorGraph()
             this_h.SetMarkerColor(this_color)
             this_h.SetLineColor(this_color)
             this_grerr.SetFillColorAlpha(this_color,0.3)
             if i==0:
-                #hpratio.GetHist().Draw("e1")
                 this_h.Draw("e1")
             else:
-                #hpratio.GetHist().Draw("e1sames")
                 this_h.Draw("e1sames")
             
-            #hpratio.GetErrorGraph().Draw("e2sames")
             this_grerr.Draw("e2sames")
             this_h.SetMaximum(1.5)
             this_h.SetMinimum(0.5)
 
 
     def SetMaximum(self):
-        #Nbins=self.h_sig.GetNbinsX()
         this_proc=self.list_dicteff[0]["proc"]
         _h=self.list_hpdict[0]["eff"][this_proc].GetHist()
         Nbins=_h.GetNbinsX()
-        #xmin=self.h_sig.GetBinLowEdge(1)
         xmin=_h.GetBinLowEdge(1)
-        #xmax=self.h_sig.GetBinLowEdge(Nbins+1)
         xmax=_h.GetBinLowEdge(Nbins+1)
         self.line=ROOT.TLine(xmin,1,xmax,1)
         self.line.SetLineStyle(2)
-        #self.ymax=1.
-        #self.ymin=0.
+
         if self.logy:
             if self.ymax<=0. : return
             for i,hp in enumerate(self.list_hpdict):
@@ -196,19 +159,17 @@ class PlotterEffPurity(PlotterBase):
         self.leg.SetShadowColor(0)
         self.leg.SetNColumns(ncolomns)
         self.leg.SetLineColor(0)
-        for i,hpdict in enumerate(reversed(self.list_hpdict)):
+        #for i,hpdict in enumerate(reversed(self.list_hpdict)):
+        #for i,hpdict in enumerate(self.list_hpdict):
+        i=len(self.list_hpdict)
+        for hpdict in reversed(self.list_hpdict):
+            i=i-1
             this_effname=self.list_dicteff[i]["effname"]
             this_proc=self.list_dicteff[i]["proc"]
             this_h=hpdict["eff"][this_proc].GetHist()
             self.leg.AddEntry(this_h,this_effname)
 
 
-    #def ReadConfigs(self):
-
-        
-    #    for dicteff in self.list_dicteff:
-    #        self.list_EffToRead.append(self.dicteff["effname"])
-    #    self.conf_effdef=
     def ReadObjects(self):
         for i,dicteff in enumerate(self.list_dicteff):
             path_confdef=dicteff["conf"]
@@ -218,7 +179,8 @@ class PlotterEffPurity(PlotterBase):
             suffix="/"
             if "suffix" in dicteff:
                 suffix=dicteff["suffix"]
-            self.effreaders.append(JHEffPurityReader(effname,path_confdef,year,ana,suffix))
+            procconfpath=dicteff["procconfpath"]
+            self.effreaders.append(JHEffPurityReader(effname,path_confdef,year,ana,suffix,procconfpath))
             self.list_hpdict.append(self.effreaders[i].GetEffHP())
 
 
