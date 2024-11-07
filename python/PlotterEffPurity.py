@@ -1,4 +1,5 @@
 import ROOT
+ROOT.gROOT.SetBatch(True)
 from JHProcHist import JHProcHist
 from JHReader import Reader
 from JHPlotter import PlotterBase
@@ -12,11 +13,12 @@ maindir=os.getenv("GIT_HistoPlotterSys")
 
 class PlotterEffPurity(PlotterBase):
     ##---for one plot file
-    def __init__(self,Year,name,list_dicteff,dirname,outname):
+    def __init__(self,Year,name,list_dicteff,dirname,outname,rebin=[]):
+        print "<PlotterEffPurity> Year=",Year
         self.name=name
         self.Year=Year
         self.list_dicteff=list_dicteff
-
+        self.rebin=rebin
         self.list_hpdict=[]
         self.effreaders=[]
         self.dirname=dirname
@@ -34,7 +36,7 @@ class PlotterEffPurity(PlotterBase):
         ##--
         self.ymax=1
         self.ymin=0
-
+        self.xname=""
 
     def RunDraw(self):
         ##---not logy
@@ -64,13 +66,13 @@ class PlotterEffPurity(PlotterBase):
         elif str(self.Year)=="2018":
             self.lumi=59.8
         else:
-            self.lumi=""
+            self.lumi=self.Year
         self.lumi=str(self.lumi)
         if self.lumi!="":
             self.lumi+=" fb^{-1}"
 
             
-    def DrawObjectPad1(self):
+    def DrawObjectPad1(self,rm_xtitle=0):
 
         for i,hpdict in enumerate(self.list_hpdict):
             this_color=self.list_dicteff[i]["color"]
@@ -81,6 +83,11 @@ class PlotterEffPurity(PlotterBase):
             this_h.SetMarkerColor(this_color)
             this_h.SetLineColor(this_color)
             this_grerr.SetFillColorAlpha(this_color,0.3)
+            this_h.GetXaxis().SetTitle(self.xname)
+            if rm_xtitle: 
+                this_h.GetXaxis().SetTitle("")
+                this_h.GetXaxis().SetLabelSize(0)
+            this_h.SetTitle(self.name)
             if i==0:
                 this_h.Draw("e1")
 
@@ -108,6 +115,14 @@ class PlotterEffPurity(PlotterBase):
             this_h.SetMarkerColor(this_color)
             this_h.SetLineColor(this_color)
             this_grerr.SetFillColorAlpha(this_color,0.3)
+            this_h.GetXaxis().SetTitle(self.xname)
+            this_h.GetXaxis().SetTitleSize(0.1)
+            this_h.GetYaxis().SetNdivisions(505)
+
+            this_h.GetXaxis().SetLabelSize(0.1)
+            this_h.GetYaxis().SetLabelSize(0.1)
+
+            this_h.SetTitle(self.name)
             if i==0:
                 this_h.Draw("e1")
             else:
@@ -165,22 +180,28 @@ class PlotterEffPurity(PlotterBase):
         for hpdict in reversed(self.list_hpdict):
             i=i-1
             this_effname=self.list_dicteff[i]["effname"]
+            this_efflabel=self.list_dicteff[i]["label"]
             this_proc=self.list_dicteff[i]["proc"]
             this_h=hpdict["eff"][this_proc].GetHist()
-            self.leg.AddEntry(this_h,this_effname)
+            self.leg.AddEntry(this_h,this_efflabel)
 
 
     def ReadObjects(self):
         for i,dicteff in enumerate(self.list_dicteff):
-            path_confdef=dicteff["conf"]
+            print "--READ EFF/PROB"
+
+            path_effdef=dicteff["effdefpath"]
             effname=dicteff["effname"]
-            year=dicteff["year"]
+            print effname
+            year=dicteff["year"].replace("__YEAR__",self.Year)
+            print "YEAR->",year
             ana=dicteff["analyzer"]
             suffix="/"
             if "suffix" in dicteff:
                 suffix=dicteff["suffix"]
-            procconfpath=dicteff["procconfpath"]
-            self.effreaders.append(JHEffPurityReader(effname,path_confdef,year,ana,suffix,procconfpath))
+            procdefpath=dicteff["procdefpath"]
+            ##---Execute EffPurityReader and add it to self.effreaders
+            self.effreaders.append(JHEffPurityReader(effname,path_effdef,year,ana,suffix,procdefpath,self.rebin))
             self.list_hpdict.append(self.effreaders[i].GetEffHP())
 
 

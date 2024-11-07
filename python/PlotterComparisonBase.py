@@ -34,11 +34,15 @@ class PlotterComparisonBase(PlotterBase):
         
         self.sqrtS=13
         self.list_HP=[]
-        self.rmax=1.5
-        self.rmin=0.5
+        self.rmax=2.0
+        self.rmin=0.0
 
         self.doNorm=0
         self.doDiff=0
+        self.xtitle=""
+
+    def SetTitleX(self,_xtitle):
+        self.xtitle=_xtitle
     def AddHP(self,hp,name,cutname,xname,procname,color):
         hp.GetHist().SetMarkerColor(color)
         hp.GetHist().SetLineColor(color)
@@ -55,20 +59,53 @@ class PlotterComparisonBase(PlotterBase):
         )
         
 
+    def SetMinMax(self):
+        ##--GetAndSetMaximum
+        self.ymax=-999999999999999999
+        self.ymin=99999999999999999
+        for i,hpdict in enumerate(self.list_HP):
+            this_h=hpdict["hp"].GetHist()
+            _ymax=this_h.GetMaximum()
+            _ymin=this_h.GetMinimum()
+            if _ymax>self.ymax : self.ymax=_ymax
+            if _ymin<self.ymin : self.ymin=_ymin
+
+    def SetMaximum(self):
+        if self.logy:
+            if self.ymax<=0. : return
+            for i,hpdict in enumerate(self.list_HP):
+                h=hpdict["hp"].GetHist()
+                h.SetMaximum(self.ymax*50)
+                if self.ymin > 0:
+                    _ymin=self.ymin/50
+                    h.SetMinimum(_ymin)
+                    h.SetMaximum(self.ymax*self.ymax/_ymin)
+                else:
+                    _ymin=min(self.ymax/100000.,0.1)
+                    h.SetMinimum(_ymin)
+                    h.SetMaximum(self.ymax*self.ymax/_ymin)
+        else:
+            for i,hpdict in enumerate(self.list_HP):
+                h=hpdict["hp"].GetHist()
+                h.SetMaximum(self.ymax*2)
+                h.SetMinimum(0.)
+
+
     def RunDraw(self):
         ##--
+        self.SetMinMax()
         self.MakeRatios()
         self.SetLegend()
         ##---not logy
         self.logy=0
-        #self.SetMaximum()
+        self.SetMaximum()
         self.Draw(0) ## argument = isratio
         self.Save(0)
         self.Draw(1)
         self.Save(1)
         ##---set logy
         self.logy=1
-        #self.SetMaximum()
+        self.SetMaximum()
         self.Draw(0)
         self.Save(0)
         self.Draw(1)
@@ -89,10 +126,10 @@ class PlotterComparisonBase(PlotterBase):
         else:
             print "Year must be 2016/7/8"
             print "self.Year","=",self.Year
-            self.lumi=""
+            self.lumi=self.Year
         self.lumi=str(self.lumi)
         if self.lumi!="": self.lumi+=" fb^{-1}"
-    def DrawObjectPad1(self):
+    def DrawObjectPad1(self,rm_xtitle=0):
         for i,hpdict in enumerate(self.list_HP):
             this_h=hpdict["hp"].GetHist()
             this_grerr=hpdict["hp"].GetErrorGraph()
@@ -101,6 +138,16 @@ class PlotterComparisonBase(PlotterBase):
             else:
                 this_h.Draw("e1sames")
             this_grerr.Draw("e2sames")
+            if rm_xtitle:
+                this_h.GetXaxis().SetTitle("")
+                this_h.GetXaxis().SetLabelSize(0)
+            else:
+                if self.xtitle=="":
+                    this_h.GetXaxis().SetTitle(hpdict["xname"])
+                else:
+                    this_h.GetXaxis().SetTitle(self.xtitle)
+                this_h.GetXaxis().SetLabelSize(0.03)
+
         self.leg.Draw()
         
     def DrawObjectPad2(self):
@@ -114,6 +161,8 @@ class PlotterComparisonBase(PlotterBase):
             hpratio.GetErrorGraph().Draw("e2sames")
             hpratio.GetHist().SetMaximum(self.rmax)
             hpratio.GetHist().SetMinimum(self.rmin)
+            hpratio.GetHist().GetYaxis().SetLabelSize(0.1)
+            hpratio.GetHist().GetXaxis().SetLabelSize(0.1)
 
     def MakeRatios(self):
         name_deno=self.list_HP[0]["name"]

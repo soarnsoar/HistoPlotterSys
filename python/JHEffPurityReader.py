@@ -54,10 +54,10 @@ class JHEffPurityReader:
         self.MakeEfficiencyObjects()
         self.myreader.CloseFile()
         ##---remove objects of each subprocess
-        for info in sorted(self.dict_effobj):
-            for proc in sorted(self.dict_effobj[info]):
-                if proc in ["Data","sig","bkg","Data-bkg"]: continue
-                #del self.dict_effobj[info][proc]
+        #for info in sorted(self.dict_effobj):
+        #    for proc in sorted(self.dict_effobj[info]):
+        #        if proc in ["Data","sig","bkg","Data-bkg"]: continue
+        #        #del self.dict_effobj[info][proc]
         #for info in sorted(self.dict_effobj):
         #    for proc in sorted(self.dict_effobj[info]):
         #        print proc
@@ -67,6 +67,7 @@ class JHEffPurityReader:
         cuts=self.dict_eff[dn]["cut"]
         x=self.dict_eff[dn]["x"]
         for i,cut in enumerate(cuts):
+            print cut,x
             this_hp_coll=self.myreader.MakeHistContainer(cut,x,self.rebin)            
             ##---Make MC stat nuisances shapes---##
             for proc in self.myreader.ProcConf:
@@ -81,35 +82,58 @@ class JHEffPurityReader:
                 for proc in self.myreader.ProcConf:            
                     self.dict_effobj[dn][proc]=self.dict_effobj[dn][proc].Combine(this_hp_coll[proc],cut,x,proc)
             #del this_hp_coll
+    def GetEmptyHist(self,dn):
+        for _p in sorted(self.dict_effobj[dn]):
+            _h=self.dict_effobj[dn][_p].GetHist().Clone()
+            _h.Reset()
+            return _h
     def MakeCombinedObject(self,dn):
-
+        HasData=False
         HistColl=self.dict_effobj[dn]
-
+        if "Data" in HistColl: HasData=True
+        
+        
         cut="__".join(self.dict_eff[dn]["cut"])
         x=self.dict_eff[dn]["x"]
-                
+        
         hp_data=JHProcHist(cut,x,"Data"+dn)
-        hp_data.Clone(HistColl["Data"])
+        if HasData:
+            hp_data.Clone(HistColl["Data"])
+        else:
+            hp_data.SetHist(self.GetEmptyHist(dn))
         hp_sig=JHProcHist(cut,x,"sig")
         hp_bkg=JHProcHist(cut,x,"bkg")
         ##as data has leptonscale variations, propagate them to mc sys.
         ##e.g)mc_up_new = mc_up_old/data_up*data_nom
         ##then data_nom/mc_up_new = data_nom/mc_up_old*data_up/data_nom = data_up/mc_up //good
 
-        dosysnorm=True
-        if HistColl["Data"].GetHist().Integral()==0:dosysnorm=False
-
+        dosysnorm=False
+        if HasData:
+            if HistColl["Data"].GetHist().Integral()!=0:dosysnorm=True
+        
         ## divide mc by data_var/data
+        
+
         hp_data_nosys=JHProcHist(cut,x,"data_nosys")
-        hp_data_nosys.SetHist(HistColl["Data"].GetHist().Clone()) ## add only nominal
+        if HasData:
+            hp_data_nosys.SetHist(HistColl["Data"].GetHist().Clone()) ## add only nominal
+        else:
+            hp_data_nosys.SetHist(self.GetEmptyHist(dn))
         hp_norm_data_sys=hp_data.Divide(hp_data_nosys)
         ##---Need to make each binerror to zero for self.hp_norm_data_sys(it disturbs mcstat variation)
         hp_norm_data_sys.MakeBinErrorZero()
+        
         ##now divide all mc with self.hp_norm_data_sys
         i_sig=0
         i_bkg=0
         siglist=self.dict_eff["sig"]
         bkglist=self.dict_eff["bkg"]
+        if len(siglist)==0:
+            hp_sig=JHProcHist(cut,x,"sig")
+            hp_sig.SetHist(self.GetEmptyHist(dn))
+        if len(bkglist)==0:
+            hp_bkg=JHProcHist(cut,x,"bkg")
+            hp_bkg.SetHist(self.GetEmptyHist(dn))
         for i,proc in enumerate(self.myreader.ProcConf):
             _h=HistColl[proc].GetHist().Clone()
             if proc=="Data" :
@@ -118,6 +142,8 @@ class JHEffPurityReader:
             if dosysnorm : HistColl[proc]=HistColl[proc].Divide(hp_norm_data_sys)
             
             if proc in siglist:
+                #
+                print "sig->",proc
                 if i_sig==0:
                     hp_sig.Clone(HistColl[proc])
                 else:
@@ -150,12 +176,21 @@ class JHEffPurityReader:
         ##HP of efficiency
         self.dict_effobj["eff"]={}
         self.dict_effobj["eff"]["Data-bkg"]=self.dict_effobj["nume"]["Data-bkg"].Divide(self.dict_effobj["deno"]["Data-bkg"])
+        ##--data-bkg, include data stat to total errbar
+        self.dict_effobj["eff"]["Data-bkg"].MakeStatNuiShapes()
+
         self.dict_effobj["eff"]["sig"]=self.dict_effobj["nume"]["sig"].Divide(self.dict_effobj["deno"]["sig"])
 
+        self.dict_effobj["SF"]=self.dict_effobj["eff"]["Data-bkg"].Divide(self.dict_effobj["eff"]["sig"])
+        
 
     def __del__(self):
         for info in sorted(self.dict_effobj):
+            if info=="SF":
+                del self.dict_effobj["SF"]
+                continue
             for proc in sorted(self.dict_effobj[info]):
+                #print "proc=",proc
                 #if proc in ["Data","sig","bkg","Data-bkg"]: continue
                 del self.dict_effobj[info][proc]
 

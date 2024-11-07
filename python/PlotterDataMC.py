@@ -1,6 +1,7 @@
 ###-----
 ###To Compare Data vs. MCStack 
 import ROOT
+ROOT.gROOT.SetBatch(True)
 from JHProcHist import JHProcHist
 from JHReader import Reader
 from JHPlotter import PlotterBase
@@ -13,26 +14,36 @@ maindir=os.getenv("GIT_HistoPlotterSys")
 
 class PlotterDataMC(PlotterBase):
     def __init__(self,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix=""):
+        print "---init <PlotterDataMC>"
         self.suffix=suffix
         self.dirname=dirname
         self.outname=outname
         self.procpath=procpath
         Year=str(Year)
         name="__".join([Year,AnalyzerName,cut,x])
+        print "--init JHPlotter(parent-class)--"
         PlotterBase.__init__(self,name)
         self.Year=Year
         self.AnaName=AnalyzerName
         self.cut=cut
         self.x=x
+        print "---SetLumi---"
         self.SetLumi()
         self.sqrtS=13
-        
+        print "---ReadData---"
         self.ReadData()
         ##--
+
         self.legendlist=OrderedDict()
         ##--
+        print "---MakeCombinedObject---"
         self.MakeCombinedObject()
+        self.blind=False
+
+    def SetBlind(self,blind):
+        self.blind=blind
     def RunDraw(self):
+        print "---RunDraw"
         ##---not logy
         self.logy=0
         self.SetMaximum()
@@ -65,24 +76,40 @@ class PlotterDataMC(PlotterBase):
             1/0
         self.lumi=str(self.lumi)
         self.lumi+=" fb^{-1}"
-    def DrawObjectPad1(self):
+    def DrawObjectPad1(self,rm_xtitle=0):
         
         self.hstack.Draw("hist")
         #self.hmc.Draw("sames")
-        self.hdata.Draw("e1sames")
+        if not self.blind : self.hdata.Draw("e1sames")
         self.grerr.Draw("e2sames")
         self.leg.Draw()
+        if rm_xtitle:
+            for this_h in [self.hstack,self.grerr,self.hdata]:
+                this_h.GetXaxis().SetTitle("")
+                this_h.GetXaxis().SetLabelSize(0)
         self.hstack.GetXaxis().SetTitle(self.x)
         self.hdata.GetXaxis().SetTitle(self.x)
         self.grerr.GetXaxis().SetTitle(self.x)
         #self.HistColl["TT"].GetHist().Draw()
+
     def DrawObjectPad2(self):
+        if self.blind: self.SetHistToOne(self.hratio)
         self.hratio.Draw("e1")
         self.line.Draw("sames")
         self.grerr_ratio.Draw("e2sames")
+        
+
         self.hratio.GetXaxis().SetTitle(self.x)
         self.grerr_ratio.GetXaxis().SetTitle(self.x)
         #self.HistColl["TT"].GetHist().Draw()
+
+    def SetHistToOne(self,_h):
+        Nbins=_h.GetNbinsX()+2
+        for i in range(1,Nbins):
+            _h.SetBinContent(i,1)
+            _h.SetBinError(i,0.0000000001)
+
+
     def MakeCombinedObject(self):
         self.hstack=ROOT.THStack()
         self.hp_mc=JHProcHist(self.cut,self.x,"mc")
@@ -153,8 +180,8 @@ class PlotterDataMC(PlotterBase):
             #print "self.hmc_nosys.GetBinError(i)=",self.hmc_nosys.GetBinError(i)
         self.hp_mc_nosys=JHProcHist(self.cut,self.x,"mc_nosys")        
         self.hp_mc_nosys.SetHist(self.hmc_nosys)
-
-        self.hp_ratio_sys=self.hp_mc.Divide(self.hp_mc_nosys)
+        #cut="",x="",proc=""
+        self.hp_ratio_sys=self.hp_mc.Divide(self.hp_mc_nosys,"","","ratio data/mc")
         #self.hp_ratio_sys.SetEffTool(self.myreader.EffToolConf)
         self.grerr_ratio=self.hp_ratio_sys.GetErrorGraph()
         self.grerr_ratio.SetFillColorAlpha(1,0.3)

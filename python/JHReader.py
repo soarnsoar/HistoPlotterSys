@@ -5,6 +5,7 @@ from copy import deepcopy
 from JHProcHist import JHProcHist
 from OpenDictFile import OpenDictFile
 from GetBinsX import GetBinsX 
+from array import array
 maindir=os.getenv("GIT_HistoPlotterSys")
 ##
 import time
@@ -27,8 +28,10 @@ class Reader:
         #else:
         #    self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/combine.root"
         self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/combine.root"
+        #print self.inputpath
     def ReadInput(self):
         self.tfile=ROOT.TFile.Open(self.inputpath)
+        print self.inputpath
     def ReadConf(self):
         self.ReadProcConf()
         self.ReadNuiConf()
@@ -65,8 +68,11 @@ class Reader:
     
     def GetEmptyHist(self,cut,x):
         _cut_x=cut+"/"+x
+        print _cut_x
         for _prockey in self.tfile.Get(_cut_x).GetListOfKeys():
             _classname=_prockey.GetClassName()
+            #print "_prockey.GetName()=",_prockey.GetName()
+            #print "_classname=",_classname
             if not "TH" in _classname: continue
             _proc=_prockey.GetName()
             _path=_cut_x+"/"+_proc
@@ -77,12 +83,13 @@ class Reader:
         raise ValueError("No Histogram in "+_cut_x)
     def MakeHistContainer(self,cut,x,rebin=[]):
         #print "<MakeHistContainer>"
-        
+        rebin=array('d',rebin)
         this_container={}
         #print "[MakeHistContainer] in JHReader.py, rebin=",rebin
         ##---Before Start, Make Empty Hist---##
         self._h_empty=self.GetEmptyHist(cut,x)
-        if len(rebin)!=0 : self._h_empty=self._h_empty.Rebin(len(rebin)-1,self._h_empty.GetName(),rebin)
+        if len(rebin)!=0 : 
+            self._h_empty=self._h_empty.Rebin(len(rebin)-1,self._h_empty.GetName(),rebin)
         for p in self.ProcConf:
             subplist=self.ProcConf[p]["procs"]
             IsData=self.CheckIsData(p)

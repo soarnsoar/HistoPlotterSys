@@ -14,9 +14,10 @@ from OpenDictFile import OpenDictFile
 
 
 
-def Run(Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix):
+def Run(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix):
     print "suffix",suffix
     myplotter=PlotterDataMC(Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix)
+    myplotter.SetBlind(blind)
     myplotter.RunDraw()
     del myplotter
 
@@ -28,12 +29,15 @@ if __name__ == '__main__':
     parser.add_argument('-d', dest='directory', default="")
     parser.add_argument('-s', dest='suffix', default="")
     parser.add_argument('-p', dest='procpath', default="")    
+    parser.add_argument('-b', dest='blind', action="store_true",default=False)    
     args = parser.parse_args()
     AnalyzerName=args.AnalyzerName
     year=args.year
     directory=args.directory
     suffix=args.suffix
     procpath=args.procpath
+    blind=args.blind
+
 
     cut_and_x_path=maindir+"/config/"+AnalyzerName+"/"+year+"/"+suffix+"/cut_and_x.py"
     cut_and_x=OpenDictFile(cut_and_x_path)
@@ -48,7 +52,7 @@ if __name__ == '__main__':
             print cut,x
             thisdir=directory+"/"+cut
             name=x
-            Run(year,AnalyzerName,cut,x,procpath,thisdir,name,suffix)
+            Run(blind,year,AnalyzerName,cut,x,procpath,thisdir,name,suffix)
         icut+=1
 
 

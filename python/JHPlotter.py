@@ -58,7 +58,7 @@ class PlotterBase:
 
         if isRatio:
             self.DrawPad1()
-            self.DrawObjectPad1()
+            self.DrawObjectPad1(1)
             self.DrawPad2()
             self.DrawObjectPad2()
         else:
@@ -89,7 +89,7 @@ class PlotterBase:
         self.pad2.SetGridx()
         self.pad2.Draw()
         self.pad2.cd()        
-    def DrawObjectPad1(self):
+    def DrawObjectPad1(self,rm_xtitle=0):
         pass
     def DrawObjectPad2(self):
         pass

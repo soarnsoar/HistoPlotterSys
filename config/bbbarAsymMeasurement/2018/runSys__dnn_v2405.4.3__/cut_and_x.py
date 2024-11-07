@@ -1,0 +1,5 @@
+{
+    "FinalCut": {
+        "MeasuredCharge_Total": {}
+    }
+}
