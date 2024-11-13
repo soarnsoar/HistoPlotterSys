@@ -259,7 +259,7 @@ class JHProcHist:## Hists Container of a proc
             dytotal_plus=sqrt(dy2sum_plus)
             dytotal_minus=sqrt(dy2sum_minus)
             self.gr_sys.SetPoint(ibin-1,x,ynom)
-            self.gr_sys.SetPointError(ibin-1,x-x1,x2-x,dytotal_plus,dytotal_minus)
+            self.gr_sys.SetPointError(ibin-1,x-x1,x2-x,dytotal_minus,dytotal_plus)
         ##----Print 
         print "----[Plus Error Rank]---"
         self.PrintSysRank(dict_err_plus,integral_total)

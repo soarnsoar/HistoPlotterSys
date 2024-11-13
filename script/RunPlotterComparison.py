@@ -52,6 +52,7 @@ def GetHPByInfo(thisDrawInfo,rebin):
         this_hp=this_HistColl[procname]
         this_hp.Scale(scale)
         ret=ret.Combine(this_hp,cut,x,label)
+    this_norm=1
     if doNorm:
         this_norm=ret.GetHist().Integral()
         if this_norm>0:
