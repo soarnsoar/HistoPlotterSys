@@ -20,6 +20,7 @@
     "ll__GoodBJet": {
         "bjet_pt": {}, 
         "true_bjet_pt": {}, 
+        "bjet_score": {}, 
         "Z_M": {}, 
         "bjet_eta": {}
     }, 
@@ -44,6 +45,7 @@
     "mm__GoodBJet": {
         "bjet_pt": {}, 
         "true_bjet_pt": {}, 
+        "bjet_score": {}, 
         "Z_M": {}, 
         "bjet_eta": {}
     }, 
@@ -120,6 +122,7 @@
     "ee__BadBJet": {
         "bjet_pt": {}, 
         "true_bjet_pt": {}, 
+        "bjet_score": {}, 
         "Z_M": {}, 
         "bjet_eta": {}
     }, 
@@ -170,10 +173,27 @@
     "ee__GoodBJet": {
         "bjet_pt": {}, 
         "true_bjet_pt": {}, 
+        "bjet_score": {}, 
         "Z_M": {}, 
         "bjet_eta": {}
     }, 
     "ee__HasSLTElectronHigh": {
+        "electronmin_eta": {}, 
+        "electronmin_score": {}, 
+        "bjet_pt": {}, 
+        "electronmin_ptwrtjet_zoom": {}, 
+        "true_bjet_pt": {}, 
+        "electronmax_ptwrtjet_zoom": {}, 
+        "electronmax_pt": {}, 
+        "electronmin_ptAtJetRest_zoom": {}, 
+        "bjet_eta": {}, 
+        "electronmin_pt": {}, 
+        "electronmax_eta": {}, 
+        "electronmax_ptAtJetRest_zoom": {}, 
+        "Z_M": {}, 
+        "electronmax_score": {}
+    }, 
+    "ee__HasSLTElectronLow": {
         "electronmin_eta": {}, 
         "electronmin_score": {}, 
         "bjet_pt": {}, 
@@ -256,6 +276,7 @@
     "ll__BadBJet": {
         "bjet_pt": {}, 
         "true_bjet_pt": {}, 
+        "bjet_score": {}, 
         "Z_M": {}, 
         "bjet_eta": {}
     }, 
@@ -290,6 +311,22 @@
         "muonmin_eta": {}, 
         "Z_M": {}, 
         "muonmin_score": {}
+    }, 
+    "ll__HasSLTElectronLow": {
+        "electronmin_eta": {}, 
+        "electronmin_score": {}, 
+        "bjet_pt": {}, 
+        "electronmin_ptwrtjet_zoom": {}, 
+        "true_bjet_pt": {}, 
+        "electronmax_ptwrtjet_zoom": {}, 
+        "electronmax_pt": {}, 
+        "electronmin_ptAtJetRest_zoom": {}, 
+        "bjet_eta": {}, 
+        "electronmin_pt": {}, 
+        "electronmax_eta": {}, 
+        "electronmax_ptAtJetRest_zoom": {}, 
+        "Z_M": {}, 
+        "electronmax_score": {}
     }, 
     "ll__HasSLTMuonHigh": {
         "true_bjet_pt": {}, 
@@ -339,41 +376,10 @@
         "Z_M": {}, 
         "muonmin_score": {}
     }, 
-    "ee__HasSLTElectronLow": {
-        "electronmin_eta": {}, 
-        "electronmin_score": {}, 
-        "bjet_pt": {}, 
-        "electronmin_ptwrtjet_zoom": {}, 
-        "true_bjet_pt": {}, 
-        "electronmax_ptwrtjet_zoom": {}, 
-        "electronmax_pt": {}, 
-        "electronmin_ptAtJetRest_zoom": {}, 
-        "bjet_eta": {}, 
-        "electronmin_pt": {}, 
-        "electronmax_eta": {}, 
-        "electronmax_ptAtJetRest_zoom": {}, 
-        "Z_M": {}, 
-        "electronmax_score": {}
-    }, 
-    "ll__HasSLTElectronLow": {
-        "electronmin_eta": {}, 
-        "electronmin_score": {}, 
-        "bjet_pt": {}, 
-        "electronmin_ptwrtjet_zoom": {}, 
-        "true_bjet_pt": {}, 
-        "electronmax_ptwrtjet_zoom": {}, 
-        "electronmax_pt": {}, 
-        "electronmin_ptAtJetRest_zoom": {}, 
-        "bjet_eta": {}, 
-        "electronmin_pt": {}, 
-        "electronmax_eta": {}, 
-        "electronmax_ptAtJetRest_zoom": {}, 
-        "Z_M": {}, 
-        "electronmax_score": {}
-    }, 
     "mm__BadBJet": {
         "bjet_pt": {}, 
         "true_bjet_pt": {}, 
+        "bjet_score": {}, 
         "Z_M": {}, 
         "bjet_eta": {}
     }, 
@@ -408,6 +414,22 @@
         "muonmin_eta": {}, 
         "Z_M": {}, 
         "muonmin_score": {}
+    }, 
+    "mm__HasSLTElectronLow": {
+        "electronmin_eta": {}, 
+        "electronmin_score": {}, 
+        "bjet_pt": {}, 
+        "electronmin_ptwrtjet_zoom": {}, 
+        "true_bjet_pt": {}, 
+        "electronmax_ptwrtjet_zoom": {}, 
+        "electronmax_pt": {}, 
+        "electronmin_ptAtJetRest_zoom": {}, 
+        "bjet_eta": {}, 
+        "electronmin_pt": {}, 
+        "electronmax_eta": {}, 
+        "electronmax_ptAtJetRest_zoom": {}, 
+        "Z_M": {}, 
+        "electronmax_score": {}
     }, 
     "mm__HasSLTMuonHigh": {
         "true_bjet_pt": {}, 
@@ -456,21 +478,5 @@
         "muonmin_eta": {}, 
         "Z_M": {}, 
         "muonmin_score": {}
-    }, 
-    "mm__HasSLTElectronLow": {
-        "electronmin_eta": {}, 
-        "electronmin_score": {}, 
-        "bjet_pt": {}, 
-        "electronmin_ptwrtjet_zoom": {}, 
-        "true_bjet_pt": {}, 
-        "electronmax_ptwrtjet_zoom": {}, 
-        "electronmax_pt": {}, 
-        "electronmin_ptAtJetRest_zoom": {}, 
-        "bjet_eta": {}, 
-        "electronmin_pt": {}, 
-        "electronmax_eta": {}, 
-        "electronmax_ptAtJetRest_zoom": {}, 
-        "Z_M": {}, 
-        "electronmax_score": {}
     }
 }

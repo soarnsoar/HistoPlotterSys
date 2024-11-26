@@ -11,12 +11,13 @@ maindir=os.getenv("GIT_HistoPlotterSys")
 import time
 ##
 class Reader:
-    def __init__(self,AnaName,YEAR,suffix,ProcConfPath):
+    def __init__(self,AnaName,YEAR,suffix,ProcConfPath,ListNormSysPath=[]):
         self.Verbose=0
         self.suffix=suffix
         self.AnaName=AnaName
         self.YEAR=str(YEAR)
         self.ProcConfPath=ProcConfPath
+        self.ListNormSysPath=ListNormSysPath
         self.SetPath()
         self.ReadInput()
         self.ReadConf()
@@ -35,6 +36,7 @@ class Reader:
     def ReadConf(self):
         self.ReadProcConf()
         self.ReadNuiConf()
+        self.ReadNormSysConfs()
     def ReadProcConf(self):
         _path=self.GetProcConfPath()
         print "--input:",_path
@@ -58,7 +60,13 @@ class Reader:
         #_path=self.GetEffToolConfPath()
         #print "--effnui:",_path
         #self.EffToolConf=OpenDictFile(_path)
-
+    def ReadNormSysConfs(self):
+        self.dict_NormSys={}
+        for NormSysPath in self.ListNormSysPath:
+            this_dict=OpenDictFile(NormSysPath)
+            self.dict_NormSys.update(this_dict)
+        print "[self.dict_NormSys]"
+        print self.dict_NormSys
     def GetNuiConfPath(self):
         return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/nuisances.py"
     #def GetEffToolConfPath(self):
@@ -120,6 +128,26 @@ class Reader:
                             this_h.SetHist(deepcopy(this_sys),nui,idx1,idx2)
                     #this_h.MakeStatNuiShapes()
                     #this_h.SetEffTool(self.EffToolConf)
+                ##---Norm Variation Shapes---##
+                for normsys in self.dict_NormSys:
+                    if IsData:continue
+                    ApplyThisNormSys=False
+                    this_sample_keys=self.dict_NormSys[normsys]["sample_keys"]
+                    for this_sample_key in this_sample_keys:                        
+                        if this_sample_key in subp:
+                            ApplyThisNormSys=True
+                            break
+                    if not ApplyThisNormSys : continue
+                    
+                    this_exceptions=self.dict_NormSys[normsys]["exception"]
+                    if subp in this_exceptions:continue ## if this subp is in exception
+                    this_nuisancename=self.dict_NormSys[normsys]["nuisanceName"]
+                    this_scaleUp=self.dict_NormSys[normsys]["up"]
+                    this_scaleDown=self.dict_NormSys[normsys]["down"]
+                    #    def AddNormSys(self,sys,scaleUp,scaleDown):
+                    this_h.AddNormSys(this_nuisancename,this_scaleUp,this_scaleDown)
+                    print "subp=",subp,"->Add Norm Sys->",this_nuisancename
+
                 ##--Store JHProcHist of this subprocess--##
                 this_container[subp]=this_h
 

@@ -39,6 +39,15 @@ class JHProcHist:## Hists Container of a proc
     def GetCut(self):
         return self.cut
 
+    def AddNormSys(self,sys,scaleUp,scaleDown):
+        hup=deepcopy(self.GetHist())
+        hup.Scale(scaleUp)
+        hdown=deepcopy(self.GetHist())
+        hdown.Scale(scaleDown)
+        self.SetHist(hup,sys,"0","Up")
+        self.SetHist(hdown,sys,"0","Down")
+
+        
     def SetHist(self,h,sys="nom",idx1=0,idx2=0):
         idx1=str(idx1)
         idx2=str(idx2)
@@ -199,6 +208,35 @@ class JHProcHist:## Hists Container of a proc
         std_dev_plus=sqrt(variance_plus)
         std_dev_minus=sqrt(variance_minus)
         return std_dev_plus,std_dev_minus
+
+
+    def GetHessianError(self,ynom,ibin,sys,idx1):
+        ##---Split them into plus/minus error
+        Nrep_plus=0
+        Nrep_minus=0
+        sum_dyplus2=0
+        sum_dyminus2=0
+        xvalue=self.hdict[sys][idx1]["0"].GetBinLowEdge(ibin)
+        for idx2 in self.hdict[sys][idx1]:
+            ysys=self.hdict[sys][idx1][idx2].GetBinContent(ibin)
+            this_dy=ysys-ynom
+            if this_dy > 0:
+                sum_dyplus2+=(this_dy**2)
+                Nrep_plus+=1
+            else:
+                sum_dyminus2+=(this_dy**2)
+                Nrep_minus+=1
+            #sum_dy2+=(this_dy**2)
+        
+        #variance_plus=sum_dyplus2/Nrep_plus if Nrep_plus else 0.
+        #variance_minus=sum_dyminus2/Nrep_minus if Nrep_minus else 0.
+        #std_dev_plus=sqrt(variance_plus)
+        #std_dev_minus=sqrt(variance_minus)
+        vector_sum_plus=sqrt(sum_dyplus2)
+        vector_sum_minus=sqrt(sum_dyminus2)
+        return vector_sum_plus,vector_sum_minus
+
+
     def GetDiffError(self,ynom,ibin,sys,idx1):
         dylist_plus=[0]
         dylist_minus=[0]
@@ -208,19 +246,82 @@ class JHProcHist:## Hists Container of a proc
             if this_dy > 0:
                 dylist_plus.append(this_dy)
             else:
-                dylist_minus.append(this_dy)
+                dylist_minus.append(abs(this_dy))
         #maxdy=max(dylist)
         #mindy=min(dylist)
-        return max(dylist_plus),min(dylist_minus)
+        return max(dylist_plus),max(dylist_minus)
+
+
+
+
+    def GetDiffErrorUpDownIndex(self,ynom,ibin,sys,idx1,list_idx2):
+
+        dylist_plus=[0]
+        dylist_minus=[0]
+        for idx2 in list_idx2:
+            ysys=self.hdict[sys][idx1][idx2].GetBinContent(ibin)
+            this_dy=ysys-ynom
+            if this_dy > 0:
+                dylist_plus.append(this_dy)
+            else:
+                dylist_minus.append(abs(this_dy))
+        #maxdy=max(dylist)
+        #mindy=min(dylist)
+        return max(dylist_plus),max(dylist_minus)
+
     def GetSysError(self,ynom,ibin,sys):
+
+
         sum_err2_plus=0
         sum_err2_minus=0
+
+
+
+
         for idx1 in self.hdict[sys]:
-            #if sys in self.dict_efftool and idx1 in self.dict_efftool[sys]:
-            if len(self.hdict[sys][idx1]) > self.nmin_replica :##if number of mem > 10 -> replica
-                this_err_plus, this_err_minus=self.GetReplicaError(ynom,ibin,sys,idx1)
+            ##---SetErrorType
+            IsHessian=0
+            IsUpDown=0
+            IsReplica=0 ## use standard deviation of the variation elements
+            IsPS=0
+            IsQCDScale=0
+            if "PDF" in sys:
+                if "AlphaS" in sys :
+                    IsUpDown=1
+                else:
+                    IsHessian=1
+            if "QCDScale"==sys:
+                IsQCDScale=1
+            elif "ps" in sys:
+                IsPS=1
+            elif len(self.hdict[sys][idx1]) > self.nmin_replica :
+                IsReplica=1
             else:
+                IsUpDown=1
+                
+                
+
+            #if sys in self.dict_efftool and idx1 in self.dict_efftool[sys]:
+            if IsReplica:
+                this_err_plus, this_err_minus=self.GetReplicaError(ynom,ibin,sys,idx1)
+            elif IsHessian:
+                this_err_plus, this_err_minus=self.GetHessianError(ynom,ibin,sys,idx1)
+
+            elif IsPS:
+                this_err_plus_isr, this_err_minus_isr=self.GetDiffErrorUpDownIndex(ynom,ibin,sys,idx1,["0","1"])
+                this_err_plus_fsr, this_err_minus_fsr=self.GetDiffErrorUpDownIndex(ynom,ibin,sys,idx1,["2","3"])
+ 
+                this_err_plus=sqrt(this_err_plus_isr**2 + this_err_plus_fsr**2)
+                this_err_minus=sqrt(this_err_minus_isr**2 + this_err_minus_fsr**2)
+
+            elif IsUpDown:
                 this_err_plus, this_err_minus=self.GetDiffError(ynom,ibin,sys,idx1)
+
+            elif IsQCDScale:
+                this_err_plus, this_err_minus=self.GetDiffError(ynom,ibin,sys,idx1)
+            else:
+                print "No Error Type for",sys,idx1
+                1/0
             sum_err2_plus+= (this_err_plus**2)
             sum_err2_minus+= (this_err_minus**2)
         total_err_plus=sqrt(sum_err2_plus)
@@ -229,7 +330,8 @@ class JHProcHist:## Hists Container of a proc
 
     
 
-    def SetErrorBand(self):
+    def SetErrorBand(self,_syslist=False):
+        print "_syslist=",_syslist
         self.gr_sys=ROOT.TGraphAsymmErrors()
         hnom=self.GetHist()
         Nbin=hnom.GetNbinsX()
@@ -244,9 +346,9 @@ class JHProcHist:## Hists Container of a proc
             integral_total+=ynom
             dy2sum_plus=0
             dy2sum_minus=0
-            #print "----"
-            #print ynom
+
             for sys in self.hdict:
+                if _syslist and (not sys in _syslist) : continue
                 dy_plus,dy_minus=self.GetSysError(ynom,ibin,sys)
                 dy2sum_plus+=(dy_plus**2)
                 dy2sum_minus+=(dy_minus**2)
@@ -256,6 +358,7 @@ class JHProcHist:## Hists Container of a proc
                     dict_err_minus[sys]=0
                 dict_err_plus[sys]+=dy_plus
                 dict_err_minus[sys]+=dy_minus
+
             dytotal_plus=sqrt(dy2sum_plus)
             dytotal_minus=sqrt(dy2sum_minus)
             self.gr_sys.SetPoint(ibin-1,x,ynom)
@@ -266,9 +369,9 @@ class JHProcHist:## Hists Container of a proc
         print "----[Minus Error Rank]---"
         self.PrintSysRank(dict_err_minus,integral_total)
         self.IsErrorSet=1
-    def GetErrorGraph(self,recalerr=0):
-        if not self.IsErrorSet: self.SetErrorBand()
-        if recalerr:self.SetErrorBand()
+    def GetErrorGraph(self,_syslist=False):
+        if not self.IsErrorSet: self.SetErrorBand(_syslist)
+        #if recalerr:self.SetErrorBand()
         return self.gr_sys
     def PrintSysRank(self,dict_err,integral_total):
         sorted_keys = sorted(dict_err, key=dict_err.get, reverse=True)
@@ -282,7 +385,16 @@ class JHProcHist:## Hists Container of a proc
             if not integral_total == 0 : relerr=dy/integral_total*100
             print '[',idx_sys,']',sys,round(relerr,3),"(%)"
             if idx_sys>self.nmaxprint:break
+        #for sys in sorted_keys:
+        #    dy=dict_err[sys]
+        #    relerr=0
+        #    if not "XSEC" in sys : continue
+        #    if not integral_total == 0 : relerr=dy/integral_total*100
+        #    print '[',idx_sys,']',sys,round(relerr,3),"(%)"
 
+
+
+            
     def __del__(self):
         for sys in sorted(self.hdict):
             for idx1 in sorted(self.hdict[sys]):

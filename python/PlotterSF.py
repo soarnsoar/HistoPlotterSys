@@ -131,8 +131,8 @@ class PlotterSF(PlotterBase):
                 this_h.Draw("e1sames")
             
             this_grerr.Draw("e2sames")
-            this_h.SetMaximum(1.5)
-            this_h.SetMinimum(0.5)
+            this_h.SetMaximum(2.0)
+            this_h.SetMinimum(0.0)
 
 
     def SetMaximum(self):

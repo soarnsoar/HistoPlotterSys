@@ -4,7 +4,9 @@ import os
 #export CMS_PATH=/cvmfs/cms.cern.ch
 #source $CMS_PATH/cmsset_default.sh
 
-def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3):
+def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
+    user=os.getenv("USER")
+    
     command='('+command+')'
     os.system('mkdir -p '+WORKDIR)
     f=open(WORKDIR+'/run.sh','w')
@@ -64,6 +66,9 @@ def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3):
     lines.append('output = '+os.getcwd()+'/'+WORKDIR+'/run.out')
     lines.append('error = '+os.getcwd()+'/'+WORKDIR+'/run.err')
     lines.append('log = '+os.getcwd()+'/'+WORKDIR+'/run.log')
+    lines.append('getenv = True')
+    if nmax:
+        lines.append('concurrency_limits = n'+str(nmax)+'.'+user)
     if memory:
         lines.append('request_memory = '+str(int(memory))+' MB \n')
     ncpu_criteria=int(memory/4096)+1

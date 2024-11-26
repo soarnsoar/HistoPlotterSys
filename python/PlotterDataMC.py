@@ -13,12 +13,28 @@ import time
 maindir=os.getenv("GIT_HistoPlotterSys")
 
 class PlotterDataMC(PlotterBase):
-    def __init__(self,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix=""):
+    def __init__(self,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix="",syslist=[],this_proclist=[],normsyspathlist=[]):
         print "---init <PlotterDataMC>"
         self.suffix=suffix
         self.dirname=dirname
         self.outname=outname
         self.procpath=procpath
+        if syslist==[]:
+            self.syslist=False
+        elif syslist==False:
+            self.syslist=False
+        else:
+            self.syslist=syslist
+
+        if this_proclist==[]:
+            self.this_proclist=False
+        elif this_proclist==False:
+            self.this_proclist=False
+        else:
+            self.this_proclist=this_proclist
+
+        self.normsyspathlist=normsyspathlist
+
         Year=str(Year)
         name="__".join([Year,AnalyzerName,cut,x])
         print "--init JHPlotter(parent-class)--"
@@ -135,6 +151,10 @@ class PlotterDataMC(PlotterBase):
             if proc=="Data" :
                 self.legendlist[proc]=_h.Clone() 
                 continue
+
+            if self.this_proclist:
+                if not proc in self.this_proclist: continue 
+
             ##--systematic norm with data var
             if dosysnorm : self.HistColl[proc]=self.HistColl[proc].Divide(self.hp_norm_data_sys)
             ##---hmc
@@ -161,7 +181,7 @@ class PlotterDataMC(PlotterBase):
             self.legendlist[proc]=_h.Clone()
             i_mc+=1
         self.hp_mc.MakeStatNuiShapes(str(self.Year))
-        self.grerr=self.hp_mc.GetErrorGraph()
+        self.grerr=self.hp_mc.GetErrorGraph(self.syslist)
         
         #for i in range(self.grerr.GetN()):
         #    #if self.grerr.GetPointY(i) > 0:
@@ -183,7 +203,7 @@ class PlotterDataMC(PlotterBase):
         #cut="",x="",proc=""
         self.hp_ratio_sys=self.hp_mc.Divide(self.hp_mc_nosys,"","","ratio data/mc")
         #self.hp_ratio_sys.SetEffTool(self.myreader.EffToolConf)
-        self.grerr_ratio=self.hp_ratio_sys.GetErrorGraph()
+        self.grerr_ratio=self.hp_ratio_sys.GetErrorGraph(self.syslist)
         self.grerr_ratio.SetFillColorAlpha(1,0.3)
         ##---Make hratio--##
         self.hdata=self.HistColl["Data"].GetHist().Clone()
@@ -193,8 +213,8 @@ class PlotterDataMC(PlotterBase):
         Nbins=self.hmc_nosys.GetNbinsX()
         self.hratio.Divide(self.hmc_nosys)
 
-        self.hratio.SetMinimum(0.5)
-        self.hratio.SetMaximum(1.5)
+        self.hratio.SetMinimum(0.0)
+        self.hratio.SetMaximum(2.0)
         self.hratio.GetYaxis().SetLabelSize(0.1)
         self.hratio.GetXaxis().SetLabelSize(0.1)
         self.hratio.GetYaxis().SetNdivisions(505)
@@ -259,10 +279,12 @@ class PlotterDataMC(PlotterBase):
         print list(self.myreader.ProcConf)
         for i,proc in enumerate(reversed(self.myreader.ProcConf)):
             if proc=="Data" : continue
+            if self.this_proclist:
+                if not proc in self.this_proclist:continue
             self.leg.AddEntry(self.legendlist[proc],proc)
         self.leg.AddEntry(self.legendlist["Data"],"Data","E")
     def ReadData(self):
-        self.myreader=Reader(self.AnaName,self.Year,self.suffix,self.procpath)
+        self.myreader=Reader(self.AnaName,self.Year,self.suffix,self.procpath,self.normsyspathlist)
         self.HistColl=self.myreader.MakeHistContainer(self.cut,self.x)
         self.myreader.CloseFile()
 

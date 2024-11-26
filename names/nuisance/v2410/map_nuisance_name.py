@@ -21,7 +21,6 @@
 
     },
     
-
     "ps":{
         "0":{
             "0":["FSR","Down"],
@@ -71,6 +70,13 @@
         "0": {
             "Down": ["ZptReweight","Down"],
             "Up": ["ZptReweight","Up"],
+        }
+    },
+
+    "topptweight": {
+        "0": {
+            "Down": ["topptweight","Down"],
+            "Up": ["topptweight","Up"],
         }
     },
     
@@ -1006,5 +1012,59 @@
             "0": ["NNPDF31_NNLO_4f_AlphaS","Down"]
         }
     },
+
+
+    "XSEC_TopMass": {
+        "0": {
+            "Up": ["XSEC_TopMass","Up"],
+            "Down": ["XSEC_TopMass","Down"]
+        }
+    },
+
+    "XSEC_QCD": {
+        "0": {
+            "Up": ["XSEC_QCD","Up"],
+            "Down": ["XSEC_QCD","Down"]
+        }
+    },
+
+
+    "lumi_uncorr2016": {
+        "0": {
+            "Up": ["lumi2016_uncorrelated","Up"],
+            "Down": ["lumi2016_uncorrelated","Down"]
+        }
+    },
+
+    "lumi_uncorr2017": {
+        "0": {
+            "Up": ["lumi2017_uncorrelated","Up"],
+            "Down": ["lumi2017_uncorrelated","Down"]
+        }
+    },
+
+
+    "lumi_uncorr2018": {
+        "0": {
+            "Up": ["lumi2018_uncorrelated","Up"],
+            "Down": ["lumi2018_uncorrelated","Down"]
+        }
+    },
+
+    "lumi_corr161718": {
+        "0": {
+            "Up": ["lumi161718_correlated","Up"],
+            "Down": ["lumi161718_correlated","Down"]
+        }
+    },
+
+    "lumi_corr1718": {
+        "0": {
+            "Up": ["lumi1718_correlated","Up"],
+            "Down": ["lumi1718_correlated","Down"]
+        }
+    },
+
+
     
 }

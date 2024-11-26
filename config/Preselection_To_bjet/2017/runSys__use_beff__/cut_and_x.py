@@ -8,6 +8,7 @@
     "ee__BadBJet": {
         "bjet_pt": {}, 
         "true_bjet_pt": {}, 
+        "bjet_score": {}, 
         "Z_M": {}, 
         "bjet_eta": {}
     }, 
@@ -32,6 +33,7 @@
     "ll__BadBJet": {
         "bjet_pt": {}, 
         "true_bjet_pt": {}, 
+        "bjet_score": {}, 
         "Z_M": {}, 
         "bjet_eta": {}
     }, 
@@ -50,6 +52,7 @@
     "ll__GoodBJet": {
         "bjet_pt": {}, 
         "true_bjet_pt": {}, 
+        "bjet_score": {}, 
         "Z_M": {}, 
         "bjet_eta": {}
     }, 
@@ -74,12 +77,14 @@
     "mm__GoodBJet": {
         "bjet_pt": {}, 
         "true_bjet_pt": {}, 
+        "bjet_score": {}, 
         "Z_M": {}, 
         "bjet_eta": {}
     }, 
     "mm__BadBJet": {
         "bjet_pt": {}, 
         "true_bjet_pt": {}, 
+        "bjet_score": {}, 
         "Z_M": {}, 
         "bjet_eta": {}
     }, 
@@ -118,6 +123,7 @@
     "ee__GoodBJet": {
         "bjet_pt": {}, 
         "true_bjet_pt": {}, 
+        "bjet_score": {}, 
         "Z_M": {}, 
         "bjet_eta": {}
     }, 
