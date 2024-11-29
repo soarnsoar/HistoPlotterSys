@@ -14,7 +14,7 @@ maindir=os.getenv("GIT_HistoPlotterSys")
 
 class PlotterDataMC(PlotterBase):
     def __init__(self,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix="",syslist=[],this_proclist=[],normsyspathlist=[]):
-        print "---init <PlotterDataMC>"
+        #print "---init <PlotterDataMC>"
         self.suffix=suffix
         self.dirname=dirname
         self.outname=outname
@@ -37,29 +37,29 @@ class PlotterDataMC(PlotterBase):
 
         Year=str(Year)
         name="__".join([Year,AnalyzerName,cut,x])
-        print "--init JHPlotter(parent-class)--"
+        #print "--init JHPlotter(parent-class)--"
         PlotterBase.__init__(self,name)
         self.Year=Year
         self.AnaName=AnalyzerName
         self.cut=cut
         self.x=x
-        print "---SetLumi---"
+        #print "---SetLumi---"
         self.SetLumi()
         self.sqrtS=13
-        print "---ReadData---"
+        #print "---ReadData---"
         self.ReadData()
         ##--
 
         self.legendlist=OrderedDict()
         ##--
-        print "---MakeCombinedObject---"
+        #print "---MakeCombinedObject---"
         self.MakeCombinedObject()
         self.blind=False
 
     def SetBlind(self,blind):
         self.blind=blind
     def RunDraw(self):
-        print "---RunDraw"
+        #print "---RunDraw"
         ##---not logy
         self.logy=0
         self.SetMaximum()
@@ -158,8 +158,8 @@ class PlotterDataMC(PlotterBase):
             ##--systematic norm with data var
             if dosysnorm : self.HistColl[proc]=self.HistColl[proc].Divide(self.hp_norm_data_sys)
             ##---hmc
-            print "--cut=",self.cut,"  x=",self.x,"--"
-            print "proc",proc," integral->",_h.Integral()
+            #print "--cut=",self.cut,"  x=",self.x,"--"
+            #print "proc",proc," integral->",_h.Integral()
             
             if i_mc==0:
                 #    def Combine(self,h2,cut="",x="",proc=""):
@@ -168,15 +168,15 @@ class PlotterDataMC(PlotterBase):
                 #self.hmc=self.HistColl[proc].GetHist().Clone()
             else:
                 #self.hmc.Add(self.HistColl[proc].GetHist())
-                print "Integral of histo to be added",self.HistColl[proc].GetHist().Integral()
+                #print "Integral of histo to be added",self.HistColl[proc].GetHist().Integral()
                 self.hp_mc=self.hp_mc.Combine(self.HistColl[proc],self.cut,self.x,"mc")
-                print "self.hp_mc.GetHist().Integral()=",self.hp_mc.GetHist().Integral()
+                #print "self.hp_mc.GetHist().Integral()=",self.hp_mc.GetHist().Integral()
             ##-------
             _color=self.myreader.ProcConf[proc]["color"]
             _h.SetFillColor(_color)
             _h.SetLineColor(_color)
             _h.SetMarkerColor(_color)
-            print "Stack->",proc
+            #print "Stack->",proc
             self.hstack.Add(_h)
             self.legendlist[proc]=_h.Clone()
             i_mc+=1
@@ -238,14 +238,14 @@ class PlotterDataMC(PlotterBase):
             _ymin=h.GetMinimum()
             if _ymax>self.ymax : self.ymax=_ymax
             if _ymin<self.ymin : self.ymin=_ymin
-        print "--cut=",self.cut,"  x=",self.x,"--"
-        print "self.ymax=",self.ymax
-        print "self.ymin=",self.ymin
+        #print "--cut=",self.cut,"  x=",self.x,"--"
+        #print "self.ymax=",self.ymax
+        #print "self.ymin=",self.ymin
         self.SetLegend()
 
         
-        print "dataintegral->",self.hdata.Integral()
-        print "mcintegral->",self.hmc_nosys.Integral()
+        #print "dataintegral->",self.hdata.Integral()
+        #print "mcintegral->",self.hmc_nosys.Integral()
     def SetMaximum(self):
         if self.logy:
             if self.ymax<=0. : return
@@ -275,8 +275,8 @@ class PlotterDataMC(PlotterBase):
         self.leg.SetShadowColor(0)
         self.leg.SetNColumns(ncolomns)
         self.leg.SetLineColor(0)
-        print "self.myreader.ProcConf="
-        print list(self.myreader.ProcConf)
+        #print "self.myreader.ProcConf="
+        #print list(self.myreader.ProcConf)
         for i,proc in enumerate(reversed(self.myreader.ProcConf)):
             if proc=="Data" : continue
             if self.this_proclist:

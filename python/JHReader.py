@@ -45,7 +45,7 @@ class Reader:
     def GetProcConfPath_OLD(self):
         if os.path.isfile(maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/proc.py"):
             return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/proc.py"
-        print "[Use nominal proc.py file]"
+        #print "[Use nominal proc.py file]"
         return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/proc.py"
 
     def GetProcConfPath(self):
@@ -54,7 +54,7 @@ class Reader:
 
     def ReadNuiConf(self):
         _path=self.GetNuiConfPath()
-        print "--nui:",_path
+        #print "--nui:",_path
         self.NuiConf=OpenDictFile(_path)
 
         #_path=self.GetEffToolConfPath()
@@ -65,8 +65,8 @@ class Reader:
         for NormSysPath in self.ListNormSysPath:
             this_dict=OpenDictFile(NormSysPath)
             self.dict_NormSys.update(this_dict)
-        print "[self.dict_NormSys]"
-        print self.dict_NormSys
+        #print "[self.dict_NormSys]"
+        #print self.dict_NormSys
     def GetNuiConfPath(self):
         return maindir+"/config/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/nuisances.py"
     #def GetEffToolConfPath(self):
@@ -76,7 +76,7 @@ class Reader:
     
     def GetEmptyHist(self,cut,x):
         _cut_x=cut+"/"+x
-        print _cut_x
+        #print _cut_x
         for _prockey in self.tfile.Get(_cut_x).GetListOfKeys():
             _classname=_prockey.GetClassName()
             #print "_prockey.GetName()=",_prockey.GetName()
@@ -146,7 +146,7 @@ class Reader:
                     this_scaleDown=self.dict_NormSys[normsys]["down"]
                     #    def AddNormSys(self,sys,scaleUp,scaleDown):
                     this_h.AddNormSys(this_nuisancename,this_scaleUp,this_scaleDown)
-                    print "subp=",subp,"->Add Norm Sys->",this_nuisancename
+                    #print "subp=",subp,"->Add Norm Sys->",this_nuisancename
 
                 ##--Store JHProcHist of this subprocess--##
                 this_container[subp]=this_h

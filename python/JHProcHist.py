@@ -130,6 +130,7 @@ class JHProcHist:## Hists Container of a proc
         ##--Check--##
         this_syslist=self.GetCombinedList(self.GetSysList(),h2.GetSysList())
         for this_sys in this_syslist:
+            continue
             this_idx1list=self.GetCombinedList(self.GetSysIdx1List(this_sys),h2.GetSysIdx1List(this_sys))
             for this_idx1 in this_idx1list:
                 this_idx2list=self.GetCombinedList(self.GetSysIdx2List(this_sys,this_idx1),h2.GetSysIdx2List(this_sys,this_idx1))
@@ -331,7 +332,7 @@ class JHProcHist:## Hists Container of a proc
     
 
     def SetErrorBand(self,_syslist=False):
-        print "_syslist=",_syslist
+        #print "_syslist=",_syslist
         self.gr_sys=ROOT.TGraphAsymmErrors()
         hnom=self.GetHist()
         Nbin=hnom.GetNbinsX()

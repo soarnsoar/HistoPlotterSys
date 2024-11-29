@@ -9,3 +9,4 @@ ws/*
 test
 *__init__.py
 datacards
+WORKDIR

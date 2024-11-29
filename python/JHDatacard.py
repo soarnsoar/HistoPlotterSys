@@ -21,6 +21,12 @@ class JHDatacard:
         self.UseNameMap=1
     def AddNormSysPath(self,_path):
         self.NormSysPathList.append(_path)
+    def ReadNormSysConfs(self):
+        self.dict_NormSys={}
+        for NormSysPath in self.NormSysPathList:
+            this_dict=OpenDictFile(NormSysPath)
+            self.dict_NormSys.update(this_dict)
+        
     def AddShape(self,proc,sysname,direction,shape,effect=1.0):
         ##--
         if not sysname in self.nuisances:
@@ -54,7 +60,7 @@ class JHDatacard:
         self.info[proc][sysname]["shape"]=None
         self.info[proc][sysname]["effect"]=effect
         self.info[proc][sysname]["type"]=type
-        self.nuisances[sysname].append(proc)
+        self.nuisances[sysname]["proc"].append(proc)
 
 
 
@@ -82,6 +88,7 @@ class JHDatacard:
         #class PlotterDataMC(PlotterBase):
         #def __init__(self,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix=""):
         #    def __init__(self,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix="",syslist=[],this_proclist=[],normsyspathlist=[]):
+        self.ReadNormSysConfs()
         self.plotter=PlotterDataMC(Year,AnalyzerName,cut,x,procpath,self.directory,self.region,suffix)
 
 
@@ -139,9 +146,28 @@ class JHDatacard:
                     #else:
                     #    print "No case of sys idx->",sys,idx1
                     #    1/0
-        
+            ##---Add lnN type nuisances
+            #self.NormSysPathList
+            #self.dict_NormSys
+            for normsys in self.dict_NormSys:
+                ApplyThisNormSys=False
+                this_sample_keys=self.dict_NormSys[normsys]["sample_keys"]
+                for this_sample_key in this_sample_keys:
+                    if this_sample_key in proc:
+                        ApplyThisNormSys=True
+                        break
+                if not ApplyThisNormSys : continue
+                this_exceptions=self.dict_NormSys[normsys]["exception"]
+                if proc in this_exceptions:continue
+                this_nuisancename=self.dict_NormSys[normsys]["nuisanceName"]
+                this_scaleUp=self.dict_NormSys[normsys]["up"]
+                this_scaleDown=self.dict_NormSys[normsys]["down"]
+                this_err_exp= str(this_scaleDown)+"/"+str(this_scaleUp) ##k_down/k_up
+                #    def AddOtherNuisance(self,proc,sysname,type,effect):
+                self.AddOtherNuisance(proc,this_nuisancename,"lnN",this_err_exp)
         self.observation=int(hdata.Integral())
         self.AddShape("Data","nom","nom",hdata)
+
         self.CalcNumberOfNuisances()
 
 
@@ -282,11 +308,13 @@ def RunYear(Ana,Year,suffix):
     name="dc"+"_"+Ana+"_"+suffix+"_"+Year
     mydc=JHDatacard(Year,name,"datacards/"+name,1)
     #    def RunWithSKFlatOutput(self,Year,AnalyzerName,cut,x,procpath,suffix):
-    procpath="/data6/Users/jhchoi/plotter/HistoPlotterSys/test/test_procconfig/proc.py"
-    nuinamepath="/data6/Users/jhchoi/plotter/HistoPlotterSys/names/nuisance/v2410/map_nuisance_name.py"
+    GIT_HistoPlotterSys=os.getenv("GIT_HistoPlotterSys")
+    procpath=GIT_HistoPlotterSys+"/test/test_procconfig/proc.py"
+    nuinamepath=GIT_HistoPlotterSys+"/names/nuisance/v2410/map_nuisance_name.py"
     mydc.LoadNuisanceNameMap(nuinamepath)
     mydc.AddNormSysPath("config/NormSys/lnN_nuisance_XSEC.py")
     mydc.AddNormSysPath("config/NormSys/lnN_lumi"+YearCombine+".py")
+    mydc.ReadNormSysConfs()
     mydc.RunWithSKFlatOutput(Year,Ana,"FinalCut","MeasuredCharge_Total",procpath,suffix)
     #mydc.NuisacneSkip=['electronID8', 'electronID9', 'zptweight0', 'electronID1', 'electronID2', 'electronID3', 'electronID4', 'electronID5', 'electronID6', 'electronID7', 'jer0', 'btagLTagCorr', 'muonID5', 'muonID4', 'muonID7', 'muonID6', 'muonID1', 'muonID3', 'muonID2', 'electronRECO12', 'electronRECO13', 'electronRECO10', 'electronRECO11', 'muonID9', 'jetpuid0', 'electronRECO14', 'electronRECO15', 'btagLTagUnCorr', 'btagHTagUnCorr', 'electronTrigger6', 'electronTrigger7', 'electronTrigger4', 'electronTrigger5', 'electronTrigger2', 'electronTrigger3', 'electronTrigger1', 'electronTrigger8', 'electronTrigger9', 'electronscale0', 'muonTrigger9', 'muonTrigger8', 'muonTrigger5', 'muonTrigger4', 'muonTrigger7', 'muonTrigger6', 'muonTrigger1', 'muonTrigger3', 'muonTrigger2', 'electronID18', 'electronID12', 'electronID13', 'electronID10', 'electronID11', 'electronID16', 'electronID17', 'electronID14', 'electronID15', 'electronscale2', 'electronscale3', 'met0', 'electronscale6', 'electronscale7', 'electronscale4', 'electronscale5', 'electronscale8', 'electronTrigger14', 'electronTrigger15', 'electronTrigger16', 'electronTrigger10', 'electronTrigger11', 'electronTrigger12', 'electronTrigger13', 'prefire0', 'isr', 'muonRECO9', 'muonRECO8', 'muonRECO1', 'muonRECO3', 'muonRECO2', 'muonRECO5', 'muonRECO4', 'muonRECO7', 'muonRECO6', 'muonTrk8', 'muonTrk9', 'muonTrk6', 'muonTrk7', 'muonTrk4', 'muonTrk5', 'muonTrk2', 'muonTrk3', 'muonTrk1', 'muonscale5', 'muonscale4', 'muonscale0', 'muonscale3', 'muonscale2', 'muonTrk14', 'muonTrk15', 'muonTrk10', 'muonTrk11', 'muonTrk12', 'muonTrk13', 'muonID11', 'muonID10', 'muonID13', 'muonID12', 'muonID15', 'muonID14', 'muonID16', 'electronRECO16', 'muonID8', 'muonRECO11', 'muonRECO10', 'muonRECO13', 'muonRECO12', 'muonRECO15', 'muonRECO14', 'muonTrigger15', 'muonTrigger14', 'muonTrigger11', 'muonTrigger10', 'muonTrigger13', 'muonTrigger12', 'btagHTagCorr', 'electronRECO1', 'electronRECO2', 'electronRECO3', 'electronRECO4', 'electronRECO5', 'electronRECO6', 'electronRECO7', 'electronRECO8', 'electronRECO9', 'jes0', 'pu0', 'fsr']
     #mydc.NuisacneSkip=['electronID8', 'electronID9', 'zptweight0', 'electronID1', 'electronID2', 'electronID3', 'electronID4', 'electronID5', 'electronID6', 'electronID7', 'jer0', 'btagLTagCorr', 'muonID5', 'muonID4', 'muonID7', 'muonID6', 'muonID1', 'muonID3', 'muonID2', 'electronRECO12', 'electronRECO13', 'electronRECO10', 'electronRECO11', 'muonID9', 'jetpuid0', 'electronRECO14', 'electronRECO15', 'btagLTagUnCorr', 'btagHTagUnCorr', 'electronTrigger6', 'electronTrigger7', 'electronTrigger4', 'electronTrigger5', 'electronTrigger2', 'electronTrigger3', 'electronTrigger1', 'electronTrigger8', 'electronTrigger9', 'electronscale0', 'muonTrigger9', 'muonTrigger8', 'muonTrigger5', 'muonTrigger4', 'muonTrigger7', 'muonTrigger6', 'muonTrigger1', 'muonTrigger3', 'muonTrigger2', 'electronID18', 'electronID12', 'electronID13', 'electronID10', 'electronID11', 'electronID16', 'electronID17', 'electronID14', 'electronID15', 'electronscale2', 'electronscale3', 'met0', 'electronscale6', 'electronscale7', 'electronscale4', 'electronscale5', 'electronscale8', 'electronTrigger14', 'electronTrigger15', 'electronTrigger16', 'electronTrigger10', 'electronTrigger11', 'electronTrigger12', 'electronTrigger13', 'prefire0', 'isr', 'muonRECO9', 'muonRECO8', 'muonRECO1', 'muonRECO3', 'muonRECO2', 'muonRECO5', 'muonRECO4', 'muonRECO7', 'muonRECO6', 'muonTrk8', 'muonTrk9', 'muonTrk6', 'muonTrk7', 'muonTrk4', 'muonTrk5', 'muonTrk2', 'muonTrk3', 'muonTrk1', 'muonscale5', 'muonscale4', 'muonscale0', 'muonscale3', 'muonscale2', 'muonTrk14', 'muonTrk15', 'muonTrk10', 'muonTrk11', 'muonTrk12', 'muonTrk13', 'muonID11', 'muonID10', 'muonID13', 'muonID12', 'muonID15', 'muonID14', 'muonID16', 'electronRECO16', 'muonID8', 'muonRECO11', 'muonRECO10', 'muonRECO13', 'muonRECO12', 'muonRECO15', 'muonRECO14', 'muonTrigger15', 'muonTrigger14', 'muonTrigger11', 'muonTrigger10', 'muonTrigger13', 'muonTrigger12', 'btagHTagCorr', 'electronRECO1', 'electronRECO2', 'electronRECO3', 'electronRECO4', 'electronRECO5', 'electronRECO6', 'electronRECO7', 'electronRECO8', 'electronRECO9', 'jes0', 'pu0']
