@@ -124,8 +124,8 @@ class PlotterComparisonBase(PlotterBase):
         elif str(self.Year)=="2018":
             self.lumi=59.8
         else:
-            print "Year must be 2016/7/8"
-            print "self.Year","=",self.Year
+            print("Year must be 2016/7/8")
+            print("self.Year","=",self.Year)
             self.lumi=self.Year
         self.lumi=str(self.lumi)
         if self.lumi!="": self.lumi+=" fb^{-1}"
@@ -134,9 +134,9 @@ class PlotterComparisonBase(PlotterBase):
             this_h=hpdict["hp"].GetHist()
             this_grerr=hpdict["hp"].GetErrorGraph()
             if i==0:
-                this_h.Draw("e1")
+                this_h.Draw("histe1")
             else:
-                this_h.Draw("e1sames")
+                this_h.Draw("histe1sames")
             this_grerr.Draw("e2sames")
             if rm_xtitle:
                 this_h.GetXaxis().SetTitle("")
@@ -155,9 +155,9 @@ class PlotterComparisonBase(PlotterBase):
         for i,hpratio in enumerate(self.list_hpratio):
 
             if i==0:
-                hpratio.GetHist().Draw("e1")
+                hpratio.GetHist().Draw("histe1")
             else:
-                hpratio.GetHist().Draw("e1sames")
+                hpratio.GetHist().Draw("histe1sames")
             hpratio.GetErrorGraph().Draw("e2sames")
             hpratio.GetHist().SetMaximum(self.rmax)
             hpratio.GetHist().SetMinimum(self.rmin)

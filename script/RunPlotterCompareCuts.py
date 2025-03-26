@@ -1,4 +1,5 @@
-#!/usr/bin/env python                                                                                                                                         import sys
+#!/usr/bin/env python3
+import sys
 import os
 maindir=os.getenv("GIT_HistoPlotterSys")
 import argparse
@@ -9,7 +10,7 @@ import time
 
 
 def Run(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,doNorm=False,doDiff=False):
-    print "suffix",suffix
+    print("suffix",suffix)
     #def __init__(self,title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist):
     myplotter=PlotterComparison(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,doNorm,doDiff)
     myplotter.DrawAll()
@@ -39,7 +40,7 @@ if __name__ == '__main__':
     suffix=args.suffix
     confcompare=args.confcompare
     confpath=maindir+"/config/"+AnalyzerName+"/"+year+"/"+suffix+"/"+confcompare
-    print confpath
+    print(confpath)
     ConfComparison=OpenDictFile(confpath)##ConfComparison={~~~}
 
     cut_and_x_path=maindir+"/config/"+AnalyzerName+"/"+year+"/"+suffix+"/cut_and_x.py"
@@ -71,9 +72,9 @@ if __name__ == '__main__':
         labellist=this_dict["label"]
         for x in xlist2:
             xlist=[x]*length
-            print "------"
-            print cutlist
-            print x
+            print("------")
+            print(cutlist)
+            print(x)
             outname=conf+"__"+x
             Run(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext)
             Run(title,dirname,outname,lumi,yearlist,analist,cutlist,xlist,proclist,labellist,suffixlist,colorlist,dict_xname,extratext,True)
@@ -85,4 +86,4 @@ if __name__ == '__main__':
             
     end_time = time.time()
     execution_time = end_time - start_time
-    print "execution_time=",execution_time
+    print("execution_time=",execution_time)

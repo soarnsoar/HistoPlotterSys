@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from SimpleCountExp import datacard
 import ROOT
 import sys
@@ -141,7 +141,7 @@ if __name__ == '__main__':
         ##---if not doGroup
         for region in cut__x__xrange:
             binname=region+"__"+year
-            print binname
+            print(binname)
             thisbin=datacard(binname)
             cut=cut__x__xrange[region]["cut"]
             x=cut__x__xrange[region]["x"]

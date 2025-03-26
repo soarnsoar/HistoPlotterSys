@@ -1,4 +1,4 @@
-#!/usr/bin/env python                                                                                                                                        
+#!/usr/bin/env python3
 import optparse
 import os
 #export CMS_PATH=/cvmfs/cms.cern.ch
@@ -85,7 +85,7 @@ def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
     f.close()
     if submit:
         submitcommand='condor_submit '+WORKDIR+'/run.jds > '+WORKDIR+'/run.jid'
-        print submitcommand
+        print(submitcommand)
         os.system(submitcommand)
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import ROOT
 from collections import OrderedDict
 import os
@@ -36,10 +36,10 @@ class FindBinning:
         self.nume_cuts=nume_cuts
     def SetPtRange(self,ptmin,ptmax):
         if not ptmin in self.init_ptbin:
-            print "ptmin=",ptmin,"is not in init pt bins",self.init_ptbin
+            print("ptmin=",ptmin,"is not in init pt bins",self.init_ptbin)
             1/0
         if not ptmax in self.init_ptbin:
-            print "ptmax=",ptmax,"is not in init pt bins",self.init_ptbin
+            print("ptmax=",ptmax,"is not in init pt bins",self.init_ptbin)
             1/0
         self.ptmin=ptmin
         self.ptmax=ptmax
@@ -57,8 +57,8 @@ class FindBinning:
 
         total_relerr=sqrt(1/(y_deno-y_nume) + 1/y_nume)
         #total_relerr=0
-        print "y_deno=",y_deno
-        print "y_nume=",y_nume
+        print("y_deno=",y_deno)
+        print("y_nume=",y_nume)
         return y_deno,y_nume,total_relerr
     def GetYieldDeno(self):
         ret=0
@@ -77,7 +77,7 @@ class FindBinning:
     def GetYield_EtaRange(self,_h,etamin,etamax):
         i_etamin=_h.FindBin(etamin)
         i_etamax=_h.FindBin(etamax)
-        print "Integral eta from",_h.GetBinLowEdge(i_etamin),"To",_h.GetBinLowEdge(i_etamax)
+        print("Integral eta from",_h.GetBinLowEdge(i_etamin),"To",_h.GetBinLowEdge(i_etamax))
         return _h.Integral(i_etamin,i_etamax)
     def SelectPtBins(self):
         #self.ParseInitPtBinning()
@@ -87,13 +87,13 @@ class FindBinning:
             if x>=self.ptmin and x<=self.ptmax:
                 self.selected_ptbins.append(x)
         self.selected_ptbins=sorted(list(set(self.selected_ptbins)))
-        print "self.selected_ptbins=",self.selected_ptbins
+        print("self.selected_ptbins=",self.selected_ptbins)
         self.xnames=[]
         for i in range(len(self.selected_ptbins)-1):
             ##30,40,50,60....
             pt1=self.selected_ptbins[i]
             pt2=self.selected_ptbins[i+1]
-            print "integral from ",pt1,"to",pt2
+            print("integral from ",pt1,"to",pt2)
             xname=self.bname+"_eta__pt"+str(pt1)+"_"+str(pt2)
             self.xnames.append(xname)
     def SetHistPaths(self):
@@ -121,8 +121,8 @@ class FindBinning:
             self.init_ptbin.append(ptmin)
             self.init_ptbin.append(ptmax)
         self.init_ptbin=sorted(list(set(self.init_ptbin)))
-        print "---inti ptbin---"
-        print self.init_ptbin
+        print("---inti ptbin---")
+        print(self.init_ptbin)
 
     def __del__(self):
         self.tfile.Close()
@@ -155,7 +155,7 @@ def ChargreScoreCutEfficiency():
 
 
     for bname in bnames:
-        print "--",bname,"--"
+        print("--",bname,"--")
         thisjob=FindBinning(Ana,year,suffix)
         thisjob.Setbname(bname)
         thisjob.SetDeno(dict_def[bname]["bmuon_high"]["deno"])
@@ -163,13 +163,13 @@ def ChargreScoreCutEfficiency():
         #thisjob.SetDeno(["AllLep_TTLJ__bLep_FailSoftMuon","AllLep_TTLJ__bLepUsingSoftMuonChargeUseOpposite","AllLep_TTLJ__bLepUsingSoftMuonChargeNotOpposite"])
         #thisjob.SetNume(["AllLep_TTLJ__bLepUsingSoftMuonChargeNotOpposite"])
         thisjob.ParseInitPtBinning()
-        print thisjob.init_ptbin
+        print(thisjob.init_ptbin)
         thisjob.SetPtRange(ptmin,ptmax)
         thisjob.SetEtaRange(etamin,etamax)
         thisjob.SelectPtBins()
         thisjob.SetHistPaths()
         y_deno,y_nume,total_relerr=thisjob.GetNdata()
-        print "total_relerr=",total_relerr
+        print("total_relerr=",total_relerr)
         
 if __name__ == '__main__':
 

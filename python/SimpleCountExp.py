@@ -116,7 +116,7 @@ class datacard:
             self.lines.append(paramline)
     def Save(self):
         filename=self.binname+".txt"
-        print "CreateCard -->",filename
+        print("CreateCard -->",filename)
         f=open(filename,"w")
         for line in self.lines:
             f.write(line+"\n")

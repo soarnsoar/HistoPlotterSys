@@ -1,4 +1,4 @@
-#!/usr/bin/env python                                                                                                                                         
+#!/usr/bin/env python3                                                                                                                                         
 import time
 start_time = time.time()
 
@@ -15,7 +15,7 @@ from ExportShellCondorSetup_tamsa import Export
 
 
 def Run(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths):
-    print "suffix",suffix
+    print("suffix",suffix)
     myplotter=PlotterDataMC(Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths)
     myplotter.SetBlind(blind)
     myplotter.RunDraw()
@@ -49,7 +49,7 @@ def RunWithCondor(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,
     pycommandlist.append("from RunPlotterDataMC import Run")
     myarglist=[]
     myarglist_raw=[blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths]
-    is_string = lambda value: isinstance(value, (str, unicode))
+    is_string = lambda value: isinstance(value, str)
 
     for this_arg in myarglist_raw:
         if is_string(this_arg):
@@ -126,8 +126,10 @@ if __name__ == '__main__':
 
     cut_and_x_path=maindir+"/config/"+AnalyzerName+"/"+year+"/"+suffix+"/cut_and_x.py"
     cut_and_x=OpenDictFile(cut_and_x_path)
+    print("cut_and_x")
+    print(cut_and_x)
     if(print_cut_and_x):
-        print cut_and_x
+        print(cut_and_x)
         exit()
 
     
@@ -135,18 +137,19 @@ if __name__ == '__main__':
     icut=0
 
     ##
-    print this_cut,this_var,this_x,this_proc
+    print("this_cut,this_var,this_x,this_proc")
+    print(this_cut,this_var,this_x,this_proc)
 
 
     for cut in cut_and_x:
-        print icut+1,'/',ncut
+        print(icut+1,'/',ncut)
         for x in cut_and_x[cut]:
             if this_cut!="" and this_cut!="-":
                 if cut!=this_cut : continue
             if this_x!="" and this_x!="-": 
                 if x!=this_x : continue
-            print "-----------"
-            print cut,x
+            print("-----------")
+            print(cut,x)
             thisdir=directory+"/"+cut
             name=x
             if args.condor:
@@ -161,4 +164,4 @@ if __name__ == '__main__':
 
 end_time = time.time()
 execution_time = end_time - start_time
-print("Script execution time: {:.6f} seconds".format(execution_time))
+print(("Script execution time: {:.6f} seconds".format(execution_time)))

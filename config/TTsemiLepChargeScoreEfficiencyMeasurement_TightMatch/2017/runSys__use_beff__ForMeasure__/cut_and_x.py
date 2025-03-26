@@ -1,13 +1,17 @@
 {
-    "LeptonMinus_bJetHadronicSideTestElectron_FailSLTElectronHigh__30To50": {
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronHighMinus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestElectron_FailSLTElectronHigh__PT50To70": {
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronHighPlus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronHigh__30To50": {
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronHighPlus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronHigh__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -15,43 +19,43 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestElectron_HasSoftElectron__30To50": {
+    "LeptonMinus_bJetHadronicSideTestJet_BadBJetMinus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestElectron_HasSoftElectron__PT50To70": {
+    "LeptonMinus_bJetHadronicSideTestJet_BadBJetMinus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestElectron_HasSoftElectron__PT70To100": {
+    "LeptonMinus_bJetHadronicSideTestJet_BadBJetMinus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestElectron__30To50": {
+    "LeptonMinus_bJetHadronicSideTestJet_BadBJetMinus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestElectron__PT100To140": {
+    "LeptonMinus_bJetHadronicSideTestJet_BadBJetPlus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestElectron__PT140ToInf": {
+    "LeptonMinus_bJetHadronicSideTestJet_BadBJetPlus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestElectron__PT50To70": {
+    "LeptonMinus_bJetHadronicSideTestJet_BadBJetPlus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestElectron__PT70To100": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetHadronicSideTestJet_BadBJet__30To50": {
+    "LeptonMinus_bJetHadronicSideTestJet_BadBJetPlus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
     "LeptonMinus_bJetHadronicSideTestJet_BadBJet__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestJet_BadBJet__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -63,11 +67,43 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestJet_GoodBJet__30To50": {
+    "LeptonMinus_bJetHadronicSideTestJet_GoodBJetMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestJet_GoodBJetMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestJet_GoodBJetMinus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestJet_GoodBJetMinus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestJet_GoodBJetPlus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestJet_GoodBJetPlus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestJet_GoodBJetPlus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestJet_GoodBJetPlus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
     "LeptonMinus_bJetHadronicSideTestJet_GoodBJet__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestJet_GoodBJet__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -79,39 +115,19 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestJet__30To50": {
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonHighMinus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestJet__PT100To140": {
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonHighMinus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestJet__PT140ToInf": {
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonHighPlus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestJet__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetHadronicSideTestJet__PT70To100": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetHadronicSideTestMuon_FailSLTMuonHigh__30To50": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetHadronicSideTestMuon_FailSLTMuonHigh__PT100To140": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetHadronicSideTestMuon_FailSLTMuonHigh__PT70To100": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonHigh__30To50": {
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonHigh__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -119,51 +135,15 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestMuon_HasSoftMuon__30To50": {
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronHighMinus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestMuon_HasSoftMuon__PT100To140": {
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronHighMinus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestMuon_HasSoftMuon__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetHadronicSideTestMuon_HasSoftMuon__PT70To100": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetHadronicSideTestMuon__30To50": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetHadronicSideTestMuon__PT100To140": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetHadronicSideTestMuon__PT140ToInf": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetHadronicSideTestMuon__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetHadronicSideTestMuon__PT70To100": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron_FailSLTElectronHigh__30To50": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron_FailSLTElectronHigh__PT100To140": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron_FailSLTElectronHigh__PT50To70": {
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronHighPlus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -179,51 +159,43 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron_HasSoftElectron__30To50": {
+    "LeptonMinus_bJetLeptonicSideTestJet_BadBJetMinus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron_HasSoftElectron__PT100To140": {
+    "LeptonMinus_bJetLeptonicSideTestJet_BadBJetMinus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron_HasSoftElectron__PT140ToInf": {
+    "LeptonMinus_bJetLeptonicSideTestJet_BadBJetMinus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron_HasSoftElectron__PT50To70": {
+    "LeptonMinus_bJetLeptonicSideTestJet_BadBJetMinus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron_HasSoftElectron__PT70To100": {
+    "LeptonMinus_bJetLeptonicSideTestJet_BadBJetPlus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron__30To50": {
+    "LeptonMinus_bJetLeptonicSideTestJet_BadBJetPlus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron__PT100To140": {
+    "LeptonMinus_bJetLeptonicSideTestJet_BadBJetPlus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron__PT140ToInf": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron__PT70To100": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestJet_BadBJet__30To50": {
+    "LeptonMinus_bJetLeptonicSideTestJet_BadBJetPlus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
     "LeptonMinus_bJetLeptonicSideTestJet_BadBJet__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestJet_BadBJet__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -235,11 +207,35 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestJet_GoodBJet__30To50": {
+    "LeptonMinus_bJetLeptonicSideTestJet_GoodBJetMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestJet_GoodBJetMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestJet_GoodBJetMinus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestJet_GoodBJetPlus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestJet_GoodBJetPlus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestJet_GoodBJetPlus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
     "LeptonMinus_bJetLeptonicSideTestJet_GoodBJet__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestJet_GoodBJet__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -251,23 +247,11 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestJet__30To50": {
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonHighMinus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestJet__PT100To140": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestJet__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestJet__PT70To100": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon_FailSLTMuonHigh__PT70To100": {
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonHighPlus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -275,35 +259,7 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon_HasSoftMuon__PT100To140": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon_HasSoftMuon__PT70To100": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon__30To50": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon__PT100To140": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon__PT140ToInf": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon__PT70To100": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetHadronicSideTestElectron_FailSLTElectronHigh__PT140ToInf": {
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronHighMinus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -311,39 +267,47 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronLowPlus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronLow__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestElectron_HasSoftElectron__PT140ToInf": {
+    "LeptonPlus_bJetHadronicSideTestJet_BadBJetMinus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestElectron_HasSoftElectron__PT50To70": {
+    "LeptonPlus_bJetHadronicSideTestJet_BadBJetMinus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestElectron__30To50": {
+    "LeptonPlus_bJetHadronicSideTestJet_BadBJetMinus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestElectron__PT100To140": {
+    "LeptonPlus_bJetHadronicSideTestJet_BadBJetMinus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestElectron__PT140ToInf": {
+    "LeptonPlus_bJetHadronicSideTestJet_BadBJetMinus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestElectron__PT50To70": {
+    "LeptonPlus_bJetHadronicSideTestJet_BadBJetPlus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestElectron__PT70To100": {
+    "LeptonPlus_bJetHadronicSideTestJet_BadBJetPlus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestJet_BadBJet__30To50": {
+    "LeptonPlus_bJetHadronicSideTestJet_BadBJetPlus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestJet_BadBJetPlus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -355,6 +319,10 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonPlus_bJetHadronicSideTestJet_BadBJet__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonPlus_bJetHadronicSideTestJet_BadBJet__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
@@ -363,7 +331,39 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestJet_GoodBJet__30To50": {
+    "LeptonPlus_bJetHadronicSideTestJet_GoodBJetMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestJet_GoodBJetMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestJet_GoodBJetMinus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestJet_GoodBJetMinus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestJet_GoodBJetPlus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestJet_GoodBJetPlus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestJet_GoodBJetPlus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestJet_GoodBJetPlus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestJet_GoodBJetPlus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -375,6 +375,10 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonPlus_bJetHadronicSideTestJet_GoodBJet__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonPlus_bJetHadronicSideTestJet_GoodBJet__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
@@ -383,59 +387,35 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestJet__30To50": {
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronHighMinus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestJet__PT100To140": {
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronHighMinus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestJet__PT140ToInf": {
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronHighMinus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestJet__PT50To70": {
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronHighPlus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestJet__PT70To100": {
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronHighPlus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestMuon__30To50": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetHadronicSideTestMuon__PT100To140": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetHadronicSideTestMuon__PT140ToInf": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetHadronicSideTestMuon__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetHadronicSideTestMuon__PT70To100": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron_FailSLTElectronHigh__PT100To140": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron_FailSLTElectronHigh__PT140ToInf": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronHigh__30To50": {
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronHighPlus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
     "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronHigh__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronHigh__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -447,47 +427,31 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron_HasSoftElectron__30To50": {
+    "LeptonPlus_bJetLeptonicSideTestJet_BadBJetMinus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron_HasSoftElectron__PT100To140": {
+    "LeptonPlus_bJetLeptonicSideTestJet_BadBJetMinus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron_HasSoftElectron__PT140ToInf": {
+    "LeptonPlus_bJetLeptonicSideTestJet_BadBJetMinus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron_HasSoftElectron__PT50To70": {
+    "LeptonPlus_bJetLeptonicSideTestJet_BadBJetPlus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron_HasSoftElectron__PT70To100": {
+    "LeptonPlus_bJetLeptonicSideTestJet_BadBJetPlus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron__30To50": {
+    "LeptonPlus_bJetLeptonicSideTestJet_BadBJetPlus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron__PT100To140": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron__PT140ToInf": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron__PT70To100": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestJet_BadBJet__30To50": {
+    "LeptonPlus_bJetLeptonicSideTestJet_BadBJetPlus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -499,6 +463,10 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonPlus_bJetLeptonicSideTestJet_BadBJet__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonPlus_bJetLeptonicSideTestJet_BadBJet__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
@@ -507,7 +475,31 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestJet_GoodBJet__30To50": {
+    "LeptonPlus_bJetLeptonicSideTestJet_GoodBJetMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestJet_GoodBJetMinus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestJet_GoodBJetPlus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestJet_GoodBJetPlus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestJet_GoodBJetPlus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestJet_GoodBJetPlus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestJet_GoodBJetPlus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -519,6 +511,10 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonPlus_bJetLeptonicSideTestJet_GoodBJet__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonPlus_bJetLeptonicSideTestJet_GoodBJet__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
@@ -527,39 +523,27 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestJet__30To50": {
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonHighMinus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestJet__PT100To140": {
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonHighPlus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestJet__PT140ToInf": {
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonHighPlus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestJet__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestJet__PT70To100": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon_FailSLTMuonHigh__PT140ToInf": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon_FailSLTMuonHigh__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonHigh__30To50": {
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonHighPlus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
     "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonHigh__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonHigh__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -571,47 +555,19 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLowMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLow__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon_HasSoftMuon__30To50": {
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronHighMinus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon_HasSoftMuon__PT140ToInf": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon_HasSoftMuon__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon_HasSoftMuon__PT70To100": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon__30To50": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon__PT100To140": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon__PT140ToInf": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon__PT70To100": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetHadronicSideTestElectron_FailSLTElectronHigh__PT140ToInf": {
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronHighPlus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -619,11 +575,15 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronLowMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronLow__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestElectron_HasSoftElectron__PT140ToInf": {
+    "LeptonMinus_bJetHadronicSideTestJet_GoodBJetMinus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -631,7 +591,7 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestMuon_FailSLTMuonHigh__PT50To70": {
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonHighPlus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -639,11 +599,11 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron_FailSLTElectronHigh__PT140ToInf": {
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronHighPlus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronHigh__30To50": {
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronHighPlus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -651,7 +611,31 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronHigh__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestJet_BadBJetMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestJet_BadBJetPlus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonMinus_bJetLeptonicSideTestJet_BadBJet__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestJet_GoodBJetMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestJet_GoodBJetMinus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestJet_GoodBJetPlus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -659,23 +643,15 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestJet__PT140ToInf": {
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonHighMinus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon_FailSLTMuonHigh__30To50": {
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonHighPlus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon_FailSLTMuonHigh__PT140ToInf": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon_FailSLTMuonHigh__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonHigh__30To50": {
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonHighPlus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -683,7 +659,15 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonHigh__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonHigh__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonLowMinus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -691,27 +675,15 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon_HasSoftMuon__30To50": {
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronHighMinus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon_HasSoftMuon__PT140ToInf": {
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronHighMinus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon_HasSoftMuon__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetHadronicSideTestElectron_FailSLTElectronHigh__30To50": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetHadronicSideTestElectron_FailSLTElectronHigh__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronHigh__30To50": {
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronHighPlus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -719,27 +691,23 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestElectron_HasSoftElectron__30To50": {
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronHigh__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestElectron_HasSoftElectron__PT100To140": {
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronLowMinus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestMuon_FailSLTMuonHigh__30To50": {
+    "LeptonPlus_bJetHadronicSideTestJet_GoodBJetMinus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestMuon_FailSLTMuonHigh__PT100To140": {
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonHighMinus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestMuon_FailSLTMuonHigh__PT50To70": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonHigh__30To50": {
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonHighPlus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -747,15 +715,11 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestMuon_HasSoftMuon__30To50": {
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonHigh__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestMuon_HasSoftMuon__PT100To140": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonPlus_bJetHadronicSideTestMuon_HasSoftMuon__PT50To70": {
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronHighPlus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -763,11 +727,31 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon_FailSLTMuonHigh__30To50": {
+    "LeptonPlus_bJetLeptonicSideTestJet_BadBJetMinus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon_FailSLTMuonHigh__PT70To100": {
+    "LeptonPlus_bJetLeptonicSideTestJet_BadBJetMinus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestJet_BadBJetPlus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestJet_GoodBJetMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestJet_GoodBJetMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonHighMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonHighPlus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -775,15 +759,15 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLowPlus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLow__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon_HasSoftMuon__PT100To140": {
-        "Event": {}, 
-        "Tcand_mass": {}
-    }, 
-    "LeptonMinus_bJetHadronicSideTestElectron_FailSLTElectronHigh__PT100To140": {
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronHighPlus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -791,7 +775,7 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestElectron_HasSoftElectron__PT100To140": {
+    "LeptonMinus_bJetHadronicSideTestJet_BadBJetPlus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -799,7 +783,23 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonMinus_bJetHadronicSideTestJet_GoodBJetPlus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonHighMinus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonHighPlus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonHigh__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonLowPlus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -807,11 +807,15 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron_FailSLTElectronHigh__PT70To100": {
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronHighPlus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon_FailSLTMuonHigh__PT100To140": {
+    "LeptonMinus_bJetLeptonicSideTestJet_GoodBJetPlus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronHighMinus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -819,7 +823,27 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestElectron_HasSoftElectron__PT70To100": {
+    "LeptonPlus_bJetHadronicSideTestJet_BadBJetPlus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonHighMinus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonHighPlus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonHighPlus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonHighPlus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonHighPlus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -835,23 +859,27 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonLow__30To50": {
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonLowMinus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestMuon_HasSoftMuon__PT140ToInf": {
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonLowPlus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestMuon_HasSoftMuon__PT70To100": {
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonLow__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron_FailSLTElectronHigh__PT50To70": {
+    "LeptonPlus_bJetLeptonicSideTestJet_GoodBJetMinus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestElectron_FailSLTElectronHigh__PT70To100": {
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonHighMinus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronLowPlus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -859,11 +887,35 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonHighMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonHighPlus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonHigh__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestMuon_HasSoftMuon__PT140ToInf": {
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonLowMinus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronHighMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronHighPlus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonHighMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonLowMinus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -871,15 +923,27 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestElectron_FailSLTElectronHigh__PT70To100": {
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronHighPlus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon_FailSLTMuonHigh__PT100To140": {
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronHighPlus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestMuon_FailSLTMuonHigh__PT140ToInf": {
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronHighMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonHighMinus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestJet_BadBJetMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonLowPlus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -887,15 +951,27 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronLow__30To50": {
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronLowPlus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestMuon_FailSLTMuonHigh__PT70To100": {
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronLow__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron_FailSLTElectronHigh__30To50": {
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonHighMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonHighMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronHighMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronLowMinus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -903,11 +979,35 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLowMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLowMinus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLow__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronLow__30To50": {
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronHighMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronLowMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronLow__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonHighPlus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonHighPlus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -915,11 +1015,11 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestElectron_FailSLTElectronHigh__PT100To140": {
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonLowMinus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestMuon_FailSLTMuonHigh__PT140ToInf": {
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonLowPlus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -931,11 +1031,43 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonHighMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonLowPlus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonLowPlus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonLow__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLow__30To50": {
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronHighPlus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonLowMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonHighPlus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLowPlus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLow__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronHighPlus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -943,11 +1075,15 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron_FailSLTElectronHigh__PT70To100": {
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronLowPlus__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronLow__30To50": {
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronLowPlus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronLow__PT30To50": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -955,11 +1091,23 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonHighMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronLowMinus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronLow__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonLow__30To50": {
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonLowMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonLowPlus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -967,11 +1115,39 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonLow__30To50": {
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonLow__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonLowPlus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonLow__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronLowPlus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
     "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronLow__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonHighPlus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonLowPlus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronLowMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronLowPlus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -983,7 +1159,23 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonLowMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonHighMinus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonLowPlus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonLow__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronHighPlus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -991,7 +1183,23 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronLowPlus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronLow__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonHighMinus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonLowPlus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonLowPlus__PT50To70": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -999,7 +1207,63 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronHighMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronLowMinus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonLowMinus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronHighPlus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLowPlus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLow__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonLowMinus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronLowMinus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonLowMinus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronHighMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronLowMinus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronLowMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonHighMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronLowPlus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonLowMinus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -1007,7 +1271,19 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronLowPlus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronLow__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronHighMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronLowMinus__PT70To100": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -1015,7 +1291,43 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
-    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronLow__30To50": {
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronLowMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronLowPlus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLowPlus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronLowPlus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronLow__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronLowPlus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonLowPlus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronHighMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLowMinus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronLowMinus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -1023,7 +1335,39 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronLowMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonLowMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonLow__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronLowPlus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronHighMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestElectron_HasSLTElectronLowPlus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLowMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonLowPlus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronLowPlus__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
@@ -1031,11 +1375,67 @@
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronLowMinus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronLowMinus__PT50To70": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronLowPlus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronLow__PT100To140": {
         "Event": {}, 
         "Tcand_mass": {}
     }, 
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronLowPlus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestMuon_HasSLTMuonLowPlus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestMuon_HasSLTMuonLowPlus__PT70To100": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetHadronicSideTestMuon_HasSLTMuonLowMinus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestElectron_HasSLTElectronLowMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetHadronicSideTestMuon_HasSLTMuonLowMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronLowPlus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
     "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronLow__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronLowMinus__PT30To50": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronLowMinus__PT100To140": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonMinus_bJetLeptonicSideTestElectron_HasSLTElectronLowPlus__PT140ToInf": {
+        "Event": {}, 
+        "Tcand_mass": {}
+    }, 
+    "LeptonPlus_bJetLeptonicSideTestElectron_HasSLTElectronLowMinus__PT140ToInf": {
         "Event": {}, 
         "Tcand_mass": {}
     }

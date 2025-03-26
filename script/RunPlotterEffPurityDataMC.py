@@ -1,4 +1,4 @@
-#!/usr/bin/env python                                                                                                                                         
+#!/usr/bin/env python3
 
 import sys
 import os
@@ -10,7 +10,7 @@ from numpy import array
 
 def Run(Year,AnalyzerName,cuts,xs,siglist,bkglist,thisdir,name,suffix,ymax,rebin):
     #print 'runsys',runsys
-    print "suffix",suffix
+    print("suffix",suffix)
     myplotter=PlotterEffPurityDataMC(Year,AnalyzerName,cuts,xs,siglist,bkglist,thisdir,name,suffix,ymax,rebin)    
     del myplotter
 
@@ -55,7 +55,7 @@ if __name__ == '__main__':
         ymax=dict_effpurity[name]["ymax"]
         rebin=[]
         if "xbins" in dict_effpurity[name]: rebin=dict_effpurity[name]["xbins"]
-        print "rebin=",rebin
+        print("rebin=",rebin)
         thisdir=directory+"/"
 
         Run(year,AnalyzerName,cuts,xs,siglist,bkglist,thisdir,name,suffix,ymax,array(rebin,dtype='double'))

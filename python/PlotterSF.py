@@ -14,7 +14,7 @@ maindir=os.getenv("GIT_HistoPlotterSys")
 class PlotterSF(PlotterBase):
     ##---for one plot file
     def __init__(self,Year,name,list_dicteff,dirname,outname,rebin):
-        print "<PlotterSF> Year=",Year
+        print("<PlotterSF> Year=",Year)
         self.name=name
         self.Year=Year
         self.list_dicteff=list_dicteff
@@ -190,13 +190,13 @@ class PlotterSF(PlotterBase):
 
     def ReadObjects(self):
         for i,dicteff in enumerate(self.list_dicteff):
-            print "--READ EFF/PROB"
+            print("--READ EFF/PROB")
 
             path_effdef=dicteff["effdefpath"]
             effname=dicteff["effname"]
-            print effname
+            print(effname)
             year=dicteff["year"].replace("__YEAR__",self.Year)
-            print "YEAR->",year
+            print("YEAR->",year)
             ana=dicteff["analyzer"]
             suffix="/"
             if "suffix" in dicteff:

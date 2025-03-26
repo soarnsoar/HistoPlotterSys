@@ -10,7 +10,7 @@ import psutil
 def get_memory_usage():
     process = psutil.Process(os.getpid())
     memory_info = process.memory_info()
-    print memory_info.rss/1024./1024.,"MB"
+    print(memory_info.rss/1024./1024.,"MB")
 
 
 maindir=os.getenv("GIT_HistoPlotterSys")
@@ -67,7 +67,7 @@ class JHEffPurityReader:
         cuts=self.dict_eff[dn]["cut"]
         x=self.dict_eff[dn]["x"]
         for i,cut in enumerate(cuts):
-            print cut,x
+            print(cut,x)
             this_hp_coll=self.myreader.MakeHistContainer(cut,x,self.rebin)            
             ##---Make MC stat nuisances shapes---##
             for proc in self.myreader.ProcConf:
@@ -143,7 +143,7 @@ class JHEffPurityReader:
             
             if proc in siglist:
                 #
-                print "sig->",proc
+                print("sig->",proc)
                 if i_sig==0:
                     hp_sig.Clone(HistColl[proc])
                 else:
@@ -206,35 +206,35 @@ if __name__ == "__main__":
     AnayzerName="TTsemiLepChargeScoreEfficiencyMeasurement"
     #class DefineEffPurity:
     #def __init__(self,Year,AnalyzerName,suffix,rebin=[]):
-    print "Read"
+    print("Read")
     testjob=JHEffPurityReader("Muon_bLep_pt__Usepoor_jetCharge",Year,AnayzerName,"/")
     get_memory_usage()
-    print "Get Obj Dict"
+    print("Get Obj Dict")
     myhp=testjob.GetEffHP()
     get_memory_usage()
-    print "del Reader"
+    print("del Reader")
     del testjob
     get_memory_usage()
-    print "print HP dict"
+    print("print HP dict")
     for key1 in myhp:
-        print "key1=",key1
+        print("key1=",key1)
         for key2 in myhp[key1]:
-            print "key2=",key2
-    print "Read add one"
+            print("key2=",key2)
+    print("Read add one")
     testjob=JHEffPurityReader("Muon_bHad_pt__Usepoor_jetCharge",Year,AnayzerName,"/")
     get_memory_usage()
-    print "Get Obj Dict2"
+    print("Get Obj Dict2")
     myhp2=testjob.GetEffHP()
     get_memory_usage()
-    print "del 2nd Reader"
+    print("del 2nd Reader")
     del testjob
     get_memory_usage()
 
 
-    print "rm 1st HP dict"
+    print("rm 1st HP dict")
     del myhp
     get_memory_usage()
 
-    print "rm 2nd HP dict"
+    print("rm 2nd HP dict")
     del myhp2
     get_memory_usage()

@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from JHDatacard import JHDatacard
 import os
 def RunYear(Ana,Year,suffix):
-    print Year,suffix
+    print(Year,suffix)
     #Year="2018"
     Year=str(Year)
     YearCombine=Year.replace("preVFP","").replace("postVFP","")

@@ -6,6 +6,7 @@ from JHProcHist import JHProcHist
 from OpenDictFile import OpenDictFile
 from GetBinsX import GetBinsX 
 from array import array
+import sys
 maindir=os.getenv("GIT_HistoPlotterSys")
 ##
 import time
@@ -31,15 +32,19 @@ class Reader:
         self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/combine.root"
         #print self.inputpath
     def ReadInput(self):
+        print("<ReadInput> in JHReader")
         self.tfile=ROOT.TFile.Open(self.inputpath)
-        print self.inputpath
+        print(self.inputpath)
+        #print "TEST Read->LeptonPlus_bJetLeptonicSideTestJet_BadBJet__PT140ToInf/Tcand_mass/Data"
+        #self.tfile.Get("LeptonPlus_bJetLeptonicSideTestJet_BadBJet__PT140ToInf/Tcand_mass/Data")
+        #print "[TEST DONE]"
     def ReadConf(self):
         self.ReadProcConf()
         self.ReadNuiConf()
         self.ReadNormSysConfs()
     def ReadProcConf(self):
         _path=self.GetProcConfPath()
-        print "--input:",_path
+        print("--input:",_path)
         self.ProcConf=OpenDictFile(_path)
 
     def GetProcConfPath_OLD(self):
@@ -74,31 +79,86 @@ class Reader:
     def CheckIsData(self,p):
         return 1 if "IsData" in self.ProcConf[p] and self.ProcConf[p]["IsData"] else 0
     
+
+    def copy_hist_structure(self,_hist):
+        print("<copy_hist_structure>")
+        bins_array = _hist.GetXaxis().GetXbins()
+        print("bins_array.GetSize()",bins_array.GetSize())
+        if bins_array.GetSize() > 0:
+            bins = [bins_array.At(i) for i in range(bins_array.GetSize())]
+            bins_array_root = array('d', bins)
+            return ROOT.TH1D(_hist.GetName() + "_empty", _hist.GetTitle(), len(bins) - 1, bins_array_root)
+        else:
+            return ROOT.TH1D(_hist.GetName() + "_empty", _hist.GetTitle(),
+                        _hist.GetNbinsX(),
+                        _hist.GetXaxis().GetXmin(),
+                        _hist.GetXaxis().GetXmax())
+
     def GetEmptyHist(self,cut,x):
         _cut_x=cut+"/"+x
         #print _cut_x
+        print("<GetEmptyHist>")
+        ##Data
+        _path=_cut_x+"/Data"
+        print(_path)
+        _h_empty=self.tfile.Get(_path).Clone()
+        _h_empty.SetDirectory(0)
+        return _h_empty
+
         for _prockey in self.tfile.Get(_cut_x).GetListOfKeys():
+            print(_prockey.GetName())
             _classname=_prockey.GetClassName()
             #print "_prockey.GetName()=",_prockey.GetName()
             #print "_classname=",_classname
             if not "TH" in _classname: continue
             _proc=_prockey.GetName()
             _path=_cut_x+"/"+_proc
-            _h_empty=deepcopy(self.tfile.Get(_path))
+            print("copy hist")
+            #_h_empty=deepcopy(self.tfile.Get(_path).Clone())
+            print(_path)
+            
+            _h_empty=self.tfile.Get(_path).Clone()
+            _h_empty.SetDirectory(0)
+            #_h_empty=self.copy_hist_structure(self.tfile.Get(_path))
+            #_h_empty.SetDirectory(0)
+            print("[END]copy hist, reset the hist")
             _h_empty.Reset()
+            print("Return empty hist->",_path)
             return _h_empty
 
-        raise ValueError("No Histogram in "+_cut_x)
+        raise ValueError("No Histogram in "+_cut_x) ##if no return within the for-loop 
+
+
     def MakeHistContainer(self,cut,x,rebin=[]):
-        #print "<MakeHistContainer>"
+        print("<MakeHistContainer>")
+
         rebin=array('d',rebin)
+        print("rebin->",rebin)
+
         this_container={}
         #print "[MakeHistContainer] in JHReader.py, rebin=",rebin
         ##---Before Start, Make Empty Hist---##
-        self._h_empty=self.GetEmptyHist(cut,x)
-        if len(rebin)!=0 : 
+        print("Make Empty Hist")
+        #self._h_empty=self.GetEmptyHist(cut,x)
+        print(cut+"/"+x)
+        self._h_empty=self.tfile.Get(cut+"/"+x+"/Data").Clone()
+        print("SetDirectory(0) Empty Hist")
+        self._h_empty.SetDirectory(0)
+        print("Reset Empty Hist")
+        self._h_empty.Reset()
+        sys.stdout.flush()
+        
+
+        print("[END]Make Empty Hist")
+        if len(rebin)!=0 :
+            print("Rebinning Empty Hist")
             self._h_empty=self._h_empty.Rebin(len(rebin)-1,self._h_empty.GetName(),rebin)
+            print("[END]Rebinning Empty Hist")
+
+
+        print(list(self.ProcConf))
         for p in self.ProcConf:
+            print(">>>Make Combined Shape of",p)
             subplist=self.ProcConf[p]["procs"]
             IsData=self.CheckIsData(p)
             this_container[p]=JHProcHist(cut,x,p)
@@ -108,12 +168,12 @@ class Reader:
                 if not isinstance(subplist,list):##if subp info is  not a simple list.(For example it would have "weight"key)
                     if "weight" in subplist[subp] : p_weight=subplist[subp]["weight"]
                 ##-----NominalShape-----#
-                this_nominal=self.ReadNominalShape(cut,x,subp)
-                
+                this_nominal=self.ReadNominalShape(cut,x,subp).Clone()
+                this_nominal.SetDirectory(0)
                 if len(rebin)!=0 : this_nominal=this_nominal.Rebin(len(rebin)-1,this_nominal.GetName(),rebin)
                 if p_weight: this_nominal.Scale(p_weight)
 
-                this_h.SetHist(deepcopy(this_nominal))##set only nominal. No sys
+                this_h.SetHist(this_nominal)##set only nominal. No sys
                 
 
                 ##----NuisanceShape-----#
@@ -122,10 +182,10 @@ class Reader:
                         if nui!="electronscale" and nui!="muonscale" : continue
                     for idx1 in self.NuiConf[nui]:
                         for idx2 in self.NuiConf[nui][idx1]:
-                            this_sys=self.ReadNuisanceShape(cut,x,subp,nui,idx1,idx2)
+                            this_sys=self.ReadNuisanceShape(cut,x,subp,nui,idx1,idx2).Clone()
                             if len(rebin)!=0 : this_sys=this_sys.Rebin(len(rebin)-1,this_sys.GetName(),rebin)
                             if p_weight: this_sys.Scale(p_weight)
-                            this_h.SetHist(deepcopy(this_sys),nui,idx1,idx2)
+                            this_h.SetHist(this_sys,nui,idx1,idx2)
                     #this_h.MakeStatNuiShapes()
                     #this_h.SetEffTool(self.EffToolConf)
                 ##---Norm Variation Shapes---##
@@ -172,17 +232,19 @@ class Reader:
         _h=self.GetShapeFromFile(_path)
         if _h==False:
             if self.Verbose:
-                print "<Fail to read Shape>"
-                print _path
+                print("<Fail to read Shape>")
+                print(_path)
                 #raise ValueError("No Histogram in the TFile->"+self.inputpath)
-                print "return empty hist"
+                print("return empty hist")
             return self._h_empty            
         return _h
     def ReadNuisanceShape(self,cut,x,proc,nui,idx1,idx2):
         _path=self.GetHistPath(cut,x,proc,nui,idx1,idx2)
         _h=self.GetShapeFromFile(_path)
         if _h==False:
-            _hnom= deepcopy(self.ReadNominalShape(cut,x,proc))
+            #_hnom= deepcopy(self.ReadNominalShape(cut,x,proc))
+            _hnom= self.ReadNominalShape(cut,x,proc).Clone()
+            _hnom.SetDirectory(0)
             _hnom.SetName("__".join([cut,x,proc,nui,idx1,idx2]))
             return _hnom
         return _h
@@ -198,7 +260,7 @@ class Reader:
         _h = self.tfile.Get(_path)
         if not "TH" in str(type(_h)):
             if self.Verbose:
-                print "NoShape->",_path
+                print("NoShape->",_path)
             return False
         return _h
 
@@ -227,7 +289,7 @@ if __name__ == '__main__':
     idx_cut=0
     for cut in cut_and_x:
         idx_cut+=1
-        print idx_cut,"/",N
+        print(idx_cut,"/",N)
         for x in cut_and_x[cut]:
             if not cut in HistColl : HistColl[cut]={}
             myreader=Reader(AnaName,Year)
@@ -245,10 +307,10 @@ if __name__ == '__main__':
                     _sum+= HistColl[cut][x][subp].GetHist().Integral()
                 #print "sum=",_sum
                 if abs(1.-integral/_sum)>0.000001:
-                    print p,"!!!!! "
-                    print "integral=",integral
-                    print "_sum=",_sum
+                    print(p,"!!!!! ")
+                    print("integral=",integral)
+                    print("_sum=",_sum)
             del myreader
     end_time= time.time()
     execution_time = end_time - start_time
-    print "[runtime]", execution_time, "sec"
+    print("[runtime]", execution_time, "sec")

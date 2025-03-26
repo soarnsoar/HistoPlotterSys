@@ -19,6 +19,7 @@ class JHProcHist:## Hists Container of a proc
         self.IsErrorSet=False
         self.nmin_replica=10 ## # of members for replica sys.
         self.nmaxprint=5
+        self.nui_threshold=0.0001
     def Scale(self,norm):
         for sys in self.hdict:
             for idx1 in self.hdict[sys]:
@@ -137,11 +138,11 @@ class JHProcHist:## Hists Container of a proc
                 for this_idx2 in this_idx2list:
                     if h_plus_h2.GetHist().Integral()>0:
                         if h_plus_h2.GetHist(this_sys,this_idx1,this_idx2).Integral()/h_plus_h2.GetHist().Integral()>2:
-                            print "[Combine]"
-                            print "nom"
-                            print h_plus_h2.GetHist().Integral()
-                            print this_sys,this_idx1,this_idx2
-                            print h_plus_h2.GetHist(this_sys,this_idx1,this_idx2).Integral()
+                            print("[Combine]")
+                            print("nom")
+                            print(h_plus_h2.GetHist().Integral())
+                            print(this_sys,this_idx1,this_idx2)
+                            print(h_plus_h2.GetHist(this_sys,this_idx1,this_idx2).Integral())
         return h_plus_h2
 
     def Clone(self,h2):
@@ -211,6 +212,27 @@ class JHProcHist:## Hists Container of a proc
         return std_dev_plus,std_dev_minus
 
 
+    def GetSymHessianError(self,ynom,ibin,sys,idx1):
+        ##---Split them into plus/minus error
+        Nrep=0
+        
+        sum_dy2=0
+        
+        xvalue=self.hdict[sys][idx1]["0"].GetBinLowEdge(ibin)
+        for idx2 in self.hdict[sys][idx1]:
+            ysys=self.hdict[sys][idx1][idx2].GetBinContent(ibin)
+            this_dy=ysys-ynom
+            
+            sum_dy2+=(this_dy**2)
+            Nrep+=1
+
+        
+
+        vector_sum=sqrt(sum_dy2)
+
+        return vector_sum,vector_sum
+
+
     def GetHessianError(self,ynom,ibin,sys,idx1):
         ##---Split them into plus/minus error
         Nrep_plus=0
@@ -238,10 +260,12 @@ class JHProcHist:## Hists Container of a proc
         return vector_sum_plus,vector_sum_minus
 
 
-    def GetDiffError(self,ynom,ibin,sys,idx1):
+    def GetDiffError(self,ynom,ibin,sys,idx1,idx2list=False):
         dylist_plus=[0]
         dylist_minus=[0]
-        for idx2 in self.hdict[sys][idx1]:
+
+        if not idx2list : idx2list=self.hdict[sys][idx1]
+        for idx2 in idx2list:
             ysys=self.hdict[sys][idx1][idx2].GetBinContent(ibin)
             this_dy=ysys-ynom
             if this_dy > 0:
@@ -281,7 +305,7 @@ class JHProcHist:## Hists Container of a proc
 
         for idx1 in self.hdict[sys]:
             ##---SetErrorType
-            IsHessian=0
+            IsSymHessian=0
             IsUpDown=0
             IsReplica=0 ## use standard deviation of the variation elements
             IsPS=0
@@ -290,8 +314,8 @@ class JHProcHist:## Hists Container of a proc
                 if "AlphaS" in sys :
                     IsUpDown=1
                 else:
-                    IsHessian=1
-            if "QCDScale"==sys:
+                    IsSymHessian=1
+            elif "QCDScale"==sys:
                 IsQCDScale=1
             elif "ps" in sys:
                 IsPS=1
@@ -305,8 +329,8 @@ class JHProcHist:## Hists Container of a proc
             #if sys in self.dict_efftool and idx1 in self.dict_efftool[sys]:
             if IsReplica:
                 this_err_plus, this_err_minus=self.GetReplicaError(ynom,ibin,sys,idx1)
-            elif IsHessian:
-                this_err_plus, this_err_minus=self.GetHessianError(ynom,ibin,sys,idx1)
+            elif IsSymHessian:
+                this_err_plus, this_err_minus=self.GetSymHessianError(ynom,ibin,sys,idx1)
 
             elif IsPS:
                 this_err_plus_isr, this_err_minus_isr=self.GetDiffErrorUpDownIndex(ynom,ibin,sys,idx1,["0","1"])
@@ -321,7 +345,7 @@ class JHProcHist:## Hists Container of a proc
             elif IsQCDScale:
                 this_err_plus, this_err_minus=self.GetDiffError(ynom,ibin,sys,idx1)
             else:
-                print "No Error Type for",sys,idx1
+                print("No Error Type for",sys,idx1)
                 1/0
             sum_err2_plus+= (this_err_plus**2)
             sum_err2_minus+= (this_err_minus**2)
@@ -339,6 +363,9 @@ class JHProcHist:## Hists Container of a proc
         dict_err_plus={}
         dict_err_minus={}
         integral_total=0
+
+        #self.nui_threshold
+
         for ibin in range(1,Nbin+1):
             x1=hnom.GetBinLowEdge(ibin)
             x2=hnom.GetBinWidth(ibin)+x1
@@ -365,9 +392,9 @@ class JHProcHist:## Hists Container of a proc
             self.gr_sys.SetPoint(ibin-1,x,ynom)
             self.gr_sys.SetPointError(ibin-1,x-x1,x2-x,dytotal_minus,dytotal_plus)
         ##----Print 
-        print "----[Plus Error Rank]---"
+        print("----[Plus Error Rank]---")
         self.PrintSysRank(dict_err_plus,integral_total)
-        print "----[Minus Error Rank]---"
+        print("----[Minus Error Rank]---")
         self.PrintSysRank(dict_err_minus,integral_total)
         self.IsErrorSet=1
     def GetErrorGraph(self,_syslist=False):
@@ -378,13 +405,13 @@ class JHProcHist:## Hists Container of a proc
         sorted_keys = sorted(dict_err, key=dict_err.get, reverse=True)
         #sorted_dict = {key: dict_err[key] for key in sorted_keys}
         idx_sys=0
-        print "Proc=",self.proc
+        print("Proc=",self.proc)
         for sys in sorted_keys:
             idx_sys+=1
             dy=dict_err[sys]
             relerr=0
             if not integral_total == 0 : relerr=dy/integral_total*100
-            print '[',idx_sys,']',sys,round(relerr,3),"(%)"
+            print('[',idx_sys,']',sys,round(relerr,3),"(%)")
             if idx_sys>self.nmaxprint:break
         #for sys in sorted_keys:
         #    dy=dict_err[sys]

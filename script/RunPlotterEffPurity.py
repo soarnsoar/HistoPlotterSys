@@ -1,4 +1,5 @@
-#!/usr/bin/env python                                                                                                                                         
+#!/usr/bin/env python3
+
 import ROOT
 ROOT.gROOT.SetBatch(True)
 
@@ -45,8 +46,8 @@ if __name__ == '__main__':
     dirname=GetDirName(args.path_effplot)
     dirname="plot/"+dirname+"/"+Year
     for plotname in dict_effplot:
-        print "plotname=",plotname
-        print "YEAR=",Year
+        print("plotname=",plotname)
+        print("YEAR=",Year)
         outname=plotname
         list_EffToDraw=dict_effplot[plotname]["ListToDraw"]
         #Year=GetYear(list_EffToDraw)

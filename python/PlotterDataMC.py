@@ -13,12 +13,17 @@ import time
 maindir=os.getenv("GIT_HistoPlotterSys")
 
 class PlotterDataMC(PlotterBase):
-    def __init__(self,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix="",syslist=[],this_proclist=[],normsyspathlist=[]):
-        #print "---init <PlotterDataMC>"
+    def __init__(self,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix="",syslist=[],this_proclist=[],normsyspathlist=[],Rebinning=[]):
+
+        print("---init <PlotterDataMC>")
+        print("<Rebinning>")
+        print(Rebinning)
+
         self.suffix=suffix
         self.dirname=dirname
         self.outname=outname
         self.procpath=procpath
+        self.Rebinning=Rebinning
         if syslist==[]:
             self.syslist=False
         elif syslist==False:
@@ -87,8 +92,8 @@ class PlotterDataMC(PlotterBase):
         elif str(self.Year)=="2018":
             self.lumi=59.8
         else:
-            print "Year must be 2016/7/8"
-            print "self.Year","=",self.Year
+            print("Year must be 2016/7/8")
+            print("self.Year","=",self.Year)
             1/0
         self.lumi=str(self.lumi)
         self.lumi+=" fb^{-1}"
@@ -265,7 +270,7 @@ class PlotterDataMC(PlotterBase):
                 h.SetMinimum(0.)
     def SetLegend(self):
         nproc=len(self.myreader.ProcConf)
-        ncolomns=(nproc)/4 +1
+        ncolomns=int(nproc/4 +1)
         nrows=(nproc)/3+1
         x1=0.39
         x2=min(0.34+0.2*ncolomns,1.)
@@ -285,9 +290,10 @@ class PlotterDataMC(PlotterBase):
         self.leg.AddEntry(self.legendlist["Data"],"Data","E")
     def ReadData(self):
         self.myreader=Reader(self.AnaName,self.Year,self.suffix,self.procpath,self.normsyspathlist)
-        self.HistColl=self.myreader.MakeHistContainer(self.cut,self.x)
+        print("<ReadData>")
+        self.HistColl=self.myreader.MakeHistContainer(self.cut,self.x,self.Rebinning)
         self.myreader.CloseFile()
-
+        print("<END - ReadData>")
     
     def Save(self,isRatio):
         prefix=""
@@ -327,4 +333,4 @@ if __name__ == "__main__":
     myplotter=PlotterDataMC(Year,AnayzerName,cut,x,dirname,outname)
 
 
-    print get_memory_usage(),"MB"
+    print(get_memory_usage(),"MB")
