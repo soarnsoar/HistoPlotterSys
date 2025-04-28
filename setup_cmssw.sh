@@ -8,9 +8,11 @@ source $CMS_PATH/cmsset_default.sh
 #export SCRAM_ARCH=slc7_amd64_gcc700
 #export cmsswrel='cmssw/CMSSW_10_2_6'
 
-export SCRAM_ARCH=el9_amd64_gcc12
-export cmsswrel='cmssw/CMSSW_15_0_1'
+#export SCRAM_ARCH=el9_amd64_gcc12
+#export cmsswrel='cmssw/CMSSW_15_0_1'
 
+export SCRAM_ARCH=el9_amd64_gcc11 ## after tamsa os update, for multiple pykeras, CMSSW_13_2_9
+export cmsswrel='cmssw/CMSSW_13_2_9' ## after tamsa os update, test for multi pykeras
 
 
 
