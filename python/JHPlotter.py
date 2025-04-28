@@ -17,7 +17,7 @@ class PlotterBase:
         self.iPos = 11
         CMS_lumi.relPosX    = 0.08
         if( self.iPos==0 ): CMS_lumi.relPosX = 0.12
-
+        print("cmslumi, self.iPos=",self.iPos)
         H_ref = 600;
         W_ref = 800;
         W = W_ref
@@ -40,7 +40,8 @@ class PlotterBase:
         # references for T, B, L, R                               
         T = 0.08*H_ref
         B = 0.12*H_ref
-        L = 0.12*W_ref
+        #L = 0.12*W_ref
+        L = 0.2*W_ref
         R = 0.04*W_ref
         self.canvas.Close()
         del self.canvas

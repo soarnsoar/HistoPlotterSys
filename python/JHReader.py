@@ -44,6 +44,8 @@ class Reader:
         self.ReadNormSysConfs()
     def ReadProcConf(self):
         _path=self.GetProcConfPath()
+        if _path=="":
+            _path=self.GetProcConfPath_OLD()
         print("--input:",_path)
         self.ProcConf=OpenDictFile(_path)
 

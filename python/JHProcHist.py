@@ -83,7 +83,7 @@ class JHProcHist:## Hists Container of a proc
         return sorted(self.hdict[sys][idx1])
     def GetCombinedList(self,list1,list2):
         return list(set(list1+list2))
-    def Divide(self, h2, cut="",x="",proc=""):
+    def Divide(self, h2, cut="",x="",proc="",deno=0):
         h_over_h2=JHProcHist(cut,x,proc)
         this_syslist=self.GetCombinedList(self.GetSysList(),h2.GetSysList())
         for this_sys in this_syslist:
@@ -92,14 +92,23 @@ class JHProcHist:## Hists Container of a proc
                 this_idx2list=self.GetCombinedList(self.GetSysIdx2List(this_sys,this_idx1),h2.GetSysIdx2List(this_sys,this_idx1))
                 for this_idx2 in this_idx2list:
                     this_shape=deepcopy(self.GetHist(this_sys,this_idx1,this_idx2))
-                    this_shape.Divide(h2.GetHist(this_sys,this_idx1,this_idx2))
+                    if deno:
+                        this_shape.Divide(self.GetBinErrorZeroShape(h2.GetHist(this_sys,this_idx1,this_idx2)))
+                    else:
+                        this_shape.Divide(h2.GetHist(this_sys,this_idx1,this_idx2))
                     h_over_h2.SetHist(this_shape,this_sys,this_idx1,this_idx2)
         return h_over_h2
     def MakeBinErrorZero(self):
         Nbins=self.hdict["nom"]['0']['0'].GetNbinsX()
         for i in range(Nbins+2):
             self.hdict["nom"]['0']['0'].SetBinError(i,0.0)
-
+    def GetBinErrorZeroShape(self,h):
+        Nbins=h.GetNbinsX()
+        newh=h.Clone()
+        for i in range(Nbins+2):
+            newh.SetBinError(i,0.0)
+        return newh
+            
     def Subtract(self,h2,cut="",x="",proc=""):
         h_minus_h2=JHProcHist(cut,x,proc)
         this_syslist=self.GetCombinedList(self.GetSysList(),h2.GetSysList())

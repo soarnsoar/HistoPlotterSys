@@ -171,7 +171,9 @@ class PlotterComparisonBase(PlotterBase):
         self.list_hpratio=[]
         for i,hpdict in enumerate(self.list_HP):
             this_name=self.list_HP[i]["name"]
-            this_hp=hpdict["hp"].Divide(hpdeno)
+            #    def Divide(self, h2, cut="",x="",proc="",deno=0):
+            isdeno = i==0
+            this_hp=hpdict["hp"].Divide(hpdeno,"","","",isdeno)
             this_color=hpdict["color"]
 
             this_hp.GetHist().SetMarkerColor(this_color)
@@ -184,6 +186,7 @@ class PlotterComparisonBase(PlotterBase):
     def SetLegend(self):
         nproc=len(self.list_HP)
         ncolomns=(nproc)/4 +1
+        ncolomns=int(ncolomns)
         nrows=(nproc)/3 +1
         x1=0.39
         x2=0.34+0.2*ncolomns
@@ -192,6 +195,7 @@ class PlotterComparisonBase(PlotterBase):
         y2=0.89
         self.leg=ROOT.TLegend(x1,y1,x2,y2)
         self.leg.SetShadowColor(0)
+        print('ncolomns',ncolomns)
         self.leg.SetNColumns(ncolomns)
         
         for i in range(nproc):
