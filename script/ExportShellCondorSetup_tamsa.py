@@ -76,7 +76,7 @@ def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
         ncpu=ncpu_criteria
 
     lines.append('request_cpus = '+str(ncpu))
-    lines.append('accounting_group=group_cms')
+    #lines.append('accounting_group=group_cms')
     lines.append('JobBatchName='+jobname)
 
     lines.append('queue')
@@ -97,6 +97,7 @@ if __name__ == '__main__':
    parser.add_option("-m","--ncpu",   dest="ncpu", help="number of multicores",default=1)
    parser.add_option("-s","--submit",   dest="submit",action="store_true", help="submit",default=False)
    parser.add_option("-r","--memory",   dest="memory", help="memory")
+   parser.add_option("--nmax",   dest="nmax", help="nmax condor")
    (options, args) = parser.parse_args()
 
    command=options.command
@@ -104,9 +105,10 @@ if __name__ == '__main__':
    jobname=options.jobname
    submit=options.submit
    ncpu=options.ncpu
+   nmax=options.nmax
    if options.memory:
        memory=int(options.memory)
    else:
        memory=False
-   Export(workdir,command,jobname,submit,ncpu,memory)
+   Export(workdir,command,jobname,submit,ncpu,memory,3,nmax)
 

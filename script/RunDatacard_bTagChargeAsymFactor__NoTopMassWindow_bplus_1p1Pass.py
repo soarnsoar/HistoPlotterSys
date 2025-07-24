@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-from JHDatacard import JHDatacard
+from JHDatacard__bplus1p1Pass import JHDatacard
 import sys
 import os
 from ExportShellCondorSetup_tamsa import Export
 import argparse
+from collections import OrderedDict
+from OpenDictFile import OpenDictFile
 
 
 
-
-
-def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning=[]):
+def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,ScaleToPlusPass):
     print(Year,suffix)
     #Year="2018"
     Year=str(Year)
@@ -26,11 +26,12 @@ def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinnin
         dsuffix+="_PreCalcScalePDF"
     if DoSimple:
         dsuffix+="_DoSimple"
-
-    datacarddir="datacards"+dsuffix+"/bChargeID_AddAccuracy/"+Ana+"/"+suffix+"/"+xname
+        
+    dsuffix+="_bPlus1p1"
+    datacarddir="datacards"+dsuffix+"/bTagChargeAsymFactor/"+Ana+"/"+suffix+"/"+xname
     print("datacarddir=",datacarddir)
-    mydc=JHDatacard(Year,name,datacarddir)
-
+    mydc=JHDatacard(Year,name,datacarddir,1)
+    mydc.bplusPassScale=ScaleToPlusPass
     if StatOnly:
         mydc.StatOnly=1
     if PreCalcScalePDF:
@@ -43,7 +44,7 @@ def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinnin
     #/data6/Users/jhchoi/plotter/HistoPlotterSys/test/test_procconfig/TTsemiEff_test
 
     GIT_HistoPlotterSys=os.getenv("GIT_HistoPlotterSys")
-    procpath=GIT_HistoPlotterSys+"/test/test_procconfig/TTsemiEff_test/proc.py"
+    procpath=GIT_HistoPlotterSys+"/config/ForDC/TTsemiLepBtagChargeAsymEfficiencyMeasurement/proc.py"
     nuinamepath=GIT_HistoPlotterSys+"/names/nuisance/v2410/map_nuisance_name.py"
     mydc.LoadNuisanceNameMap(nuinamepath)
     mydc.AddNormSysPath("config/NormSys/lnN_nuisance_XSEC.py")
@@ -55,18 +56,20 @@ def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinnin
     mydc.RunWithSKFlatOutput(Year,Ana,cut,xname,procpath,suffix)
     mydc.Export()
 
-def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple):
+def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,ScaleToPlusPass):
     Year=str(Year)
     #def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
     statonly_suffix=""
     scalepdf_precalc_suffix=""
+    pseudo_suffix="__bPlus1p1"
     if StatOnly:
         statonly_suffix="__statonly"
     if PreCalcScalePDF:
         scalepdf_precalc_suffix="__precalcPDFScale"
     if DoSimple:
         scalepdf_precalc_suffix+="__doSimple"
-    WORKDIR="WORKDIR/bChargeID/AddAccuracy/datacard"+statonly_suffix+scalepdf_precalc_suffix+"/"+Ana+"/"+Year+"/"+suffix+"/"+cut+"/"+xname
+
+    WORKDIR="WORKDIR/bTagChargeAsym/datacard"+statonly_suffix+scalepdf_precalc_suffix+pseudo_suffix+"/"+Ana+"/"+Year+"/"+suffix+"/"+cut+"/"+xname
     
         
     jobname="datacard__"+Ana+"__"+Year
@@ -87,11 +90,15 @@ def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple):
     dosimple_option=""
     if DoSimple:
         dosimple_option=" --dosimple "
+    
+    #pseudo_option=" --ScaleToPlusPass "+str(ScaleToPlusPass)+" "
+    pseudo_option=""
+        
     commandlist=[]
     commandlist.append("cd "+curdir)
     GIT_HistoPlotterSys=os.getenv("GIT_HistoPlotterSys")
     this_scriptname=sys.argv[0].split("/")[-1]
-    commandlist.append("python -u "+GIT_HistoPlotterSys+"/script/"+this_scriptname+" --condorsub --xname "+xname+" --year "+Year+" --cut "+cut+statonly_option+scalepdf_precalc_option+dosimple_option)
+    commandlist.append("python3 -u "+GIT_HistoPlotterSys+"/script/"+this_scriptname+" --condorsub --xname "+xname+" --year "+Year+" --cut "+cut+statonly_option+scalepdf_precalc_option+dosimple_option+pseudo_option)
 
 
     command="&&".join(commandlist)
@@ -101,9 +108,9 @@ def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple):
 
 def GetRebinningHadronicSide():
     this_rebinning=[]
-    this_N=100
+    this_N=70
     xmin=100.
-    xmax=350.
+    xmax=240.
 
     dx=(xmax-xmin)/this_N
 
@@ -114,9 +121,9 @@ def GetRebinningHadronicSide():
 
 def GetRebinningLeptonicSide():
     this_rebinning=[]
-    this_N=40
+    this_N=45
     xmin=150.
-    xmax=250.
+    xmax=240.
 
     dx=(xmax-xmin)/this_N
 
@@ -126,37 +133,56 @@ def GetRebinningLeptonicSide():
     return this_rebinning
 
 
+def GetScaleToPlusPass(year):
+    maindir=os.getenv("GIT_HistoPlotterSys")
+    infopath=maindir+"/config/ForDC/TTsemiLepBtagChargeAsymEfficiencyMeasurement/YieldInfo/RunDatacard_bTagChargeAsymFactor__NoTopMassWindow_bplus_1p1Pass/"+str(year)+".py"
+    #OpenDictFile
+    this_info=OpenDictFile(infopath)
+    bplus_pass=this_info['N_bplus_PASS']
+    bplus_fail=this_info['N_bplus_FAIL']
+    p=bplus_pass
+    f=bplus_fail
+    r=f/p
+
+    #r'=r/1.1 - 1/11
+    rr=r/1.1-1/11.
+    #p'=f/r' = f/(r/1.1 -1/11)
+    pp=f/rr
+
+    this_scale=pp/p
+    print(year,"] Scale bplus to",this_scale)
+    return this_scale
+    
 if __name__ == '__main__':
     ##----Setup-----##
     Years=["2016preVFP","2016postVFP","2017","2018"]
         
-    Ana="TTsemiLepChargeScoreEfficiencyMeasurement_TightMatch"
-    suffix="runSys__use_beff__ForMeasure__"
+    Ana="TTsemiLepBtagChargeAsymEfficiencyMeasurement"
+    #suffix="runSys__TopMassWindow__"
+    suffix="runSys__ApplyBtagSF__"
     
         
     cutlist=[]
     LeptonChs=["LeptonMinus_","LeptonPlus_"] ##2
     TDecayChs=["bJetHadronicSide","bJetLeptonicSide"] ##2
-    ChargeObjs=["TestMuon_HasSLTMuonHigh","TestMuon_HasSLTMuonLow","TestElectron_HasSLTElectronHigh","TestElectron_HasSLTElectronLow","TestJet_GoodBJet","TestJet_BadBJet"]##6
-    SoftLeptonChs=["Plus","Minus"]
-    #SoftLeptonChs=[""]
-    PtBins=["__PT30To50","__PT50To70","__PT70To100","__PT100To140","__PT140ToInf"]##Need To Fix later -> 30to50 ##5
+    ProbePassFails=["__PASS","__FAIL"]
+
+
+
     
     for LeptonCh in LeptonChs:
         for TDecayCh in TDecayChs:
-            for ChargeObj in ChargeObjs:
-                for SoftLeptonCh in SoftLeptonChs:
-                    
-                    for PtBin in PtBins:
-                        cutname=LeptonCh+TDecayCh+ChargeObj+SoftLeptonCh+PtBin
-                        cutlist.append(cutname)
+            for PASSFAIL in ProbePassFails:
+                cutname=LeptonCh+TDecayCh+PASSFAIL
+                cutlist.append(cutname)
 
 
     ##---
-    parser = argparse.ArgumentParser(description='RunDatacard_TTsemiEff_AddAccuracy')
+    parser = argparse.ArgumentParser(description='RunDatacard_bTagChargeAsymFactor.py')
     parser.add_argument('--condor', dest='runCondor', action="store_true", default=False)
     parser.add_argument('--condorsub', dest='runCondorSub', action="store_true", default=False)
     parser.add_argument('--statonly', dest='StatOnly', action="store_true", default=False)
+    #parser.add_argument('--ScaleToPlusPass', dest='ScaleToPlusPass', default=1.)
     parser.add_argument('--precalcPDFScale', dest='PreCalcScalePDF', action="store_true", default=False)
     parser.add_argument('--dosimple', dest='DoSimple', action="store_true", default=False)
 
@@ -177,6 +203,8 @@ if __name__ == '__main__':
     StatOnly=args.StatOnly
     PreCalcScalePDF=args.PreCalcScalePDF
     DoSimple=args.DoSimple
+
+    #ScaleToPlusPass=float(args.ScaleToPlusPass)
     if DoSimple:
         PreCalcScalePDF=1
     ##--THad ->[100,350]
@@ -195,9 +223,10 @@ if __name__ == '__main__':
 
     if runCondor:
         for Year in Years:
+            ScaleToPlusPass=GetScaleToPlusPass(Year)
             for cut in cutlist:
                 print(cut)
-                RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple)       
+                RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,ScaleToPlusPass)       
     else:
 
         if runCondorSub:
@@ -207,16 +236,18 @@ if __name__ == '__main__':
                 Rebinning=GetRebinningLeptonicSide()
             if "HadronicSide" in this_cut and "Tcand_mass" in xname:
                 Rebinning=GetRebinningHadronicSide()
-            RunYear(Ana,this_Year,suffix,this_cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning)
+            ScaleToPlusPass=GetScaleToPlusPass(this_Year)
+            RunYear(Ana,this_Year,suffix,this_cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,ScaleToPlusPass)
         else:
             for Year in Years:
+                ScaleToPlusPass=GetScaleToPlusPass(Year)
                 for cut in cutlist:
                     print(cut)
                     if "LeptonicSide" in cut and "Tcand_mass" in xname:
                         Rebinning=GetRebinningLeptonicSide()
                     if "HadronicSide" in cut and "Tcand_mass" in xname:
                         Rebinning=GetRebinningHadronicSide()
-                    RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning)
+                    RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,ScaleToPlusPass)
         
 
 

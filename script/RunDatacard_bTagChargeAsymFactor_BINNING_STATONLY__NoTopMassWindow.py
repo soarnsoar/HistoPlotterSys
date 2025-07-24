@@ -9,7 +9,7 @@ import argparse
 
 
 
-def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning=[]):
+def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,pseudo):
     print(Year,suffix)
     #Year="2018"
     Year=str(Year)
@@ -26,10 +26,11 @@ def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinnin
         dsuffix+="_PreCalcScalePDF"
     if DoSimple:
         dsuffix+="_DoSimple"
-
-    datacarddir="datacards"+dsuffix+"/bChargeID_AddAccuracy/"+Ana+"/"+suffix+"/"+xname
+    if pseudo:
+        dsuffix+="_Pesudo"
+    datacarddir="datacards"+dsuffix+"/bTagChargeAsymFactor_BINNING_STATONLY/"+Ana+"/"+suffix+"/"+xname
     print("datacarddir=",datacarddir)
-    mydc=JHDatacard(Year,name,datacarddir)
+    mydc=JHDatacard(Year,name,datacarddir,pseudo)
 
     if StatOnly:
         mydc.StatOnly=1
@@ -43,7 +44,7 @@ def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinnin
     #/data6/Users/jhchoi/plotter/HistoPlotterSys/test/test_procconfig/TTsemiEff_test
 
     GIT_HistoPlotterSys=os.getenv("GIT_HistoPlotterSys")
-    procpath=GIT_HistoPlotterSys+"/test/test_procconfig/TTsemiEff_test/proc.py"
+    procpath=GIT_HistoPlotterSys+"/config/ForDC/TTsemiLepBtagChargeAsymEfficiencyMeasurement/proc.py"
     nuinamepath=GIT_HistoPlotterSys+"/names/nuisance/v2410/map_nuisance_name.py"
     mydc.LoadNuisanceNameMap(nuinamepath)
     mydc.AddNormSysPath("config/NormSys/lnN_nuisance_XSEC.py")
@@ -55,18 +56,21 @@ def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinnin
     mydc.RunWithSKFlatOutput(Year,Ana,cut,xname,procpath,suffix)
     mydc.Export()
 
-def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple):
+def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,pseudo):
     Year=str(Year)
     #def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
     statonly_suffix=""
     scalepdf_precalc_suffix=""
+    pseudo_suffix=""
     if StatOnly:
         statonly_suffix="__statonly"
     if PreCalcScalePDF:
         scalepdf_precalc_suffix="__precalcPDFScale"
     if DoSimple:
         scalepdf_precalc_suffix+="__doSimple"
-    WORKDIR="WORKDIR/bChargeID/AddAccuracy/datacard"+statonly_suffix+scalepdf_precalc_suffix+"/"+Ana+"/"+Year+"/"+suffix+"/"+cut+"/"+xname
+    if pseudo:
+        pseudo_suffix="__pseudo"
+    WORKDIR="WORKDIR/bTagChargeAsym_BINNING_STATONLY/datacard"+statonly_suffix+scalepdf_precalc_suffix+pseudo_suffix+"/"+Ana+"/"+Year+"/"+suffix+"/"+cut+"/"+xname
     
         
     jobname="datacard__"+Ana+"__"+Year
@@ -87,11 +91,16 @@ def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple):
     dosimple_option=""
     if DoSimple:
         dosimple_option=" --dosimple "
+    pseudo_option=""
+    if pseudo:
+        pseudo_option=" --pseudo "
+
+        
     commandlist=[]
     commandlist.append("cd "+curdir)
     GIT_HistoPlotterSys=os.getenv("GIT_HistoPlotterSys")
     this_scriptname=sys.argv[0].split("/")[-1]
-    commandlist.append("python -u "+GIT_HistoPlotterSys+"/script/"+this_scriptname+" --condorsub --xname "+xname+" --year "+Year+" --cut "+cut+statonly_option+scalepdf_precalc_option+dosimple_option)
+    commandlist.append("python3 -u "+GIT_HistoPlotterSys+"/script/"+this_scriptname+" --condorsub --xname "+xname+" --year "+Year+" --cut "+cut+statonly_option+scalepdf_precalc_option+dosimple_option+pseudo_option)
 
 
     command="&&".join(commandlist)
@@ -101,9 +110,9 @@ def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple):
 
 def GetRebinningHadronicSide():
     this_rebinning=[]
-    this_N=100
+    this_N=70
     xmin=100.
-    xmax=350.
+    xmax=240.
 
     dx=(xmax-xmin)/this_N
 
@@ -114,9 +123,9 @@ def GetRebinningHadronicSide():
 
 def GetRebinningLeptonicSide():
     this_rebinning=[]
-    this_N=40
+    this_N=45
     xmin=150.
-    xmax=250.
+    xmax=240.
 
     dx=(xmax-xmin)/this_N
 
@@ -130,33 +139,34 @@ if __name__ == '__main__':
     ##----Setup-----##
     Years=["2016preVFP","2016postVFP","2017","2018"]
         
-    Ana="TTsemiLepChargeScoreEfficiencyMeasurement_TightMatch"
-    suffix="runSys__use_beff__ForMeasure__"
+    Ana="TTsemiLepBtagChargeAsymEfficiencyMeasurement_BINNING"
+    #suffix="runSys__TopMassWindow__"
+    suffix="ApplyBtagSF__"
     
         
     cutlist=[]
     LeptonChs=["LeptonMinus_","LeptonPlus_"] ##2
     TDecayChs=["bJetHadronicSide","bJetLeptonicSide"] ##2
-    ChargeObjs=["TestMuon_HasSLTMuonHigh","TestMuon_HasSLTMuonLow","TestElectron_HasSLTElectronHigh","TestElectron_HasSLTElectronLow","TestJet_GoodBJet","TestJet_BadBJet"]##6
-    SoftLeptonChs=["Plus","Minus"]
-    #SoftLeptonChs=[""]
-    PtBins=["__PT30To50","__PT50To70","__PT70To100","__PT100To140","__PT140ToInf"]##Need To Fix later -> 30to50 ##5
+    ProbePassFails=["__PASS","__FAIL"]
+    PTBINS=["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
+    ETABINS=["Eta0To0p8","Eta0p8To1p6","Eta1p6To2","Eta2To2p5"] #
+
     
     for LeptonCh in LeptonChs:
         for TDecayCh in TDecayChs:
-            for ChargeObj in ChargeObjs:
-                for SoftLeptonCh in SoftLeptonChs:
-                    
-                    for PtBin in PtBins:
-                        cutname=LeptonCh+TDecayCh+ChargeObj+SoftLeptonCh+PtBin
+            for PASSFAIL in ProbePassFails:
+                for PTBIN in PTBINS:
+                    for ETABIN in ETABINS:
+                        cutname=LeptonCh+TDecayCh+PASSFAIL+"__"+PTBIN+"__"+ETABIN
                         cutlist.append(cutname)
 
 
     ##---
-    parser = argparse.ArgumentParser(description='RunDatacard_TTsemiEff_AddAccuracy')
+    parser = argparse.ArgumentParser(description='RunDatacard_bTagChargeAsymFactor.py')
     parser.add_argument('--condor', dest='runCondor', action="store_true", default=False)
     parser.add_argument('--condorsub', dest='runCondorSub', action="store_true", default=False)
     parser.add_argument('--statonly', dest='StatOnly', action="store_true", default=False)
+    parser.add_argument('--pseudo', dest='pseudo', action="store_true", default=False)
     parser.add_argument('--precalcPDFScale', dest='PreCalcScalePDF', action="store_true", default=False)
     parser.add_argument('--dosimple', dest='DoSimple', action="store_true", default=False)
 
@@ -177,6 +187,7 @@ if __name__ == '__main__':
     StatOnly=args.StatOnly
     PreCalcScalePDF=args.PreCalcScalePDF
     DoSimple=args.DoSimple
+    pseudo=args.pseudo
     if DoSimple:
         PreCalcScalePDF=1
     ##--THad ->[100,350]
@@ -197,7 +208,7 @@ if __name__ == '__main__':
         for Year in Years:
             for cut in cutlist:
                 print(cut)
-                RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple)       
+                RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,pseudo)       
     else:
 
         if runCondorSub:
@@ -207,7 +218,7 @@ if __name__ == '__main__':
                 Rebinning=GetRebinningLeptonicSide()
             if "HadronicSide" in this_cut and "Tcand_mass" in xname:
                 Rebinning=GetRebinningHadronicSide()
-            RunYear(Ana,this_Year,suffix,this_cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning)
+            RunYear(Ana,this_Year,suffix,this_cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,pseudo)
         else:
             for Year in Years:
                 for cut in cutlist:
@@ -216,7 +227,7 @@ if __name__ == '__main__':
                         Rebinning=GetRebinningLeptonicSide()
                     if "HadronicSide" in cut and "Tcand_mass" in xname:
                         Rebinning=GetRebinningHadronicSide()
-                    RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning)
+                    RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,pseudo)
         
 
 

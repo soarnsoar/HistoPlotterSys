@@ -14,15 +14,15 @@ from OpenDictFile import OpenDictFile
 from ExportShellCondorSetup_tamsa import Export
 
 
-def Run(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths):
+def Run(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths,rebinning):
     print("suffix",suffix)
-    myplotter=PlotterDataMC(Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths)
+    myplotter=PlotterDataMC(Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths,rebinning)
     myplotter.SetBlind(blind)
     myplotter.RunDraw()
     del myplotter
 
 
-def RunWithCondor(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths):
+def RunWithCondor(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths,rebinning):
     GIT_HistoPlotterSys=os.getenv("GIT_HistoPlotterSys")
     #export PYTHONPATH
     PYTHONPATH=os.getenv("PYTHONPATH")
@@ -48,7 +48,7 @@ def RunWithCondor(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,
     pycommandlist.append('sys.path.append("'+GIT_HistoPlotterSys+'/script")')
     pycommandlist.append("from RunPlotterDataMC import Run")
     myarglist=[]
-    myarglist_raw=[blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths]
+    myarglist_raw=[blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths,rebinning]
     is_string = lambda value: isinstance(value, str)
 
     for this_arg in myarglist_raw:
@@ -86,6 +86,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', dest='procpath', default="")    
     parser.add_argument('-b', dest='blind', action="store_true",default=False)
     parser.add_argument('-n', dest='normsyspaths', default=False)
+    parser.add_argument('-r', dest='rebinning_path', default=False)
     parser.add_argument('--print', dest='print_cut_and_x', action="store_true",default=False)
 
 
@@ -103,7 +104,11 @@ if __name__ == '__main__':
     suffix=args.suffix
     procpath=args.procpath
     blind=args.blind
+    rebinning_path=args.rebinning_path
 
+    dict_rebinning={}
+    if rebinning_path:
+        dict_rebinning=OpenDictFile(rebinning_path)
 
 
     this_cut=args.this_cut
@@ -152,11 +157,18 @@ if __name__ == '__main__':
             print(cut,x)
             thisdir=directory+"/"+cut
             name=x
+            ##rebinning
+            rebinning=[]
+            if cut in dict_rebinning:
+                if x in dict_rebinning[cut]:
+                    rebinning=dict_rebinning[cut][x]
+                    print("REBINNING",rebinning)
+            ##
             if args.condor:
-                RunWithCondor(blind,year,AnalyzerName,cut,x,procpath,thisdir,name,suffix,this_var,this_proc,normsyspaths)
+                RunWithCondor(blind,year,AnalyzerName,cut,x,procpath,thisdir,name,suffix,this_var,this_proc,normsyspaths,rebinning)
                 
             else:
-                Run(blind,year,AnalyzerName,cut,x,procpath,thisdir,name,suffix,this_var,this_proc,normsyspaths)
+                Run(blind,year,AnalyzerName,cut,x,procpath,thisdir,name,suffix,this_var,this_proc,normsyspaths,rebinning)
 
 
         icut+=1
