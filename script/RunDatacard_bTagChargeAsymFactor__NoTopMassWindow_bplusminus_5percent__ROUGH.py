@@ -9,7 +9,7 @@ from OpenDictFile import OpenDictFile
 
 
 
-def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,ScaleToPlusPass,ScaleToPlusFail,ScaleToMinusPass,ScaleToMinusFail):
+def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,ScaleToPlusPass,ScaleToMinusPass):
     print(Year,suffix)
     #Year="2018"
     Year=str(Year)
@@ -32,10 +32,7 @@ def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinnin
     print("datacarddir=",datacarddir)
     mydc=JHDatacard(Year,name,datacarddir,1)
     mydc.bplusPassScale=ScaleToPlusPass
-    mydc.bplusFailScale=ScaleToPlusFail
-
     mydc.bminusPassScale=ScaleToMinusPass
-    mydc.bminusFailScale=ScaleToMinusFail
     if StatOnly:
         mydc.StatOnly=1
     if PreCalcScalePDF:
@@ -64,7 +61,7 @@ def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinnin
     print(Year,suffix,cut)
     print('mydc.sum_bplus=',mydc.sum_bplus)
     print('mydc.sum_bminus=',mydc.sum_bminus)
-def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple):
+def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,ScaleToPlusPass,ScaleToMinusPass):
     Year=str(Year)
     #def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
     statonly_suffix=""
@@ -141,7 +138,7 @@ def GetRebinningLeptonicSide():
     return this_rebinning
 
 
-def GetScaleToPlus(year):
+def GetScaleToPlusPass(year):
     #return 1
     maindir=os.getenv("GIT_HistoPlotterSys")
     #infopath=maindir+"/config/ForDC/TTsemiLepBtagChargeAsymEfficiencyMeasurement/YieldInfo/RunDatacard_bTagChargeAsymFactor__NoTopMassWindow_bplusminus_5percent/"+str(year)+".py"
@@ -152,14 +149,18 @@ def GetScaleToPlus(year):
     bplus_fail=this_info['N_bplus_FAIL']
     p=bplus_pass
     f=bplus_fail
+    r=f/p
+    
+    #r'=r/1.05 - 5/105
+    rr=r/1.05-5/105
+    #p'=f/r' = f/(r/1.05 -5/105)
+    pp=f/rr
 
-    ScaleToPass=1.05
-    ##f'=f-0.05p
-    ScaleToFail=(f-0.05*p)/f
+    this_scale=pp/p
+    print(year,"] Scale bplus to",this_scale)
+    return this_scale
 
-    return ScaleToPass,ScaleToFail
-
-def GetScaleToMinus(year):
+def GetScaleToMinusPass(year):
     #return 1
     maindir=os.getenv("GIT_HistoPlotterSys")
     #infopath=maindir+"/config/ForDC/TTsemiLepBtagChargeAsymEfficiencyMeasurement/YieldInfo/RunDatacard_bTagChargeAsymFactor__NoTopMassWindow_bplusminus_5percent/"+str(year)+".py"
@@ -170,11 +171,16 @@ def GetScaleToMinus(year):
     bminus_fail=this_info['N_bminus_FAIL']
     p=bminus_pass
     f=bminus_fail
+    r=f/p
 
-    ScaleToPass=0.95
-    ##f'=f+0.05p
-    ScaleToFail=(f+0.05*p)/f
-    return ScaleToPass,ScaleToFail
+    #r'=r/0.95 + 5/95
+    rr=r/0.95 + 5/95
+    #p'=f/r' = f/(r/0.95 +5/95)
+    pp=f/rr
+
+    this_scale=pp/p
+    print(year,"] Scale bminus to",this_scale)
+    return this_scale
 
 if __name__ == '__main__':
     ##----Setup-----##
@@ -184,8 +190,8 @@ if __name__ == '__main__':
     Ana="TTsemiLepBtagChargeAsymEfficiencyMeasurement_BINNING"
     #suffix="runSys__TopMassWindow__"
     #suffix="runSys__ApplyBtagSF__"
-    suffix="runSys__ApplyBtagSF__use_beff__JETPUID_L__chi2kincut__"
-    #suffix="ApplyBtagSF__use_beff__JETPUID_L__chi2kincut__"
+    #suffix="runSys__ApplyBtagSF__use_beff__JETPUID_L__chi2kincut__"
+    suffix="ApplyBtagSF__use_beff__JETPUID_L__chi2kincut__"
         
     cutlist=[]
     LeptonChs=["LeptonMinus_","LeptonPlus_"] ##2
@@ -248,11 +254,11 @@ if __name__ == '__main__':
 
     if runCondor:
         for Year in Years:
-            ScaleToPlusPass,ScaleToPlusFail=GetScaleToPlus(Year)
-            ScaleToMinusPass,ScaleToMinusFail=GetScaleToMinus(Year)
+            ScaleToPlusPass=GetScaleToPlusPass(Year)
+            ScaleToMinusPass=GetScaleToMinusPass(Year)
             for cut in cutlist:
                 print(cut)
-                RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple)
+                RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,ScaleToPlusPass,ScaleToMinusPass)       
     else:
 
         if runCondorSub:
@@ -262,13 +268,13 @@ if __name__ == '__main__':
                 Rebinning=GetRebinningLeptonicSide()
             if "HadronicSide" in this_cut and "Tcand_mass" in xname:
                 Rebinning=GetRebinningHadronicSide()
-            ScaleToPlusPass,ScaleToPlusFail=GetScaleToPlus(this_Year)
-            ScaleToMinusPass,ScaleToMinusFail=GetScaleToMinus(this_Year)
-            RunYear(Ana,this_Year,suffix,this_cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,ScaleToPlusPass,ScaleToPlusFail,ScaleToMinusPass,ScaleToMinusFail)
+            ScaleToPlusPass=GetScaleToPlusPass(this_Year)
+            ScaleToMinusPass=GetScaleToMinusPass(this_Year)
+            RunYear(Ana,this_Year,suffix,this_cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,ScaleToPlusPass,ScaleToMinusPass)
         else:
             for Year in Years:
-                ScaleToPlusPass,ScaleToPlusFail=GetScaleToPlus(Year)
-                ScaleToMinusPass,ScaleToMinusFail=GetScaleToMinus(Year)
+                ScaleToPlusPass=GetScaleToPlusPass(Year)
+                ScaleToMinusPass=GetScaleToMinusPass(Year)
                 for cut in cutlist:
                     print(cut)
                     if "LeptonicSide" in cut and "Tcand_mass" in xname:
@@ -276,7 +282,7 @@ if __name__ == '__main__':
                     if "HadronicSide" in cut and "Tcand_mass" in xname:
                         Rebinning=GetRebinningHadronicSide()
                     #Rebinning=[]
-                    RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,ScaleToPlusPass,ScaleToPlusFail,ScaleToMinusPass,ScaleToMinusFail)
+                    RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,ScaleToPlusPass,ScaleToMinusPass)
         
 
 
