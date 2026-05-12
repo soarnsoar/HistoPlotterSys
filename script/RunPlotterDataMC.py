@@ -17,20 +17,33 @@ from ExportShellCondorSetup_tamsa import Export
 def Run(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths,rebinning):
     print("suffix",suffix)
     myplotter=PlotterDataMC(Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths,rebinning)
+    #    def __init__(self,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix="",syslist=[],this_proclist=[],normsyspathlist=[],Rebinning=[],EmptyNuisance=False):
+
     myplotter.SetBlind(blind)
     myplotter.RunDraw()
     del myplotter
+def Run_NormBinSize(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths,rebinning):
+    print("suffix",suffix)
+    myplotter=PlotterDataMC(Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths,rebinning,False,True)
+    #myplotter.SetDivideByBinSize(True)
+    #    def __init__(self,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix="",syslist=[],this_proclist=[],normsyspathlist=[],Rebinning=[],EmptyNuisance=False,DivideByBinSize=False):
+    myplotter.SetBlind(blind)
+    myplotter.RunDraw()
+    del myplotter
+    
 
-
-def RunWithCondor(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths,rebinning):
+def RunWithCondor(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths,rebinning,normbybin):
     GIT_HistoPlotterSys=os.getenv("GIT_HistoPlotterSys")
     #export PYTHONPATH
     PYTHONPATH=os.getenv("PYTHONPATH")
     curdir=str(os.getcwd())
-
-    
+    this_var_suffix="__".join(this_var)
+    this_proc_suffix="__".join(this_proc)
+    normbybin_suffix=""
+    if normbybin:
+        normbybin_suffix="__normbybin"
     ##batch setup##
-    WORKDIR="/".join(['WORKDIR',AnalyzerName,str(Year),suffix,"isBlind__"+str(blind),cut,x])
+    WORKDIR="/".join(['WORKDIR'+normbybin_suffix,AnalyzerName,str(Year),suffix,"isBlind__"+str(blind),cut,x,this_var_suffix,this_proc_suffix])
     os.system('mkdir -p '+WORKDIR)
     jobname="plotter__"+AnalyzerName+"__"+Year
     submit=True
@@ -46,7 +59,10 @@ def RunWithCondor(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,
     pycommandlist=[]
     pycommandlist.append('import sys')
     pycommandlist.append('sys.path.append("'+GIT_HistoPlotterSys+'/script")')
-    pycommandlist.append("from RunPlotterDataMC import Run")
+    if normbybin:
+        pycommandlist.append("from RunPlotterDataMC import Run_NormBinSize as Run")
+    else:
+        pycommandlist.append("from RunPlotterDataMC import Run")
     myarglist=[]
     myarglist_raw=[blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,this_var,this_proc,normsyspaths,rebinning]
     is_string = lambda value: isinstance(value, str)
@@ -66,7 +82,7 @@ def RunWithCondor(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,
     f.close()
     ##--[END] Make python script
 
-    commandlist.append("python "+WORKDIR+"/Condor_RunPlotterDataMC.py")
+    commandlist.append("python3 "+WORKDIR+"/Condor_RunPlotterDataMC.py")
     command="&&".join(commandlist)
 
     
@@ -95,6 +111,7 @@ if __name__ == '__main__':
     parser.add_argument('-x', dest='this_x', default="")
     parser.add_argument('--proconly', dest='this_proc', default="")
     parser.add_argument('--condor', dest='condor', action="store_true", default=False)
+    parser.add_argument('--normbybin', dest='normbybin', action="store_true", default=False)
 
 
     args = parser.parse_args()
@@ -105,7 +122,9 @@ if __name__ == '__main__':
     procpath=args.procpath
     blind=args.blind
     rebinning_path=args.rebinning_path
+    normbybin=args.normbybin
 
+    
     dict_rebinning={}
     if rebinning_path:
         dict_rebinning=OpenDictFile(rebinning_path)
@@ -165,10 +184,13 @@ if __name__ == '__main__':
                     print("REBINNING",rebinning)
             ##
             if args.condor:
-                RunWithCondor(blind,year,AnalyzerName,cut,x,procpath,thisdir,name,suffix,this_var,this_proc,normsyspaths,rebinning)
+                RunWithCondor(blind,year,AnalyzerName,cut,x,procpath,thisdir,name,suffix,this_var,this_proc,normsyspaths,rebinning,normbybin)
                 
             else:
-                Run(blind,year,AnalyzerName,cut,x,procpath,thisdir,name,suffix,this_var,this_proc,normsyspaths,rebinning)
+                if normbybin:
+                    Run_NormBinSize(blind,year,AnalyzerName,cut,x,procpath,thisdir,name,suffix,this_var,this_proc,normsyspaths,rebinning)
+                else:
+                    Run(blind,year,AnalyzerName,cut,x,procpath,thisdir,name,suffix,this_var,this_proc,normsyspaths,rebinning)
 
 
         icut+=1

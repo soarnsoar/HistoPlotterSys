@@ -27,7 +27,9 @@ def GetHPByInfo(thisDrawInfo,rebin):
     doNorm=0
     if "doNorm" in thisDrawInfo:
         doNorm= thisDrawInfo["doNorm"]
-    
+
+
+        
     #"proc":[
     #("TTLJ From bplus",1),
     #("TTLJ From bplus",1),
@@ -62,15 +64,23 @@ def GetHPByInfo(thisDrawInfo,rebin):
 
 def RunThisInfo(path_plotconf,plotname,plotinfo,year):
     xlabel=plotinfo["xlabel"]
+    ylabel=""
+    if 'ylabel' in plotinfo:
+        ylabel=plotinfo["ylabel"]
     rebin=[]
     if "rebin" in plotinfo:
         rebin=plotinfo["rebin"]
+    doDiff=0
+    if "doDiff" in plotinfo:
+        doDiff= plotinfo["doDiff"]
         
     dirname="plot/"+"/"+ path_plotconf.replace(".py","").replace("/","__") +"/"+year+"/"
     outname=plotname
     plotter=PlotterComparisonBase(year,dirname,outname)
     plotter.SetTitleX(xlabel)
-
+    plotter.SetTitleY(ylabel)
+    plotter.doDiff=doDiff
+    
     ListToDraw=plotinfo["ListToDraw"]
 
 
