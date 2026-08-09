@@ -7,6 +7,7 @@ import os
 maindir=os.getenv("GIT_HistoPlotterSys")
 import argparse
 from PlotterComparisonBase import PlotterComparisonBase
+from JHProcHist import JHProcHist
 from JHReader import Reader
 from OpenDictFile import OpenDictFile
 maindir=os.getenv("GIT_HistoPlotterSys")
@@ -22,7 +23,9 @@ def GetHPByInfo(thisDrawInfo,rebin):
     cut=thisDrawInfo["cut"]
     x=thisDrawInfo["x"]
     proclist=thisDrawInfo["proc"]
-    
+    nuisance=False
+    if "nuisance" in thisDrawInfo:
+        nuisance=thisDrawInfo["nuisance"]
     
     doNorm=0
     if "doNorm" in thisDrawInfo:
@@ -40,7 +43,7 @@ def GetHPByInfo(thisDrawInfo,rebin):
     this_HistColl=this_myreader.MakeHistContainer(cut,x,rebin)
     this_myreader.CloseFile()
     
-    ###----Add each hp in this_HistColl[proc]
+    ###----Add each hp in this_HistColl[proc] 
     ##---init with 1st proc
     procinfo=proclist[0]
     procname=procinfo[0]
@@ -55,6 +58,11 @@ def GetHPByInfo(thisDrawInfo,rebin):
         this_hp.Scale(scale)
         ret=ret.Combine(this_hp,cut,x,label)
     this_norm=1
+    if nuisance:
+        ret2=JHProcHist(cut,x,procname)
+        #    def GetHist(self,sys="nom",idx1=0,idx2=0):
+        ret2.SetHist(ret.GetHist(nuisance[0],nuisance[1],nuisance[2]))
+        ret=ret2
     if doNorm:
         this_norm=ret.GetHist().Integral()
         if this_norm>0:
@@ -73,10 +81,19 @@ def RunThisInfo(path_plotconf,plotname,plotinfo,year):
     doDiff=0
     if "doDiff" in plotinfo:
         doDiff= plotinfo["doDiff"]
+
+
+    ratio_range=False
+    if "ratio_range" in plotinfo:
+        ratio_range= plotinfo["ratio_range"]
         
     dirname="plot/"+"/"+ path_plotconf.replace(".py","").replace("/","__") +"/"+year+"/"
     outname=plotname
     plotter=PlotterComparisonBase(year,dirname,outname)
+    if ratio_range!=False:
+        plotter.rmin=ratio_range[0]
+        plotter.rmax=ratio_range[1]
+    
     plotter.SetTitleX(xlabel)
     plotter.SetTitleY(ylabel)
     plotter.doDiff=doDiff

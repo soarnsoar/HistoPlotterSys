@@ -12,16 +12,20 @@ maindir=os.getenv("GIT_HistoPlotterSys")
 import time
 ##
 class Reader:
-    def __init__(self,AnaName,YEAR,suffix,ProcConfPath,ListNormSysPath=[]):
+    def __init__(self,AnaName,YEAR,suffix,ProcConfPath,ListNormSysPath=[],ScaleByBinWidth=False):
         self.Verbose=0
         self.suffix=suffix
         self.AnaName=AnaName
         self.YEAR=str(YEAR)
         self.ProcConfPath=ProcConfPath
         self.ListNormSysPath=ListNormSysPath
+        self.ScaleByBinWidth=ScaleByBinWidth
+        print("!!ScaleByBinWidth=>",ScaleByBinWidth)
         self.SetPath()
         self.ReadInput()
         self.ReadConf()
+    def SetNuisanceEmpty(self):
+        self.NuiConf={}
     def SetVerbose(self,_v):
         self.Verbose=_v
     def SetPath(self):
@@ -143,7 +147,11 @@ class Reader:
         print("Make Empty Hist")
         #self._h_empty=self.GetEmptyHist(cut,x)
         print(cut+"/"+x)
-        self._h_empty=self.tfile.Get(cut+"/"+x+"/Data").Clone()
+        firstkey=self.tfile.Get(cut+"/"+x).GetListOfKeys()[0]
+        firstname=firstkey.GetName()
+        print(firstname)
+        self._h_empty=self.tfile.Get(cut+"/"+x+"/"+firstname).Clone()
+        if self.ScaleByBinWidth : self._h_empty.Scale(1.0,"width") 
         print("SetDirectory(0) Empty Hist")
         self._h_empty.SetDirectory(0)
         print("Reset Empty Hist")
@@ -172,9 +180,10 @@ class Reader:
                 ##-----NominalShape-----#
                 this_nominal=self.ReadNominalShape(cut,x,subp).Clone()
                 this_nominal.SetDirectory(0)
+
                 if len(rebin)!=0 : this_nominal=this_nominal.Rebin(len(rebin)-1,this_nominal.GetName(),rebin)
                 if p_weight: this_nominal.Scale(p_weight)
-
+                if self.ScaleByBinWidth : this_nominal.Scale(1.0,"width")
                 this_h.SetHist(this_nominal)##set only nominal. No sys
                 
 
@@ -187,6 +196,7 @@ class Reader:
                             this_sys=self.ReadNuisanceShape(cut,x,subp,nui,idx1,idx2).Clone()
                             if len(rebin)!=0 : this_sys=this_sys.Rebin(len(rebin)-1,this_sys.GetName(),rebin)
                             if p_weight: this_sys.Scale(p_weight)
+                            if self.ScaleByBinWidth : this_sys.Scale(1.0,"width")
                             this_h.SetHist(this_sys,nui,idx1,idx2)
                     #this_h.MakeStatNuiShapes()
                     #this_h.SetEffTool(self.EffToolConf)
@@ -198,6 +208,7 @@ class Reader:
                     for this_sample_key in this_sample_keys:                        
                         if this_sample_key in subp:
                             ApplyThisNormSys=True
+                            print('[NormSys]',subp,'has',normsys)
                             break
                     if not ApplyThisNormSys : continue
                     
@@ -238,7 +249,8 @@ class Reader:
                 print(_path)
                 #raise ValueError("No Histogram in the TFile->"+self.inputpath)
                 print("return empty hist")
-            return self._h_empty            
+            return self._h_empty
+        #if self.ScaleByBinWidth: _h.Scale(1.0,"width")
         return _h
     def ReadNuisanceShape(self,cut,x,proc,nui,idx1,idx2):
         _path=self.GetHistPath(cut,x,proc,nui,idx1,idx2)
@@ -249,6 +261,8 @@ class Reader:
             _hnom.SetDirectory(0)
             _hnom.SetName("__".join([cut,x,proc,nui,idx1,idx2]))
             return _hnom
+        ##--
+        #if self.ScaleByBinWidth:_h.Scale(1.0,"width")
         return _h
 
     def GetHistPath(self,cut,x,proc,sys=False,idx1=0,idx2=0):

@@ -40,9 +40,12 @@ class PlotterComparisonBase(PlotterBase):
         self.doNorm=0
         self.doDiff=0
         self.xtitle=""
+        self.ytitle=""
 
     def SetTitleX(self,_xtitle):
         self.xtitle=_xtitle
+    def SetTitleY(self,_ytitle):
+        self.ytitle=_ytitle
     def AddHP(self,hp,name,cutname,xname,procname,color):
         hp.GetHist().SetMarkerColor(color)
         hp.GetHist().SetLineColor(color)
@@ -94,7 +97,10 @@ class PlotterComparisonBase(PlotterBase):
     def RunDraw(self):
         ##--
         self.SetMinMax()
-        self.MakeRatios()
+        if self.doDiff:
+            self.MakeDiffs()
+        else:            
+            self.MakeRatios()
         self.SetLegend()
         ##---not logy
         self.logy=0
@@ -147,10 +153,17 @@ class PlotterComparisonBase(PlotterBase):
                 else:
                     this_h.GetXaxis().SetTitle(self.xtitle)
                 this_h.GetXaxis().SetLabelSize(0.03)
-
+                #this_h.GetXaxis().SetTitleSize(0.03)
+            this_h.GetYaxis().SetTitle(self.ytitle)
+            this_h.GetYaxis().SetLabelSize(0.03)
         self.leg.Draw()
         
     def DrawObjectPad2(self):
+        if self.doDiff:
+            self.DrawObjectPad2Diff()
+            return
+
+        ###---
         #self.line.Draw("sames")
         for i,hpratio in enumerate(self.list_hpratio):
 
@@ -163,7 +176,32 @@ class PlotterComparisonBase(PlotterBase):
             hpratio.GetHist().SetMinimum(self.rmin)
             hpratio.GetHist().GetYaxis().SetLabelSize(0.1)
             hpratio.GetHist().GetXaxis().SetLabelSize(0.1)
+            hpratio.GetHist().GetXaxis().SetTitle(self.xtitle)
+            hpratio.GetHist().GetXaxis().SetTitleSize(0.1)
+    def DrawObjectPad2Diff(self):
+        self.dmax=-9999999999
+        self.dmin=9999999999
+        for i,hpdiff in enumerate(self.list_hpdiff):
+            #hpdiff.GetHist().Draw("histe1")
+            this_max=hpdiff.GetHist().GetMaximum()
+            this_min=hpdiff.GetHist().GetMinimum()
+            if this_max > self.dmax : self.dmax=this_max
+            if this_min < self.dmin : self.dmin=this_min
+        for i,hpdiff in enumerate(self.list_hpdiff):
 
+            if i==0:
+                hpdiff.GetHist().Draw("histe1")
+            else:
+                hpdiff.GetHist().Draw("histe1sames")
+            hpdiff.GetErrorGraph().Draw("e2sames")
+            hpdiff.GetHist().SetMaximum(self.dmax)
+            hpdiff.GetHist().SetMinimum(self.dmin)
+            hpdiff.GetHist().GetYaxis().SetLabelSize(0.1)
+            hpdiff.GetHist().GetXaxis().SetLabelSize(0.1)
+            hpdiff.GetHist().GetXaxis().SetTitle(self.xtitle)
+            hpdiff.GetHist().GetXaxis().SetTitleSize(0.1)
+            hpdiff.GetHist().GetYaxis().SetTitle("diff.")
+            hpdiff.GetHist().GetYaxis().SetTitleSize(0.1)
     def MakeRatios(self):
         name_deno=self.list_HP[0]["name"]
         hpdeno=self.list_HP[0]["hp"]
@@ -181,6 +219,26 @@ class PlotterComparisonBase(PlotterBase):
             this_hp.GetErrorGraph().SetFillColorAlpha(this_color,0.3)
 
             self.list_hpratio.append(this_hp)
+
+    def MakeDiffs(self):
+        name_deno=self.list_HP[0]["name"]
+        hpdeno=self.list_HP[0]["hp"]
+
+        self.list_hpdiff=[]
+        for i,hpdict in enumerate(self.list_HP):
+            this_name=self.list_HP[i]["name"]
+            #    def Divide(self, h2, cut="",x="",proc="",deno=0):
+            #    def Subtract(self,h2,cut="",x="",proc=""):
+
+            isdeno = i==0
+            this_hp=hpdict["hp"].Subtract(hpdeno,"","","")
+            this_color=hpdict["color"]
+
+            this_hp.GetHist().SetMarkerColor(this_color)
+            this_hp.GetHist().SetLineColor(this_color)
+            this_hp.GetErrorGraph().SetFillColorAlpha(this_color,0.3)
+
+            self.list_hpdiff.append(this_hp)            
 
 
     def SetLegend(self):

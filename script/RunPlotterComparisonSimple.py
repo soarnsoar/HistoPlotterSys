@@ -11,11 +11,12 @@ from JHReader import Reader
 from OpenDictFile import OpenDictFile
 maindir=os.getenv("GIT_HistoPlotterSys")
 
-def Run(Year,AnalyzerName,suffix,cut_and_x_path,path_procconf):
+def Run(Year,AnalyzerName,suffix,cut_and_x_path,path_procconf,dirname_main):
     cut_and_x=OpenDictFile(cut_and_x_path)
     for cut in cut_and_x:
         for x in cut_and_x[cut]:
-            dirname="plot/"+"/__"+suffix+"/"+Year+"/"+cut
+            #dirname="plot/"+"/__"+suffix+"/"+Year+"/"+cut
+            dirname=dirname_main+"/"+cut
             outname=x
             xname=x            
             plotter=PlotterComparisonBase(Year,dirname,outname)
@@ -36,6 +37,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', dest='path_procconf', default="")
     parser.add_argument('-y', dest='year', default="")
     parser.add_argument('-s', dest='suffix', default="")
+    parser.add_argument('-d', dest='dirname', default="")
 
     
     args = parser.parse_args()
@@ -43,7 +45,7 @@ if __name__ == '__main__':
     AnalyzerName=args.AnalyzerName
     path_procconf=args.path_procconf
     suffix=args.suffix
-
+    dirname=args.dirname
     
 
     ##----Get dirname
@@ -55,5 +57,5 @@ if __name__ == '__main__':
 
 
 
-    Run(Year,AnalyzerName,suffix,cut_and_x_path,path_procconf)
+    Run(Year,AnalyzerName,suffix,cut_and_x_path,path_procconf,dirname)
 

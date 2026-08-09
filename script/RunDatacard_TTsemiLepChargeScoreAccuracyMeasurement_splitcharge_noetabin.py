@@ -185,8 +185,10 @@ if __name__ == '__main__':
         "NoSL_jOthers":["Eta0To0p8","Eta0p8To1p6","Eta1p6To2","Eta2To2p5"],
     }
     MeasuredCharges=[
-        "MeuasredMinus",
-        "MeuasredPlus",
+        #"MeuasredMinus",
+        #"MeuasredPlus",
+        "MeasuredMinus",
+        "MeasuredPlus"
     ]
     for LeptonCh in LeptonChs:
         for TDecayCh in TDecayChs:

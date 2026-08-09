@@ -1,16 +1,24 @@
 < 2016preVFP >
-[init]= 149.28983908208474
-[year-specific]= 153.46968231551287
-[combined]= 153.23270464995133
+point_year_specific= [65.0, 0.0, 5.0, 520.0]
+point_combine= [70.0, 0, 5.0, 500.0]
+[init]= 185.70146875508885
+[year-specific]= 193.8935181565611
+[combined]= 193.84265432014902
 < 2016postVFP >
-[init]= 87.8515953084612
-[year-specific]= 128.61467288368826
-[combined]= 124.54272985714276
+point_year_specific= [70.0, 0.0, 5.0, -1]
+point_combine= [70.0, 0, 5.0, 500.0]
+[init]= 172.63982240508156
+[year-specific]= 179.2407818518981
+[combined]= 179.2376053167485
 < 2017 >
-[init]= 143.1577233013101
-[year-specific]= 217.5681457543164
-[combined]= 217.5681457543164
+point_year_specific= [75.0, 0.0, 5.0, 600.0]
+point_combine= [70.0, 0, 5.0, 500.0]
+[init]= 277.4719361483125
+[year-specific]= 287.26668219963
+[combined]= 287.1511711484458
 < 2018 >
-[init]= 261.9534375423984
-[year-specific]= 267.351898950295
-[combined]= 266.8142545658406
+point_year_specific= [75.0, 0.0, 5.0, 500.0]
+point_combine= [70.0, 0, 5.0, 500.0]
+[init]= 341.86413717050215
+[year-specific]= 353.8036773661161
+[combined]= 353.695212883561

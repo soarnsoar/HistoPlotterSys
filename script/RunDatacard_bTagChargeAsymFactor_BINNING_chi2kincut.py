@@ -9,7 +9,7 @@ from OpenDictFile import OpenDictFile
 
 
 
-def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,pseudo,OneBinFailRegion,IsTestJob=False):
+def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,pseudo,OneBinFailRegion,OneBin,IsTestJob=False):
     print(Year,suffix)
     #Year="2018"
     Year=str(Year)
@@ -30,6 +30,8 @@ def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinnin
         dsuffix+="_Pesudo"
     if OneBinFailRegion:
         dsuffix+="_OneBinFailRegion"
+    if OneBin:
+        dsuffix+="_OneBin"        
     datacarddir="datacards"+dsuffix+"/bTagChargeAsymFactor_BINNING/"+Ana+"/"+suffix+"/"+xname
     print("datacarddir=",datacarddir)
     mydc=JHDatacard(Year,name,datacarddir,pseudo)
@@ -60,13 +62,14 @@ def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinnin
     mydc.RunWithSKFlatOutput(Year,Ana,cut,xname,procpath,suffix)
     mydc.Export()
 
-def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,pseudo,OneBinFailRegion):
+def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,pseudo,OneBinFailRegion,OneBin):
     Year=str(Year)
     #def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
     statonly_suffix=""
     scalepdf_precalc_suffix=""
     pseudo_suffix=""
     OneBinFailRegion_suffix=""
+    OneBin_suffix=""
     if StatOnly:
         statonly_suffix="__statonly"
     if PreCalcScalePDF:
@@ -77,7 +80,9 @@ def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,ps
         pseudo_suffix="__pseudo"
     if OneBinFailRegion:
         OneBinFailRegion_suffix="__OneBinFailRegion"
-    WORKDIR="WORKDIR/bTagChargeAsym_BINNING/datacard"+statonly_suffix+scalepdf_precalc_suffix+pseudo_suffix+OneBinFailRegion_suffix+"/"+Ana+"/"+Year+"/"+suffix+"/"+cut+"/"+xname
+    if OneBin:
+        OneBin_suffix="__OneBin"        
+    WORKDIR="WORKDIR/bTagChargeAsym_BINNING/datacard"+statonly_suffix+scalepdf_precalc_suffix+pseudo_suffix+OneBinFailRegion_suffix+OneBin_suffix+"/"+Ana+"/"+Year+"/"+suffix+"/"+cut+"/"+xname
     
         
     jobname="datacard__"+Ana+"__"+Year
@@ -85,7 +90,7 @@ def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,ps
     ncpu=1
     memory=False
     nretry=1
-    nmax=480
+    nmax=400
 
     curdir=os.getcwd()
 
@@ -104,12 +109,14 @@ def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,ps
     OneBinFailRegion_option=""
     if OneBinFailRegion:
         OneBinFailRegion_option=" --OneBinFailRegion "
-        
+    OneBin_option=""
+    if OneBin:
+        OneBin_option=" --OneBin "        
     commandlist=[]
     commandlist.append("cd "+curdir)
     GIT_HistoPlotterSys=os.getenv("GIT_HistoPlotterSys")
     this_scriptname=sys.argv[0].split("/")[-1]
-    commandlist.append("python3 -u "+GIT_HistoPlotterSys+"/script/"+this_scriptname+" --condorsub --xname "+xname+" --year "+Year+" --cut "+cut+statonly_option+scalepdf_precalc_option+dosimple_option+pseudo_option+OneBinFailRegion_option)
+    commandlist.append("python3 -u "+GIT_HistoPlotterSys+"/script/"+this_scriptname+" --condorsub --xname "+xname+" --year "+Year+" --cut "+cut+statonly_option+scalepdf_precalc_option+dosimple_option+pseudo_option+OneBinFailRegion_option+OneBin_option)
 
 
     command="&&".join(commandlist)
@@ -158,7 +165,7 @@ if __name__ == '__main__':
         
     Ana="TTsemiLepBtagChargeAsymEfficiencyMeasurement_BINNING"
     #suffix="runSys__TopMassWindow__"
-    suffix="runSys__ApplyBtagSF__use_beff__JETPUID_L__chi2kincut__"
+    suffix="runSys__ApplyBtagSF__use_beff__noveto__newlepveto__JETPUID_L__chi2kincut__"
     
         
     cutlist=[]
@@ -195,6 +202,7 @@ if __name__ == '__main__':
     parser.add_argument('--testjob', dest='testjob', action="store_true", default=False)
     
     parser.add_argument('--OneBinFailRegion', dest='OneBinFailRegion', action="store_true", default=False)
+    parser.add_argument('--OneBin', dest='OneBin', action="store_true", default=False)
 
     args = parser.parse_args()
     xname=args.xname
@@ -233,7 +241,7 @@ if __name__ == '__main__':
                 #Rebinning=GetRebinning(Year,cut,xname,suffix)
                 #if "__FAIL" in cut :
                 #    Rebinning=[Rebinning[0],Rebinning[-1]]
-                RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,pseudo,args.OneBinFailRegion)       
+                RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,pseudo,args.OneBinFailRegion,args.OneBin)       
     else:
 
         if runCondorSub:
@@ -243,12 +251,18 @@ if __name__ == '__main__':
             #    Rebinning=GetRebinningLeptonicSide()
             #if "HadronicSide" in this_cut and "Tcand_mass" in xname:
             #    Rebinning=GetRebinningHadronicSide()
-            Rebinning=GetRebinning(this_Year,this_cut,xname,suffix)
+            Rebinning=[]
+            if xname!='Event':
+                Rebinning=GetRebinning(this_Year,this_cut,xname,suffix)
             if args.OneBinFailRegion:
                 if "__FAIL" in this_cut :
                     Rebinning=[Rebinning[0],Rebinning[-1]]
                     print("Use SingleBinning For Fail Region!")
-            RunYear(Ana,this_Year,suffix,this_cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,pseudo,args.OneBinFailRegion,args.testjob)
+            if args.OneBin:
+                Rebinning=[Rebinning[0],Rebinning[-1]]
+                print("Use SingleBinning!")
+                
+            RunYear(Ana,this_Year,suffix,this_cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,pseudo,args.OneBinFailRegion,args.OneBin,args.testjob)
         else:
             for Year in Years:
                 for cut in cutlist:
@@ -257,13 +271,19 @@ if __name__ == '__main__':
                     #    Rebinning=GetRebinningLeptonicSide()
                     #if "HadronicSide" in cut and "Tcand_mass" in xname:
                     #    Rebinning=GetRebinningHadronicSide()
-                    Rebinning=GetRebinning(Year,cut,xname,suffix)
+                    Rebinning=[]
+                    if xname!='Event':
+                        Rebinning=GetRebinning(this_Year,this_cut,xname,suffix)                    
+
                     if args.OneBinFailRegion:
                         if "__FAIL" in cut :
                             Rebinning=[Rebinning[0],Rebinning[-1]]
                             print("Use SingleBinning For Fail Region!")
-
-                    RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,pseudo,args.OneBinFailRegion,args.testjob)
+                    if args.OneBin:
+                        Rebinning=[Rebinning[0],Rebinning[-1]]
+                        print("Use SingleBinning!!")
+                        
+                    RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinning,pseudo,args.OneBinFailRegion,args.OneBin,args.testjob)
         
 
 

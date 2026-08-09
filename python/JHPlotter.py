@@ -64,7 +64,7 @@ class PlotterBase:
             self.DrawObjectPad2()
         else:
             if self.logy : self.canvas.SetLogy()
-            self.DrawObjectPad1()
+            self.DrawObjectPad1(isRatio)
 
 
         CMS_lumi.CMS_lumi(self.canvas, self.iPeriod, self.iPos)
@@ -73,11 +73,14 @@ class PlotterBase:
         self.canvas.RedrawAxis()
 
 
-    def DrawPad1(self):
-        self.pad1=ROOT.TPad("pad1", "pad1", 0, 0.3, 1, 1) ##x1,y1,x2,y2
+    def DrawPad1(self,isRatio=True):
+        y1=0
+        if isRatio: y1=0.3
+        self.pad1=ROOT.TPad("pad1", "pad1", 0, y1, 1, 1) ##x1,y1,x2,y2
         if self.logy : self.pad1.SetLogy()
         self.pad1.SetTopMargin(0.1)
-        self.pad1.SetBottomMargin(0.02)
+        self.pad1.SetBottomMargin(0.2)
+        if isRatio:self.pad1.SetBottomMargin(0.02)
         self.pad1.SetGridx()
         self.pad1.Draw()
         self.pad1.cd()

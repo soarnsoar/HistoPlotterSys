@@ -13,7 +13,7 @@ class JHDatacard:
         self.IsPseudoExp=IsPseudoExp
         self.info={}
         self.nuisances={}
-        self.NuisacneSkip=[]
+        self.NuisanceSkip=[]
         self.NormSysPathList=[]
         self.year=str(year)
         self.UseNameMap=0
@@ -22,7 +22,8 @@ class JHDatacard:
         self.SimplifiedSys=0
         self.NuiThreshold=0.001
         self.IgnoreSmall=1
-
+        self.ScaleMC=False
+        self.SkipNominalBug=True
     def IsSmallVariation(self,_hnom,_hup,_hdown):
         _Nbins=_hnom.GetNbinsX()
         ##--Let's get max rel dy. if max dy is less than thereshold, ignore this variation
@@ -55,7 +56,9 @@ class JHDatacard:
             self.dict_NormSys.update(this_dict)
         
     def AddShape(self,proc,sysname,direction,shape,effect=1.0):
-
+        if self.ScaleMC:
+            ##
+            if proc!="Data" : shape.Scale(self.ScaleMC)
         if not sysname in self.nuisances:
             self.nuisances[sysname]={}
         if not "type" in self.nuisances[sysname]:
@@ -73,6 +76,8 @@ class JHDatacard:
                 print("[fix negative shape]->",proc,sysname,direction)
                 shape=self.plotter.HistColl[proc].GetHist().Clone()
                 shape.Scale(0.0001)
+                if self.ScaleMC:
+                    shape.Scale(self.ScaleMC)
                 print("new norm->",shape.Integral())
         else:
             if shape.Integral()<=0:
@@ -80,11 +85,12 @@ class JHDatacard:
 
                 _Nbins=self.plotter.HistColl[proc].GetHist().GetNbinsX()
                 for i in range(1,_Nbins+1):
-                    y=self.plotter.HistColl[proc].GetHist().GetBinContent(i)
+                    #y=self.plotter.HistColl[proc].GetHist().GetBinContent(i)
+                    y=shape.GetBinContent(i)
                     if y<0:
                         print("bin",i," -> 0")
-                        self.plotter.HistColl[proc].GetHist().SetBinContent(i,0)
-
+                        #self.plotter.HistColl[proc].GetHist().SetBinContent(i,0)
+                        shape.SetBinContent(i,0)
 
         self.info[proc][sysname][direction]=shape
         self.info[proc][sysname]["effect"]=effect
@@ -312,8 +318,12 @@ class JHDatacard:
                                     hup,hdown= self.GetUpDownEnvelop(proc,sys,idx1,["0","1","2","3","4","6","8"])
                                     this_sysname=self.nuisance_map[sys][str(idx1)][str(this_idx2)][0]
                                     this_sysname="QCDScale_muR_muF_Envelope"
-
+                                    if len(self.nuisance_map[sys][str(idx1)][str(idx2)])>2:
+                                        if not self.nuisance_map[sys][str(idx1)][str(idx2)][2] : continue 
                                     if not this_sysname in self.FullSysList : self.FullSysList.append(this_sysname)
+                                    if self.IsSmallVariation(self.plotter.HistColl[proc].GetHist() , hup, hdown) : 
+                                        continue
+
 
                                     self.AddShape(proc,this_sysname,"Up",hup)
                                     self.AddShape(proc,this_sysname,"Down",hdown)
@@ -324,13 +334,18 @@ class JHDatacard:
                                     this_idx2=self.plotter.HistColl[proc].GetSysIdx2List(sys,idx1)[0]
                                     hup,hdown= self.GetUpDownHessian(proc,sys,idx1)
                                     this_sysname=self.nuisance_map[sys][str(idx1)][str(this_idx2)][0]
+                                    if len(self.nuisance_map[sys][str(idx1)][str(idx2)])>2:
+                                        if not self.nuisance_map[sys][str(idx1)][str(idx2)][2] : continue 
+                                    #if 'nominal' in this_sysname : continue
                                     this_sysname=sys
-                                    
                                     if not this_sysname in self.FullSysList : self.FullSysList.append(this_sysname)
-
-                                    ##---Check If it is small variation---#
                                     if self.IsSmallVariation(self.plotter.HistColl[proc].GetHist() , hup, hdown) : 
                                         continue
+                                    
+
+
+                                    ##---Check If it is small variation---#
+
                                     ##---[END] Check If it is small variation                                
 
 
@@ -343,11 +358,15 @@ class JHDatacard:
                                 if ("muR" in sys and "muF" in sys) or("QCDScale" in sys): ##QCDSclae ->Envelop
                                     this_idx2=self.plotter.HistColl[proc].GetSysIdx2List(sys,idx1)[0]
                                     hup,hdown= self.GetUpDownEnvelop(proc,sys,idx1)
+                                    
                                     this_sysname=self.nuisance_map[sys][str(idx1)][str(this_idx2)][0]
+                                    if len(self.nuisance_map[sys][str(idx1)][str(idx2)])>2:
+                                        if not self.nuisance_map[sys][str(idx1)][str(idx2)][2] : continue 
                                     this_sysname="QCDScale_muR_muF_Envelope"
 
                                     if not this_sysname in self.FullSysList : self.FullSysList.append(this_sysname)
-
+                                    if self.IsSmallVariation(self.plotter.HistColl[proc].GetHist() , hup, hdown) :
+                                        continue
                                     self.AddShape(proc,this_sysname,"Up",hup)
                                     self.AddShape(proc,this_sysname,"Down",hdown)
 
@@ -356,6 +375,8 @@ class JHDatacard:
                                     for idx2 in self.plotter.HistColl[proc].GetSysIdx2List(sys,idx1):
                                         #this_idx2=self.plotter.HistColl[proc].GetSysIdx2List(sys,idx1)[0]
                                         this_sysname=self.nuisance_map[sys][str(idx1)][str(idx2)][0]
+                                        if len(self.nuisance_map[sys][str(idx1)][str(idx2)])>2:
+                                            if not self.nuisance_map[sys][str(idx1)][str(idx2)][2] : continue 
                                         hup=self.plotter.HistColl[proc].GetHist(sys,idx1,idx2).Clone()
                                         print("Make GetPairOfOneSideShape->",this_sysname)
                                         hdown=self.GetPairOfOneSideShape(hup,self.plotter.HistColl[proc].GetHist()).Clone()
@@ -364,14 +385,40 @@ class JHDatacard:
                                         ##---Check If it is small variation---#
                                         if self.IsSmallVariation(self.plotter.HistColl[proc].GetHist() , hup, hdown) : 
                                             continue
-                                            ##---[END] Check If it is small variation                                
+                                        ##---[END] Check If it is small variation                                
                                         
                                         self.AddShape(proc,this_sysname,"Up",hup)
                                         self.AddShape(proc,this_sysname,"Down",hdown)
-                        
-                        else:##not leptonstat/PDF/QCDScale/oneside
+                        elif Nidx2==2: ## simple up/down
+                            this_idx2list=self.plotter.HistColl[proc].GetSysIdx2List(sys,idx1)
+                            _h0=self.plotter.HistColl[proc].GetHist(sys,idx1,this_idx2list[0]).Clone()
+                            _h1=self.plotter.HistColl[proc].GetHist(sys,idx1,this_idx2list[1]).Clone()
+                            
+                            print("namemap",sys,idx1,this_idx2list[0])
+                            print("namemap",sys,idx1,this_idx2list[1])
+
+                            this_sysname0=self.nuisance_map[sys][str(idx1)][str(this_idx2list[0])][0]
+                            this_sysdir0=self.nuisance_map[sys][str(idx1)][str(this_idx2list[0])][1]
+                            this_sysname1=self.nuisance_map[sys][str(idx1)][str(this_idx2list[1])][0]
+                            this_sysdir1=self.nuisance_map[sys][str(idx1)][str(this_idx2list[1])][1]
+                            do_sysdir0=True
+                            do_sysdir1=True
+                            if len(self.nuisance_map[sys][str(idx1)][str(this_idx2list[0])])>2:
+                                if not self.nuisance_map[sys][str(idx1)][str(this_idx2list[0])][2] : do_sysdir0=False
+                                if not self.nuisance_map[sys][str(idx1)][str(this_idx2list[1])][2] : do_sysdir1=False
+                                
+                            if not this_sysname0 in self.FullSysList and do_sysdir0 : self.FullSysList.append(this_sysname0)
+                            if not this_sysname1 in self.FullSysList and do_sysdir1 : self.FullSysList.append(this_sysname1)
+                            if self.IsSmallVariation(self.plotter.HistColl[proc].GetHist() , _h0, _h1) :
+                                continue
+                                
+                            if do_sysdir0: self.AddShape(proc,this_sysname0,this_sysdir0,_h0)
+                            if do_sysdir1: self.AddShape(proc,this_sysname1,this_sysdir1,_h1)
+                            
+                        else:##not leptonstat/PDF/QCDScale/oneside/simple up,down .. e.g)ISR,FSR
                             for _order,idx2 in enumerate(self.plotter.HistColl[proc].GetSysIdx2List(sys,idx1)):
                                 _h=self.plotter.HistColl[proc].GetHist(sys,idx1,idx2).Clone()
+
                                 print("namemap",sys,idx1,idx2)
 
 
@@ -380,8 +427,12 @@ class JHDatacard:
                                 this_sysname=self.nuisance_map[sys][str(idx1)][str(idx2)][0]                                
 
                                 this_sysdir=self.nuisance_map[sys][str(idx1)][str(idx2)][1]
-
+                                if len(self.nuisance_map[sys][str(idx1)][str(idx2)])>2:
+                                    if not self.nuisance_map[sys][str(idx1)][str(idx2)][2] : continue 
                                 if not this_sysname in self.FullSysList : self.FullSysList.append(this_sysname)
+                                #if self.IsSmallVariation(self.plotter.HistColl[proc].GetHist() , _h, _h) :
+                                #    continue
+                                ##Don't do this skipping small var line. Only Up OR Down is added and it makes trouble
 
                                 self.AddShape(proc,this_sysname,this_sysdir,_h)
 
@@ -463,7 +514,7 @@ class JHDatacard:
     def ExportShapeRootFile(self):
         print("[export]"+self.region+".root")
         os.system("mkdir -p "+self.directory+"/shapes")
-        self.tfile_output=ROOT.TFile.Open(self.directory+"/shapes/"+self.region+".root" ,"RECREATE")
+        self.tfile_output=ROOT.TFile.Open(self.directory+"/shapes/"+self.region.replace('Meuasred','Measured')+".root" ,"RECREATE")
 
         #self.info[proc][sysname]
         for proc in self.info:
@@ -475,8 +526,8 @@ class JHDatacard:
             #print "proc=",proc
             #print "syslist=",sorted(self.info[proc])
             for sysname in self.info[proc]:
-                print("sysname=",sysname)
-                print("self.info[proc][sysname]=")
+                #print("sysname=",sysname)
+                #print("self.info[proc][sysname]=")
                 print(self.info[proc][sysname])
                 ##
                 if sysname=="nom": 
@@ -485,6 +536,7 @@ class JHDatacard:
                     #print self.info[proc]["nom"]["nom"].GetName()
                     self.info[proc]["nom"]["nom"].Write()
                 elif self.info[proc][sysname]["type"]=="shape":
+                    #print(proc,sysname)
                     self.info[proc][sysname]["Up"].SetName(proc+"_"+sysname+"Up")
                     self.info[proc][sysname]["Up"].SetTitle(proc+"_"+sysname+"Up")
                     self.info[proc][sysname]["Up"].Write()
@@ -529,7 +581,7 @@ class JHDatacard:
 
         ##--nuisances
         for nui in self.syslist:
-            if nui in self.NuisacneSkip:continue
+            if nui in self.NuisanceSkip:continue
             self.DCStr+=nui+"     "+self.nuisances[nui]["type"]
             for proc in self.siglist+self.bkglist:
                 HasThisNui=False
@@ -545,7 +597,7 @@ class JHDatacard:
         self.DCStr+=self.bin+" autoMCStats  5 1 1"
 
     def ExportDatacard(self):
-        ftxt=open(self.directory+"/"+self.region+".txt","w")
+        ftxt=open(self.directory+"/"+ self.region.replace('Meuasred','Measured') +".txt","w")
         ftxt.write(self.DCStr)
         ftxt.close()
     
@@ -568,8 +620,8 @@ def RunYear(Ana,Year,suffix):
     mydc.AddNormSysPath("config/NormSys/lnN_lumi"+YearCombine+".py")
     mydc.ReadNormSysConfs()
     mydc.RunWithSKFlatOutput(Year,Ana,"FinalCut","MeasuredCharge_Total",procpath,suffix)
-    #mydc.NuisacneSkip=['electronID8', 'electronID9', 'zptweight0', 'electronID1', 'electronID2', 'electronID3', 'electronID4', 'electronID5', 'electronID6', 'electronID7', 'jer0', 'btagLTagCorr', 'muonID5', 'muonID4', 'muonID7', 'muonID6', 'muonID1', 'muonID3', 'muonID2', 'electronRECO12', 'electronRECO13', 'electronRECO10', 'electronRECO11', 'muonID9', 'jetpuid0', 'electronRECO14', 'electronRECO15', 'btagLTagUnCorr', 'btagHTagUnCorr', 'electronTrigger6', 'electronTrigger7', 'electronTrigger4', 'electronTrigger5', 'electronTrigger2', 'electronTrigger3', 'electronTrigger1', 'electronTrigger8', 'electronTrigger9', 'electronscale0', 'muonTrigger9', 'muonTrigger8', 'muonTrigger5', 'muonTrigger4', 'muonTrigger7', 'muonTrigger6', 'muonTrigger1', 'muonTrigger3', 'muonTrigger2', 'electronID18', 'electronID12', 'electronID13', 'electronID10', 'electronID11', 'electronID16', 'electronID17', 'electronID14', 'electronID15', 'electronscale2', 'electronscale3', 'met0', 'electronscale6', 'electronscale7', 'electronscale4', 'electronscale5', 'electronscale8', 'electronTrigger14', 'electronTrigger15', 'electronTrigger16', 'electronTrigger10', 'electronTrigger11', 'electronTrigger12', 'electronTrigger13', 'prefire0', 'isr', 'muonRECO9', 'muonRECO8', 'muonRECO1', 'muonRECO3', 'muonRECO2', 'muonRECO5', 'muonRECO4', 'muonRECO7', 'muonRECO6', 'muonTrk8', 'muonTrk9', 'muonTrk6', 'muonTrk7', 'muonTrk4', 'muonTrk5', 'muonTrk2', 'muonTrk3', 'muonTrk1', 'muonscale5', 'muonscale4', 'muonscale0', 'muonscale3', 'muonscale2', 'muonTrk14', 'muonTrk15', 'muonTrk10', 'muonTrk11', 'muonTrk12', 'muonTrk13', 'muonID11', 'muonID10', 'muonID13', 'muonID12', 'muonID15', 'muonID14', 'muonID16', 'electronRECO16', 'muonID8', 'muonRECO11', 'muonRECO10', 'muonRECO13', 'muonRECO12', 'muonRECO15', 'muonRECO14', 'muonTrigger15', 'muonTrigger14', 'muonTrigger11', 'muonTrigger10', 'muonTrigger13', 'muonTrigger12', 'btagHTagCorr', 'electronRECO1', 'electronRECO2', 'electronRECO3', 'electronRECO4', 'electronRECO5', 'electronRECO6', 'electronRECO7', 'electronRECO8', 'electronRECO9', 'jes0', 'pu0', 'fsr']
-    #mydc.NuisacneSkip=['electronID8', 'electronID9', 'zptweight0', 'electronID1', 'electronID2', 'electronID3', 'electronID4', 'electronID5', 'electronID6', 'electronID7', 'jer0', 'btagLTagCorr', 'muonID5', 'muonID4', 'muonID7', 'muonID6', 'muonID1', 'muonID3', 'muonID2', 'electronRECO12', 'electronRECO13', 'electronRECO10', 'electronRECO11', 'muonID9', 'jetpuid0', 'electronRECO14', 'electronRECO15', 'btagLTagUnCorr', 'btagHTagUnCorr', 'electronTrigger6', 'electronTrigger7', 'electronTrigger4', 'electronTrigger5', 'electronTrigger2', 'electronTrigger3', 'electronTrigger1', 'electronTrigger8', 'electronTrigger9', 'electronscale0', 'muonTrigger9', 'muonTrigger8', 'muonTrigger5', 'muonTrigger4', 'muonTrigger7', 'muonTrigger6', 'muonTrigger1', 'muonTrigger3', 'muonTrigger2', 'electronID18', 'electronID12', 'electronID13', 'electronID10', 'electronID11', 'electronID16', 'electronID17', 'electronID14', 'electronID15', 'electronscale2', 'electronscale3', 'met0', 'electronscale6', 'electronscale7', 'electronscale4', 'electronscale5', 'electronscale8', 'electronTrigger14', 'electronTrigger15', 'electronTrigger16', 'electronTrigger10', 'electronTrigger11', 'electronTrigger12', 'electronTrigger13', 'prefire0', 'isr', 'muonRECO9', 'muonRECO8', 'muonRECO1', 'muonRECO3', 'muonRECO2', 'muonRECO5', 'muonRECO4', 'muonRECO7', 'muonRECO6', 'muonTrk8', 'muonTrk9', 'muonTrk6', 'muonTrk7', 'muonTrk4', 'muonTrk5', 'muonTrk2', 'muonTrk3', 'muonTrk1', 'muonscale5', 'muonscale4', 'muonscale0', 'muonscale3', 'muonscale2', 'muonTrk14', 'muonTrk15', 'muonTrk10', 'muonTrk11', 'muonTrk12', 'muonTrk13', 'muonID11', 'muonID10', 'muonID13', 'muonID12', 'muonID15', 'muonID14', 'muonID16', 'electronRECO16', 'muonID8', 'muonRECO11', 'muonRECO10', 'muonRECO13', 'muonRECO12', 'muonRECO15', 'muonRECO14', 'muonTrigger15', 'muonTrigger14', 'muonTrigger11', 'muonTrigger10', 'muonTrigger13', 'muonTrigger12', 'btagHTagCorr', 'electronRECO1', 'electronRECO2', 'electronRECO3', 'electronRECO4', 'electronRECO5', 'electronRECO6', 'electronRECO7', 'electronRECO8', 'electronRECO9', 'jes0', 'pu0']
+    #mydc.NuisanceSkip==['electronID8', 'electronID9', 'zptweight0', 'electronID1', 'electronID2', 'electronID3', 'electronID4', 'electronID5', 'electronID6', 'electronID7', 'jer0', 'btagLTagCorr', 'muonID5', 'muonID4', 'muonID7', 'muonID6', 'muonID1', 'muonID3', 'muonID2', 'electronRECO12', 'electronRECO13', 'electronRECO10', 'electronRECO11', 'muonID9', 'jetpuid0', 'electronRECO14', 'electronRECO15', 'btagLTagUnCorr', 'btagHTagUnCorr', 'electronTrigger6', 'electronTrigger7', 'electronTrigger4', 'electronTrigger5', 'electronTrigger2', 'electronTrigger3', 'electronTrigger1', 'electronTrigger8', 'electronTrigger9', 'electronscale0', 'muonTrigger9', 'muonTrigger8', 'muonTrigger5', 'muonTrigger4', 'muonTrigger7', 'muonTrigger6', 'muonTrigger1', 'muonTrigger3', 'muonTrigger2', 'electronID18', 'electronID12', 'electronID13', 'electronID10', 'electronID11', 'electronID16', 'electronID17', 'electronID14', 'electronID15', 'electronscale2', 'electronscale3', 'met0', 'electronscale6', 'electronscale7', 'electronscale4', 'electronscale5', 'electronscale8', 'electronTrigger14', 'electronTrigger15', 'electronTrigger16', 'electronTrigger10', 'electronTrigger11', 'electronTrigger12', 'electronTrigger13', 'prefire0', 'isr', 'muonRECO9', 'muonRECO8', 'muonRECO1', 'muonRECO3', 'muonRECO2', 'muonRECO5', 'muonRECO4', 'muonRECO7', 'muonRECO6', 'muonTrk8', 'muonTrk9', 'muonTrk6', 'muonTrk7', 'muonTrk4', 'muonTrk5', 'muonTrk2', 'muonTrk3', 'muonTrk1', 'muonscale5', 'muonscale4', 'muonscale0', 'muonscale3', 'muonscale2', 'muonTrk14', 'muonTrk15', 'muonTrk10', 'muonTrk11', 'muonTrk12', 'muonTrk13', 'muonID11', 'muonID10', 'muonID13', 'muonID12', 'muonID15', 'muonID14', 'muonID16', 'electronRECO16', 'muonID8', 'muonRECO11', 'muonRECO10', 'muonRECO13', 'muonRECO12', 'muonRECO15', 'muonRECO14', 'muonTrigger15', 'muonTrigger14', 'muonTrigger11', 'muonTrigger10', 'muonTrigger13', 'muonTrigger12', 'btagHTagCorr', 'electronRECO1', 'electronRECO2', 'electronRECO3', 'electronRECO4', 'electronRECO5', 'electronRECO6', 'electronRECO7', 'electronRECO8', 'electronRECO9', 'jes0', 'pu0', 'fsr']
+    #mydc.NuisanceSkip==['electronID8', 'electronID9', 'zptweight0', 'electronID1', 'electronID2', 'electronID3', 'electronID4', 'electronID5', 'electronID6', 'electronID7', 'jer0', 'btagLTagCorr', 'muonID5', 'muonID4', 'muonID7', 'muonID6', 'muonID1', 'muonID3', 'muonID2', 'electronRECO12', 'electronRECO13', 'electronRECO10', 'electronRECO11', 'muonID9', 'jetpuid0', 'electronRECO14', 'electronRECO15', 'btagLTagUnCorr', 'btagHTagUnCorr', 'electronTrigger6', 'electronTrigger7', 'electronTrigger4', 'electronTrigger5', 'electronTrigger2', 'electronTrigger3', 'electronTrigger1', 'electronTrigger8', 'electronTrigger9', 'electronscale0', 'muonTrigger9', 'muonTrigger8', 'muonTrigger5', 'muonTrigger4', 'muonTrigger7', 'muonTrigger6', 'muonTrigger1', 'muonTrigger3', 'muonTrigger2', 'electronID18', 'electronID12', 'electronID13', 'electronID10', 'electronID11', 'electronID16', 'electronID17', 'electronID14', 'electronID15', 'electronscale2', 'electronscale3', 'met0', 'electronscale6', 'electronscale7', 'electronscale4', 'electronscale5', 'electronscale8', 'electronTrigger14', 'electronTrigger15', 'electronTrigger16', 'electronTrigger10', 'electronTrigger11', 'electronTrigger12', 'electronTrigger13', 'prefire0', 'isr', 'muonRECO9', 'muonRECO8', 'muonRECO1', 'muonRECO3', 'muonRECO2', 'muonRECO5', 'muonRECO4', 'muonRECO7', 'muonRECO6', 'muonTrk8', 'muonTrk9', 'muonTrk6', 'muonTrk7', 'muonTrk4', 'muonTrk5', 'muonTrk2', 'muonTrk3', 'muonTrk1', 'muonscale5', 'muonscale4', 'muonscale0', 'muonscale3', 'muonscale2', 'muonTrk14', 'muonTrk15', 'muonTrk10', 'muonTrk11', 'muonTrk12', 'muonTrk13', 'muonID11', 'muonID10', 'muonID13', 'muonID12', 'muonID15', 'muonID14', 'muonID16', 'electronRECO16', 'muonID8', 'muonRECO11', 'muonRECO10', 'muonRECO13', 'muonRECO12', 'muonRECO15', 'muonRECO14', 'muonTrigger15', 'muonTrigger14', 'muonTrigger11', 'muonTrigger10', 'muonTrigger13', 'muonTrigger12', 'btagHTagCorr', 'electronRECO1', 'electronRECO2', 'electronRECO3', 'electronRECO4', 'electronRECO5', 'electronRECO6', 'electronRECO7', 'electronRECO8', 'electronRECO9', 'jes0', 'pu0']
 
 
 

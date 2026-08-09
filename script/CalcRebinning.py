@@ -177,7 +177,7 @@ if __name__ == '__main__':
         #def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
         for cut in cut_and_x:
             for x in cut_and_x[cut]:
-                WORKDIR="WORKDIR/Rebinning/"+year+"/"+cut+"/"+x+"/"
+                WORKDIR="WORKDIR/Rebinning/"+suffix+"/"+year+"/"+cut+"/"+x+"/"
                 command="cd "+os.getcwd()+"&&CalcRebinning.py --condorsub --cut "+cut+" --x "+x+" -a "+AnalyzerName+" -y "+year+" -d "+directory+" -s "+suffix +" -p "+procpath
                 submit=1
                 Export(WORKDIR,command,"rebinning",submit,1)

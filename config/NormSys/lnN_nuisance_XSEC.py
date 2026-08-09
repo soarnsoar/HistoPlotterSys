@@ -2,7 +2,8 @@
     "XSEC_TopMass_TT":{##
         "nuisanceName":"XSEC_TopMass",
         "ref":"https://twiki.cern.ch/twiki/bin/view/LHCPhysics/TtbarNNLO",
-        "sample_keys":["TTLJ_powheg","TTLL_powheg","TTJJ_powheg"], ##if a sample name has one of this keys, apply the uncertainty
+        #"sample_keys":["TTLJ_powheg","TTLL_powheg","TTJJ_powheg"], ##if a sample name has one of this keys, apply the uncertainty
+        "sample_keys":["TTLJ","TTLL","TTJJ"], ##if a sample name has one of this keys, apply the uncertainty
         "exception":[],
         #Mass uncert. up / down only
         "up":1.0 - 22.5/833.9,
@@ -58,11 +59,11 @@
     "XSEC_QCD":{##
         "nuisanceName":"XSEC_QCD",
         #"ref":"https://twiki.cern.ch/twiki/bin/viewauth/CMS/StandardModelCrossSectionsat13TeV",
-        "sample_keys":["QCD_bEnriched"], ##if a sample name has one of this keys, apply the uncertainty
+        "sample_keys":["QCD_bEnriched","_QCD"], ##if a sample name has one of this keys, apply the uncertainty
         "exception":[],
         ##
-        "up":1.3 ,
-        "down":0.7
+        "up":1.5 ,
+        "down":0.5
     },
 
 

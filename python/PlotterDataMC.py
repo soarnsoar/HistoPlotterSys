@@ -13,7 +13,7 @@ import time
 maindir=os.getenv("GIT_HistoPlotterSys")
 
 class PlotterDataMC(PlotterBase):
-    def __init__(self,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix="",syslist=[],this_proclist=[],normsyspathlist=[],Rebinning=[]):
+    def __init__(self,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix="",syslist=[],this_proclist=[],normsyspathlist=[],Rebinning=[],EmptyNuisance=False,DivideByBinSize=False):
 
         print("---init <PlotterDataMC>")
         print("<Rebinning>")
@@ -24,6 +24,8 @@ class PlotterDataMC(PlotterBase):
         self.outname=outname
         self.procpath=procpath
         self.Rebinning=Rebinning
+        self.EmptyNuisance=EmptyNuisance
+        self.DivideByBinSize=DivideByBinSize
         if syslist==[]:
             self.syslist=False
         elif syslist==False:
@@ -60,7 +62,8 @@ class PlotterDataMC(PlotterBase):
         #print "---MakeCombinedObject---"
         self.MakeCombinedObject()
         self.blind=False
-
+        #self.DivideByBinSize=False
+        
     def SetBlind(self,blind):
         self.blind=blind
     def RunDraw(self):
@@ -98,21 +101,47 @@ class PlotterDataMC(PlotterBase):
         self.lumi=str(self.lumi)
         self.lumi+=" fb^{-1}"
     def DrawObjectPad1(self,rm_xtitle=0):
-        
+
         self.hstack.Draw("hist")
         #self.hmc.Draw("sames")
+
         if not self.blind : self.hdata.Draw("e1sames")
         self.grerr.Draw("e2sames")
         self.leg.Draw()
-        if rm_xtitle:
-            for this_h in [self.hstack,self.grerr,self.hdata]:
+
+        for this_h in [self.hstack,self.grerr,self.hdata]:
+            if rm_xtitle:
                 this_h.GetXaxis().SetTitle("")
                 this_h.GetXaxis().SetLabelSize(0)
+            else:
+                this_h.GetXaxis().SetTitleOffset(0.8)
+                
         self.hstack.GetXaxis().SetTitle(self.x)
         self.hdata.GetXaxis().SetTitle(self.x)
         self.grerr.GetXaxis().SetTitle(self.x)
-        #self.HistColl["TT"].GetHist().Draw()
 
+        if self.DivideByBinSize:
+            self.hstack.GetYaxis().SetTitle("Entries/BinSize")
+            self.hdata.GetYaxis().SetTitle("Entries/BinSize")
+            self.grerr.GetYaxis().SetTitle("Entries/BinSize")
+        else:
+            self.hstack.GetYaxis().SetTitle("Entries")
+            self.hdata.GetYaxis().SetTitle("Entries")
+            self.grerr.GetYaxis().SetTitle("Entries")
+        #self.HistColl["TT"].GetHist().Draw()
+        ##Print
+        Nbins=self.hdata.GetNbinsX()+2
+        for i in range(1,Nbins):
+            xi=self.hdata.GetBinLowEdge(i)
+            xf=self.hdata.GetBinLowEdge(i+1)
+            ydata=self.hdata.GetBinContent(i)
+            ymc=self.hmc_nosys.GetBinContent(i)
+            r=0
+            if ymc > 0 : r=ydata/ymc
+            print('--- x=',xi,xf,'----')
+            print('ydata=',ydata)
+            print('ymc=',ymc)
+            print('data/mc=',r)
     def DrawObjectPad2(self):
         if self.blind: self.SetHistToOne(self.hratio)
         self.hratio.Draw("e1")
@@ -152,14 +181,16 @@ class PlotterDataMC(PlotterBase):
         ##now divide all mc with self.hp_norm_data_sys
         i_mc=0
         for i,proc in enumerate(self.myreader.ProcConf):
+            #print(proc)
             _h=self.HistColl[proc].GetHist().Clone()
             if proc=="Data" :
                 self.legendlist[proc]=_h.Clone() 
                 continue
 
             if self.this_proclist:
+                print("this_proc=",proc)
                 if not proc in self.this_proclist: continue 
-
+                print("PASS proclist!->",proc)
             ##--systematic norm with data var
             if dosysnorm : self.HistColl[proc]=self.HistColl[proc].Divide(self.hp_norm_data_sys)
             ##---hmc
@@ -185,6 +216,7 @@ class PlotterDataMC(PlotterBase):
             self.hstack.Add(_h)
             self.legendlist[proc]=_h.Clone()
             i_mc+=1
+        print("nMC=",i_mc)
         self.hp_mc.MakeStatNuiShapes(str(self.Year))
         self.grerr=self.hp_mc.GetErrorGraph(self.syslist)
         
@@ -216,6 +248,11 @@ class PlotterDataMC(PlotterBase):
         self.hdata.SetMarkerSize(0.5)
         self.hratio=self.hdata.Clone()
         Nbins=self.hmc_nosys.GetNbinsX()
+        temp_bins=[]
+        for i in range(1,Nbins+1):
+            temp_bins.append(self.hmc_nosys.GetBinLowEdge(i))
+        print("<xbins>")
+        print(temp_bins)
         self.hratio.Divide(self.hmc_nosys)
 
         self.hratio.SetMinimum(0.0)
@@ -289,8 +326,11 @@ class PlotterDataMC(PlotterBase):
             self.leg.AddEntry(self.legendlist[proc],proc)
         self.leg.AddEntry(self.legendlist["Data"],"Data","E")
     def ReadData(self):
-        self.myreader=Reader(self.AnaName,self.Year,self.suffix,self.procpath,self.normsyspathlist)
+        self.myreader=Reader(self.AnaName,self.Year,self.suffix,self.procpath,self.normsyspathlist,self.DivideByBinSize)
         print("<ReadData>")
+        if self.EmptyNuisance:
+            print("!!!! force empty nuisance!!!!")
+            self.myreader.SetNuisanceEmpty()
         self.HistColl=self.myreader.MakeHistContainer(self.cut,self.x,self.Rebinning)
         self.myreader.CloseFile()
         print("<END - ReadData>")

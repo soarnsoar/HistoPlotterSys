@@ -3,7 +3,7 @@ import sys
 import os
 maindir=os.getenv("GIT_HistoPlotterSys")
 import argparse
-from PlotterComparisonBase import PlotterComparison
+from PlotterComparison import PlotterComparison
 from OpenDictFile import OpenDictFile
 import time
 

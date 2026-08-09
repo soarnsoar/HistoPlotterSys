@@ -17,9 +17,13 @@ import time
 resub=True
 
 def GetTreeFilePath(year,ana,suffix):
-    GIT_HistoPlotterSys=os.getenv("GIT_HistoPlotterSys")
-    ret="/".join([GIT_HistoPlotterSys,'SKFlatOutput',ana,year,suffix])
-    ret+="/combine.root"
+    hostname=os.getenv('HOSTNAME')
+    if 'tamsa' in hostname:
+        GIT_HistoPlotterSys=os.getenv("GIT_HistoPlotterSys")
+        ret="/".join([GIT_HistoPlotterSys,'SKFlatOutput',ana,year,suffix,'ForOptimization']) ## Only DY and TT
+        ret+="/combine.root"
+
+        
     return ret
 
 class Optimizer:
@@ -34,6 +38,7 @@ class Optimizer:
         self.sigtreename='OutTree/ll1b_dy1b'
         self.bkg1treename='OutTree/ll1b_dy_others'
         self.bkg2treename='OutTree/ll1b_bkg'
+        self.datatreename='OutTree/ll1b_data'
         
         self.OpenTFile()
         self.OpenTrees()
@@ -41,15 +46,19 @@ class Optimizer:
         self.dict_out={}
         
     def OpenTFile(self):
+        
         self.inputpath=GetTreeFilePath(self.year,self.ana,self.suffix)
         self.tfile=ROOT.TFile.Open(self.inputpath)
     def OpenTrees(self):
         self.sigtree=self.tfile.Get(self.sigtreename)
         self.bkg1tree=self.tfile.Get(self.bkg1treename)
         self.bkg2tree=self.tfile.Get(self.bkg2treename)
+        self.datatree=self.tfile.Get(self.datatreename)
+        
         self.dictTree['S']=self.sigtree
         self.dictTree['B1']=self.bkg1tree
         self.dictTree['B2']=self.bkg2tree
+        self.dictTree['data']=self.datatree
         
     def SetRange_maxMET(self,_this_range):
         self.range_maxMET=_this_range+[]
@@ -77,7 +86,9 @@ class Optimizer:
                                 'B1':0,
                                 'B1_sumw2':0,
                                 'B2':0,
-                                'B2_sumw2':0
+                                'B2_sumw2':0,
+                                'data':0,
+                                'data_sumw2':0,
                             }
                         #self.dict_out.append({'maxMET':_maxMET,
                         #                      'min_dphi_z_b':_min_dphi_z_b,
@@ -107,7 +118,9 @@ class Optimizer:
             this_dphi_z_b = ev.dphi_z_b
             this_z_pt = ev.z_pt
             this_ptzb = ev.ptzb
-            this_weight = ev.weight
+            this_weight=1.
+            if eventname!="data":
+                this_weight = ev.weight
             for _maxMET in self.range_maxMET:
                 if _maxMET > 0 :
                     if this_met > _maxMET : continue
@@ -142,6 +155,7 @@ def EMPTY():
     sigtreename='OutTree/ll1b_dy1b'
     bkg1treename='OutTree/ll1b_dy_others'
     bkg2treename='OutTree/ll1b_bkg'
+
 
     sigtree=tfile.Get(sigtreename)
     bkg1tree=tfile.Get(bkg1treename)
@@ -264,11 +278,12 @@ if __name__ == '__main__':
         RunCondorSub(args.year,args.ana,args.suffix, args.eventname, args.idx_split,args.nsplit,args.list_maxMET, args.list_min_dphi_z_b, args.list_min_z_pt, args.list_max_ptzb)
     else:
         ana="PreselectionAnalyzer"
-        suffix="jetpuid_loose__lepveto__"    
+        suffix="jetpuid_loose__kincutopt__"    
         yearlist=["2016preVFP","2016postVFP","2017","2018"]
         #yearlist=["2016preVFP"]
         ###----grid-----###
-        list_eventname=['S','B1','B2']
+        list_eventname=['S','B1','B2','data']
+        #list_eventname=['data']
         grid_maxMET=[50+5*i for i in range(30)]+[200+10*i for i in range(21)]+[-1] ## -1 ==> no maxcut
         grid_max_ptzb=[40+10*i for i in range(16)]+[200 + 20*i for i in range(21)]+[-1] ##=== -1 ==>no maxcut
         grid_min_dphi_z_b=[0.2*float(i) for i in range(16)]
@@ -277,9 +292,10 @@ if __name__ == '__main__':
         #grid_min_zpt=[0]
 
         dict_nsplit={
-            "S":15,
-            "B1":15,
-            "B2":70
+            "S":10,
+            "B1":10,
+            "B2":70,
+            "data":10,
         }
         
         for year in yearlist:

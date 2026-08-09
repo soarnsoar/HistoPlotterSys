@@ -18,8 +18,12 @@
             "Down": ["btag_HTagCorr","Down"],
             "Up": ["btag_HTagCorr","Up"],
         },
-
+        "dAsym__YEAR__": {
+            "Down": ["btag_ChargeAsymFactor","Down"],
+            "Up": ["btag_ChargeAsymFactor","Up"],
+        },
     },
+    
     
     "ps":{
         "0":{
@@ -60,10 +64,33 @@
             "Up": ["JES__YEAR__","Up"]
         }
     },
+
+    #"jesAsym": {
+    #    "0": {
+    #        "Down": ["JESAsym__YEAR__","Down"],
+    #        "Up": ["JESAsym__YEAR__","Up"]
+    #    }
+    #},
+    "jesbminus":{
+        "0":{
+            "Down": ["JESbminus","Down"],
+            "Up": ["JESbminus","Up"],
+            }
+    },
+    "jesbplus":{
+        "0":{
+            "Down": ["JESbplus","Down"],
+            "Up": ["JESbplus","Up"],
+            }
+    },    
     "pu__YEAR__": {
+        #https://twiki.cern.ch/twiki/bin/view/CMS/PileupJSONFileforData#Recommended_cross_section
+        ## Fully correlated
         "0": {
-            "Down": ["PU__YEAR__","Down"],
-            "Up": ["PU__YEAR__","Up"]
+            #"Down": ["PU__YEAR__","Down"],
+            "Down": ["PU","Down"],
+            #"Up": ["PU__YEAR__","Up"]
+            "Up": ["PU","Up"]
         }
     },
     "zptweight": {
@@ -639,7 +666,7 @@
     ##-----Momentum/Energy Scale
     "electronscale__YEAR__": {
         "0": {
-            "0": ["electronscale_nominal__YEAR__","Up"]
+            "0": ["electronscale_nominal__YEAR__","Up",False]
         },
         "1": {
             "24": ["electronscale_stat__YEAR__","24"],
@@ -711,7 +738,7 @@
 
     "muonscale__YEAR__": {
         "0": {
-            "0": ["muonscale_nominal__YEAR__","Up"]
+            "0": ["muonscale_nominal__YEAR__","Up",False] ## [2]=False : Do not use
         },
         "1": {
             "24": ["muonscale_stat__YEAR__","24"],
@@ -1069,7 +1096,128 @@
             "Down": ["lumi1718_correlated","Down"]
         }
     },
-
+}|{ ### btagChargedAsym
+    "btagChargedAsym"+PT+ETA+"__YEAR__":{
+        '0':{
+            "Down":['btagChargedAsym'+PT+ETA+'__YEAR__',"Down"],
+            "Up"  :['btagChargedAsym'+PT+ETA+'__YEAR__',"Up"],
+        }
+    }
+    for PT in ["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
+    for ETA in ["Eta0To0p8","Eta0p8To1p6","Eta1p6To2","Eta2To2p5"]
+    
 
     
+}|{#### bChargeID Jet high or others
+    "bChargeID_Jet_Corr_"+PT+ETA+"__YEAR__":{
+        '0':{
+            "Down":['bChargeID_Jet_Corr_'+PT+ETA+'__YEAR__',"Down"],
+            "Up"  :['bChargeID_Jet_Corr_'+PT+ETA+'__YEAR__',"Up"],
+        }
+    }
+    for PT in ["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
+    for ETA in ["Eta0To0p8","Eta0p8To1p6","Eta1p6To2","Eta2To2p5"]
+}|{
+    "bChargeID_Jet_UnCorrPlus_"+PT+ETA+"__YEAR__":{
+        '0':{
+            "Down":['bChargeID_Jet_UnCorrPlus_'+PT+ETA+'__YEAR__',"Down"],
+            "Up"  :['bChargeID_Jet_UnCorrPlus_'+PT+ETA+'__YEAR__',"Up"],
+        }
+    }
+    for PT in ["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
+    for ETA in ["Eta0To0p8","Eta0p8To1p6","Eta1p6To2","Eta2To2p5"]
+    
+}|{
+    "bChargeID_Jet_UnCorrMinus_"+PT+ETA+"__YEAR__":{
+        '0':{
+            "Down":['bChargeID_Jet_UnCorrMinus_'+PT+ETA+'__YEAR__',"Down"],
+            "Up"  :['bChargeID_Jet_UnCorrMinus_'+PT+ETA+'__YEAR__',"Up"],
+        }
+    }
+    for PT in ["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
+    for ETA in ["Eta0To0p8","Eta0p8To1p6","Eta1p6To2","Eta2To2p5"]
+}|{##---SLT Tag eff
+    "bChargeID_SLT_Corr_"+PT+SLT+"__YEAR__":{
+        '0':{
+            "Down":['bChargeID_SLT_Corr_'+PT+SLT+'__YEAR__',"Down"],
+            "Up"  :['bChargeID_SLT_Corr_'+PT+SLT+'__YEAR__',"Up"],
+        }
+    }
+    for PT in ["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
+    for SLT in ["muH","muL","eH","eL"]
+}|{
+    "bChargeID_SLT_UnCorrPlus_"+PT+SLT+"__YEAR__":{
+        '0':{
+            "Down":['bChargeID_SLT_UnCorrPlus_'+PT+SLT+'__YEAR__',"Down"],
+            "Up"  :['bChargeID_SLT_UnCorrPlus_'+PT+SLT+'__YEAR__',"Up"],
+        }
+    }
+    for PT in ["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
+    for SLT in ["muH","muL","eH","eL"]
+}|{
+    "bChargeID_SLT_UnCorrMinus_"+PT+SLT+"__YEAR__":{
+        '0':{
+            "Down":['bChargeID_SLT_UnCorrMinus_'+PT+SLT+'__YEAR__',"Down"],
+            "Up"  :['bChargeID_SLT_UnCorrMinus_'+PT+SLT+'__YEAR__',"Up"],
+        }
+    }
+    for PT in ["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
+    for SLT in ["muH","muL","eH","eL"]
+}|{##---SLT Charge Acc
+    "bChargeAcc_SLT_Corr_"+PT+SLT+"__YEAR__":{
+        '0':{
+            "Down":['bChargeAcc_SLT_Corr_'+PT+SLT+'__YEAR__',"Down"],
+            "Up"  :['bChargeAcc_SLT_Corr_'+PT+SLT+'__YEAR__',"Up"],
+        }
+    }
+    for PT in ["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
+    for SLT in ["1muHOnly","1muLOnly","1eHOnly","1eLOnly"]
+}|{
+    "bChargeAcc_SLT_UnCorrPlus_"+PT+SLT+"__YEAR__":{
+        '0':{
+            "Down":['bChargeAcc_SLT_UnCorrPlus_'+PT+SLT+'__YEAR__',"Down"],
+            "Up"  :['bChargeAcc_SLT_UnCorrPlus_'+PT+SLT+'__YEAR__',"Up"],
+        }
+    }
+    for PT in ["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
+    for SLT in ["1muHOnly","1muLOnly","1eHOnly","1eLOnly"]
+}|{
+    "bChargeAcc_SLT_UnCorrMinus_"+PT+SLT+"__YEAR__":{
+        '0':{
+            "Down":['bChargeAcc_SLT_UnCorrMinus_'+PT+SLT+'__YEAR__',"Down"],
+            "Up"  :['bChargeAcc_SLT_UnCorrMinus_'+PT+SLT+'__YEAR__',"Up"],
+        }
+    }
+    for PT in ["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
+    for SLT in ["1muHOnly","1muLOnly","1eHOnly","1eLOnly"]
+}|{#### bChargeAcc Jet high or others
+    "bChargeAcc_Jet_Corr_"+PT+ETA+jt+"__YEAR__":{
+        '0':{
+            "Down":['bChargeAcc_Jet_Corr_'+PT+ETA+jt+'__YEAR__',"Down"],
+            "Up"  :['bChargeAcc_Jet_Corr_'+PT+ETA+jt+'__YEAR__',"Up"],
+        }
+    }
+    for PT in ["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
+    for ETA in ["Eta0To0p8","Eta0p8To1p6","Eta1p6To2","Eta2To2p5"]
+    for jt in ["NoSL_jH","NoSL_jOthers"]
+}|{
+    "bChargeAcc_Jet_UnCorrPlus_"+PT+ETA+jt+"__YEAR__":{
+        '0':{
+            "Down":['bChargeAcc_Jet_UnCorrPlus_'+PT+ETA+jt+'__YEAR__',"Down"],
+            "Up"  :['bChargeAcc_Jet_UnCorrPlus_'+PT+ETA+jt+'__YEAR__',"Up"],
+        }
+    }
+    for PT in ["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
+    for ETA in ["Eta0To0p8","Eta0p8To1p6","Eta1p6To2","Eta2To2p5"]
+    for jt in ["NoSL_jH","NoSL_jOthers"]    
+}|{
+    "bChargeAcc_Jet_UnCorrMinus_"+PT+ETA+jt+"__YEAR__":{
+        '0':{
+            "Down":['bChargeAcc_Jet_UnCorrMinus_'+PT+ETA+jt+'__YEAR__',"Down"],
+            "Up"  :['bChargeAcc_Jet_UnCorrMinus_'+PT+ETA+jt+'__YEAR__',"Up"],
+        }
+    }
+    for PT in ["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
+    for ETA in ["Eta0To0p8","Eta0p8To1p6","Eta1p6To2","Eta2To2p5"]
+    for jt in ["NoSL_jH","NoSL_jOthers"]
 }

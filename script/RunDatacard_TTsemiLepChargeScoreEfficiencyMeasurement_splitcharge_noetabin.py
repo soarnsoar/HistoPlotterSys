@@ -89,8 +89,8 @@ def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,ps
     ncpu=1
     memory=False
     nretry=1
-    #nmax=480
-    nmax=False
+    nmax=400
+    #nmax=False
 
     curdir=os.getcwd()
 
@@ -175,7 +175,7 @@ if __name__ == '__main__':
         "Has_muL","No_muL",
         "Has_eH","No_eH",
         "Has_eL","No_eL",
-        "NoSL_jH","NoSL_jOthers"
+        #"NoSL_jH","NoSL_jOthers"
 
     ]
     PTBINS=["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]

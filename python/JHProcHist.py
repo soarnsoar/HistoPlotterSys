@@ -2,7 +2,7 @@ from GetBinsX import GetBinsX
 from copy import deepcopy
 from OpenDictFile import OpenDictFile
 import ROOT
-from math import sqrt
+from math import sqrt,isnan
 
 import psutil
 def get_memory_usage():
@@ -48,7 +48,19 @@ class JHProcHist:## Hists Container of a proc
         self.SetHist(hup,sys,"0","Up")
         self.SetHist(hdown,sys,"0","Down")
 
-        
+    def CheckHasNanInHist(self,_h,sys,idx1,idx2):
+        HasNan=False
+        for i in range(1, _h.GetNbinsX() + 1):
+            v = _h.GetBinContent(i)
+            if isnan(v):
+                HasNan=True
+                #self.cut=cut
+                #self.x=x
+                #self.proc=proc
+
+                print(self.cut,self.x,self.proc,'has Nan in ',i,'bin',sys,'idx1=',idx1,'idx2=',idx2)
+                break
+        return HasNan
     def SetHist(self,h,sys="nom",idx1=0,idx2=0):
         idx1=str(idx1)
         idx2=str(idx2)
@@ -56,6 +68,12 @@ class JHProcHist:## Hists Container of a proc
             self.hdict[sys]={}
         if not idx1 in self.hdict[sys]:
             self.hdict[sys][idx1]={}
+        HasNan=False
+        if not sys=="nom":
+            HasNan=self.CheckHasNanInHist(h,sys,idx1,idx2)
+            if HasNan:
+                self.hdict[sys][idx1][idx2]=deepcopy(self.GetHist())
+                return
         self.hdict[sys][idx1][idx2]=deepcopy(h)
 
     def GetHist(self,sys="nom",idx1=0,idx2=0):
@@ -67,7 +85,7 @@ class JHProcHist:## Hists Container of a proc
             return self.hdict["nom"]['0']['0']
         if not idx2 in self.hdict[sys][idx1]:
             return self.hdict["nom"]['0']['0']
-
+        self.CheckHasNanInHist(self.hdict[sys][idx1][idx2],sys,idx1,idx2)
         return self.hdict[sys][idx1][idx2]
     def GetSysList(self):
         return sorted(self.hdict)
@@ -180,8 +198,10 @@ class JHProcHist:## Hists Container of a proc
             nui_name=nui_name_base+"__bin"+str(i)
             y=h.GetBinContent(i)
             yerr=h.GetBinError(i)
+            if yerr > 1000000000. :
+                print("yerr is very large-->","i=",i,"y=",y,"yerr=",yerr)
             yup=y+yerr
-            ydown=y-yerr if y > yerr else 0.
+            ydown=y-yerr if y - yerr > 0 else 0.
             hup=deepcopy(h)
             hup.SetName(h.GetName()+nui_name+"Up")
             hup.SetBinContent(i,yup)
@@ -224,21 +244,29 @@ class JHProcHist:## Hists Container of a proc
     def GetSymHessianError(self,ynom,ibin,sys,idx1):
         ##---Split them into plus/minus error
         Nrep=0
-        
+        Nnan=0
         sum_dy2=0
         
-        xvalue=self.hdict[sys][idx1]["0"].GetBinLowEdge(ibin)
+ 
+        idx2_first=sorted(self.hdict[sys][idx1])[0]
+        #xvalue=self.hdict[sys][idx1]["0"].GetBinLowEdge(ibin)
+        xvalue=self.hdict[sys][idx1][idx2_first].GetBinLowEdge(ibin)
+        
         for idx2 in self.hdict[sys][idx1]:
             ysys=self.hdict[sys][idx1][idx2].GetBinContent(ibin)
-            this_dy=ysys-ynom
+            if not isnan(ysys):
+                this_dy=ysys-ynom
             
-            sum_dy2+=(this_dy**2)
+                sum_dy2+=(this_dy**2)
+            else:
+                print(sys,idx2,"is nan")
+                Nnan+=1
             Nrep+=1
 
         
 
         vector_sum=sqrt(sum_dy2)
-
+        print('Nnan=',Nnan)
         return vector_sum,vector_sum
 
 
@@ -248,7 +276,9 @@ class JHProcHist:## Hists Container of a proc
         Nrep_minus=0
         sum_dyplus2=0
         sum_dyminus2=0
-        xvalue=self.hdict[sys][idx1]["0"].GetBinLowEdge(ibin)
+        idx2_first=sorted(self.hdict[sys][idx1])[0]
+        #xvalue=self.hdict[sys][idx1]["0"].GetBinLowEdge(ibin)
+        xvalue=self.hdict[sys][idx1][idx2_first].GetBinLowEdge(ibin)
         for idx2 in self.hdict[sys][idx1]:
             ysys=self.hdict[sys][idx1][idx2].GetBinContent(ibin)
             this_dy=ysys-ynom
@@ -270,17 +300,25 @@ class JHProcHist:## Hists Container of a proc
 
 
     def GetDiffError(self,ynom,ibin,sys,idx1,idx2list=False):
+        #QCDScale
+        
         dylist_plus=[0]
         dylist_minus=[0]
 
         if not idx2list : idx2list=self.hdict[sys][idx1]
+        #print("len(idx2list)=",len(idx2list))
         for idx2 in idx2list:
             ysys=self.hdict[sys][idx1][idx2].GetBinContent(ibin)
             this_dy=ysys-ynom
+            #print('[sysidx2,this_dy]',idx2,this_dy)
             if this_dy > 0:
                 dylist_plus.append(this_dy)
             else:
                 dylist_minus.append(abs(this_dy))
+        #if 'QCDScale' in sys:
+        #   print('[idx2list]=',idx2list)
+        #   print("[GetDiffError, QCDScale]dylist_plus=",dylist_plus)
+        #   print("[GetDiffError, QCDScale]dylist_minus=",dylist_minus)
         #maxdy=max(dylist)
         #mindy=min(dylist)
         return max(dylist_plus),max(dylist_minus)
@@ -330,6 +368,11 @@ class JHProcHist:## Hists Container of a proc
                 IsPS=1
             elif len(self.hdict[sys][idx1]) > self.nmin_replica :
                 IsReplica=1
+            elif 'zptweight' in sys:
+                if len(self.hdict[sys][idx1]) ==1:
+                    IsSymHessian=1
+                else:
+                    IsUpDown=1
             else:
                 IsUpDown=1
                 
@@ -353,9 +396,19 @@ class JHProcHist:## Hists Container of a proc
 
             elif IsQCDScale:
                 this_err_plus, this_err_minus=self.GetDiffError(ynom,ibin,sys,idx1)
+                #print("[QCDScale error]x=",self.GetHist().GetBinLowEdge(ibin),this_err_plus, this_err_minus)
             else:
                 print("No Error Type for",sys,idx1)
                 1/0
+            #print(sys,idx1)
+            #print("this_err_plus=",this_err_plus)
+            #print("this_err_minus=",this_err_minus)
+            if isnan(this_err_plus):
+                print('[isnan errplus]',ibin,sys)
+                this_err_plus=0
+            if isnan(this_err_minus) :
+                print('[isnan errminus]',ibin,sys)
+                this_err_minus=0
             sum_err2_plus+= (this_err_plus**2)
             sum_err2_minus+= (this_err_minus**2)
         total_err_plus=sqrt(sum_err2_plus)
@@ -364,7 +417,8 @@ class JHProcHist:## Hists Container of a proc
 
     
 
-    def SetErrorBand(self,_syslist=False):
+    def SetErrorBand(self,_syslist=False,_updown_sym=False):
+        print("<SetErrorBand>")
         #print "_syslist=",_syslist
         self.gr_sys=ROOT.TGraphAsymmErrors()
         hnom=self.GetHist()
@@ -385,21 +439,34 @@ class JHProcHist:## Hists Container of a proc
             dy2sum_minus=0
 
             for sys in self.hdict:
+                if ibin ==1 : print(sys)
                 if _syslist and (not sys in _syslist) : continue
                 dy_plus,dy_minus=self.GetSysError(ynom,ibin,sys)
+                if isnan(dy_plus) :
+                    dy_plus=0
+                    print('x=','(',x1,',',x2,')','has nan sys +direction :',sys)
+                if isnan(dy_minus):
+                    dy_minus=0
+                    print('x=','(',x1,',',x2,')','has nan sys -direction :',sys)
                 dy2sum_plus+=(dy_plus**2)
                 dy2sum_minus+=(dy_minus**2)
-                if sys not in dict_err_plus: 
+                ##---init error dict
+                if not sys in dict_err_plus: 
                     dict_err_plus[sys]=0
-                if sys not in dict_err_minus: 
+                if not sys in dict_err_minus: 
                     dict_err_minus[sys]=0
                 dict_err_plus[sys]+=dy_plus
                 dict_err_minus[sys]+=dy_minus
 
             dytotal_plus=sqrt(dy2sum_plus)
             dytotal_minus=sqrt(dy2sum_minus)
+            #print('x=','(',x1,',',x2,')',dytotal_plus,dytotal_minus)
             self.gr_sys.SetPoint(ibin-1,x,ynom)
+            if _updown_sym:
+                dytotal_minus=max(dytotal_minus,dytotal_plus)
+                dytotal_plus=dytotal_minus
             self.gr_sys.SetPointError(ibin-1,x-x1,x2-x,dytotal_minus,dytotal_plus)
+            print('x=',x,'    errp=',dytotal_plus,'    errn=',dytotal_minus)
         ##----Print 
         print("----[Plus Error Rank]---")
         self.PrintSysRank(dict_err_plus,integral_total)

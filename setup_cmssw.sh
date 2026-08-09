@@ -11,11 +11,16 @@ source $CMS_PATH/cmsset_default.sh
 #export SCRAM_ARCH=el9_amd64_gcc12
 #export cmsswrel='cmssw/CMSSW_15_0_1'
 
-export SCRAM_ARCH=el9_amd64_gcc11 ## after tamsa os update, for multiple pykeras, CMSSW_13_2_9
-export cmsswrel='cmssw/CMSSW_13_2_9' ## after tamsa os update, test for multi pykeras
+#export SCRAM_ARCH=el9_amd64_gcc11 ## after tamsa os update, for multiple pykeras, CMSSW_13_2_9
+#export cmsswrel='cmssw/CMSSW_13_2_9' ## after tamsa os update, test for multi pykeras
 
+##---250620---> use cmssw_14 for root6.30 .. to fix slow hadd##
+export SCRAM_ARCH=el9_amd64_gcc12
+export cmsswrel='cmssw/CMSSW_14_1_0_pre4'
 
-
+##--260116 ->test with the latest version
+export SCRAM_ARCH=el9_amd64_gcc12
+export cmsswrel='cmssw/CMSSW_15_0_1' ## after tamsa os update
 
 
 cd /cvmfs/cms.cern.ch/$SCRAM_ARCH/cms/$cmsswrel/src
