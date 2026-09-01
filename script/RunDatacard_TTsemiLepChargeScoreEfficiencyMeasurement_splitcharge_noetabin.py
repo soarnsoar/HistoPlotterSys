@@ -163,7 +163,8 @@ if __name__ == '__main__':
         
     Ana="TTsemiLepChargeScoreEfficiencyMeasurement"
     #suffix="runSys__TopMassWindow__"
-    suffix="runSys__use_beff_dasym__JETPUID_L__chi2kincut__bdt2512.5__splitcharge__noetabin__"
+    #suffix="runSys__use_beff_dasym__JETPUID_L__chi2kincut__bdt2512.5__splitcharge__noetabin__"
+    suffix="runSys__use_beff_dasym__JETPUID_L__noveto__newlepveto__chi2kincut__bdt2608.2__splitcharge__noetabin__"
     
         
     cutlist=[]
