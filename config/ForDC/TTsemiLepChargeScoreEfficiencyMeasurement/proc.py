@@ -25,7 +25,7 @@
     }),
 
     #0) QCD processes
-    #["QCD_bEnriched_HT1000to1500","QCD_bEnriched_HT1500to2000","QCD_bEnriched_HT200to300","QCD_bEnriched_HT300to500","QCD_bEnriched_HT500to700","QCD_bEnriched_HT700to1000"]
+
     ("OverlapPromptLep__QCD",{
         "procs":
         [bkg+"_From"+p+"__Hadron"+b+"_PromptContam" for bkg in ["QCD_bEnriched_HT100to200","QCD_bEnriched_HT1000to1500","QCD_bEnriched_HT1500to2000","QCD_bEnriched_HT200to300","QCD_bEnriched_HT300to500","QCD_bEnriched_HT500to700","QCD_bEnriched_HT700to1000"]  for p in ["bminus","bplus","Others"] for b in ["Others","B"]],
@@ -74,7 +74,7 @@
     }),
 
     #2) SingleTop_tch_top
-    ("OverlapPromptLep__SingleTop_sch__SingleTop_tch_top",{
+    ("OverlapPromptLep__SingleTop_tch_top",{
         "procs":
         [bkg+"_From"+p+"__Hadron"+b+"_PromptContam" for bkg in ["SingleTop_tch_top_Incl"] for p in ["bminus","bplus","Others"] for b in ["Others","B"]],
         "color":8,
@@ -167,7 +167,7 @@
 
     ("OverlapPromptLep__TTLJ",{
         "procs":["TTLJ_powheg_From"+p+"__Hadron"+b+"_PromptContam" for p in ["bminus","bplus","Others"] for b in ["Others","B"]],
-        "name":"fOverlapPromptLep__TTLJ",
+        "name":"OverlapPromptLep__TTLJ",
         "color":3,
         "IsSig":True
     }),
