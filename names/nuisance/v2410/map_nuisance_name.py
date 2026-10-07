@@ -1220,4 +1220,14 @@
     for PT in ["PT30To50","PT50To70","PT70To100","PT100To140","PT140ToInf"]
     for ETA in ["Eta0To0p8","Eta0p8To1p6","Eta1p6To2","Eta2To2p5"]
     for jt in ["NoSL_jH","NoSL_jOthers"]
+}|{#### bChargeID Effs
+    "bChargeID_SLT_"+systype+"_SLTID"+str(sltidx)+"_bin"+str(binidx)+"_"+"__YEAR__":{
+        '0':{
+            "Down":["bChargeID_SLT_Corr_SLTID"+str(sltidx)+"_bin"+str(binidx)+"_"+"__YEAR__","Down"],
+            "Up"  :["bChargeID_SLT_Corr_SLTID"+str(sltidx)+"_bin"+str(binidx)+"_"+"__YEAR__","Up"],
+        }
+    }
+    for sltidx in [0,1,2,3]
+    for binidx in range(0,100)
+    for systype in ['Corr','UnCorrPlus','UnCorrMinus']
 }
