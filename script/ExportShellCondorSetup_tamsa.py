@@ -63,9 +63,9 @@ def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
     lines=[]
     lines.append('executable = '+os.getcwd()+'/'+WORKDIR+'/run.sh')
     lines.append('universe = vanilla')
-    lines.append('output = '+os.getcwd()+'/'+WORKDIR+'/run.out')
-    lines.append('error = '+os.getcwd()+'/'+WORKDIR+'/run.err')
-    lines.append('log = '+os.getcwd()+'/'+WORKDIR+'/run.log')
+    #lines.append('output = '+os.getcwd()+'/'+WORKDIR+'/run.out')
+    #lines.append('error = '+os.getcwd()+'/'+WORKDIR+'/run.err')
+    #lines.append('log = '+os.getcwd()+'/'+WORKDIR+'/run.log')
     lines.append('getenv = True')
     count=1
     if memory:
