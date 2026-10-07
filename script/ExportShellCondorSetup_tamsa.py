@@ -6,7 +6,7 @@ import os
 
 def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
     user=os.getenv("USER")
-    
+    HOSTNAME=os.getenv('HOSTNAME')
     command='('+command+')'
     os.system('mkdir -p '+WORKDIR)
     f=open(WORKDIR+'/run.sh','w')
@@ -81,7 +81,8 @@ def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
     #    ncpu=ncpu_criteria
 
     lines.append('request_cpus = '+str(ncpu))
-    #lines.append('accounting_group=group_cms')
+    if 'sdfarm' in HOSTNAME:
+        lines.append('accounting_group=group_cms')
     lines.append('JobBatchName='+jobname)
 
     lines.append('queue')
