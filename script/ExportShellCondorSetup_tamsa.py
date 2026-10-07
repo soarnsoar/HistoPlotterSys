@@ -86,6 +86,8 @@ def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
         lines.append('output = run.out')
         lines.append('error = run.err')
         lines.append('log = run.log')
+        lines.append('should_transfer_files = YES')
+        lines.append('when_to_transfer_output = ON_EXIT')       
     else:
         lines.append('output = '+os.getcwd()+'/'+WORKDIR+'/run.out')
         lines.append('error = '+os.getcwd()+'/'+WORKDIR+'/run.err')
