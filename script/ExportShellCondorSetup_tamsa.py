@@ -83,6 +83,14 @@ def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
     lines.append('request_cpus = '+str(ncpu))
     if 'sdfarm' in HOSTNAME:
         lines.append('accounting_group=group_cms')
+        lines.append('output = run.out')
+        lines.append('error = run.err')
+        lines.append('log = run.log')
+    else:
+        lines.append('output = '+os.getcwd()+'/'+WORKDIR+'/run.out')
+        lines.append('error = '+os.getcwd()+'/'+WORKDIR+'/run.err')
+        lines.append('log = '+os.getcwd()+'/'+WORKDIR+'/run.log')
+        
     lines.append('JobBatchName='+jobname)
 
     lines.append('queue')
@@ -90,10 +98,16 @@ def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
         f.write(line+'\n')
     f.close()
     if submit:
+        CURDIR=os.getcwd()        
         submitcommand='condor_submit '+WORKDIR+'/run.jds > '+WORKDIR+'/run.jid'
+        if 'sdfarm' in HOSTNAME :
+            os.chdir(WORKDIR)
+            submitcommand="condor_submit run.jds > run.jid"
+        
         print(submitcommand)
         os.system(submitcommand)
-
+        os.chdir(CURDIR)
+        
 if __name__ == '__main__':
    usage = 'usage: %prog [options]'
    parser = optparse.OptionParser(usage)
