@@ -67,10 +67,15 @@ def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
     lines.append('error = '+os.getcwd()+'/'+WORKDIR+'/run.err')
     lines.append('log = '+os.getcwd()+'/'+WORKDIR+'/run.log')
     lines.append('getenv = True')
-    if nmax:
-        lines.append('concurrency_limits = n'+str(nmax)+'.'+user)
+    count=1
     if memory:
         lines.append('request_memory = '+str(int(memory))+' MB \n')
+        count += int(float(int(memory)+3199)/3200.)
+    else:
+        count+=1
+    if nmax:
+        lines.append('concurrency_limits = n'+str(nmax)+'.'+user+':'+str(count))
+        
     #ncpu_criteria=int(memory/4096)+1
     #if int(ncpu) < int(ncpu_criteria):
     #    ncpu=ncpu_criteria
