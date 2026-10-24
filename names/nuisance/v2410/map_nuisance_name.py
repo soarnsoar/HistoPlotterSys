@@ -1223,11 +1223,20 @@
 }|{#### bChargeID Effs
     "bChargeID_SLT_"+systype+"_SLTID"+str(sltidx)+"_bin"+str(binidx)+"_"+"__YEAR__":{
         '0':{
-            "Down":["bChargeID_SLT_Corr_SLTID"+str(sltidx)+"_bin"+str(binidx)+"_"+"__YEAR__","Down"],
-            "Up"  :["bChargeID_SLT_Corr_SLTID"+str(sltidx)+"_bin"+str(binidx)+"_"+"__YEAR__","Up"],
+            "Down":["bChargeID_SLT_"+systype+"_SLTID"+str(sltidx)+"_bin"+str(binidx)+"_"+"__YEAR__","Down"],
+            "Up"  :["bChargeID_SLT_"+systype+"_SLTID"+str(sltidx)+"_bin"+str(binidx)+"_"+"__YEAR__","Up"],
         }
     }
     for sltidx in [0,1,2,3]
+    for binidx in range(0,100)
+    for systype in ['Corr','UnCorrPlus','UnCorrMinus']
+}|{#### bChargeID Effs for jH  //e.g. bChargeID_jH_Corr_bin0_2018
+    "bChargeID_jH_"+systype+"_bin"+str(binidx)+"_"+"__YEAR__":{
+        '0':{
+            "Down":["bChargeID_jH_"+systype+"_bin"+str(binidx)+"_"+"__YEAR__","Down"],
+            "Up"  :["bChargeID_jH_"+systype+"_bin"+str(binidx)+"_"+"__YEAR__","Up"],
+        }
+    }
     for binidx in range(0,100)
     for systype in ['Corr','UnCorrPlus','UnCorrMinus']
 }
