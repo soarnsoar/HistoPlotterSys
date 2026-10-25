@@ -34,6 +34,9 @@ class Reader:
         #else:
         #    self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/combine.root"
         self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/combine.root"
+        HOSTNAME=os.getenv('HOSTNAME')                                       
+        if 'sdfarm' in HOSTNAME:                                                                                                                                      self.inputpath="/xrd/store/user/jhchoi/plotter/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/combine.root"
+        
         #print self.inputpath
     def ReadInput(self):
         print("<ReadInput> in JHReader")
