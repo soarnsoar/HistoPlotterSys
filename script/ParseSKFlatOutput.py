@@ -8,6 +8,7 @@ maindir=os.getenv("GIT_HistoPlotterSys")
 
 class Parser:
     def __init__(self, AnaName,YEAR,suffix):
+        HOSTNAME=os.getenv("HOSTNAME")
         #self.inputpath=inputpath
         self.AnaName=AnaName
         self.YEAR=str(YEAR)
@@ -18,6 +19,9 @@ class Parser:
         #else:
         #    self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/combine.root"
         self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/combine.root"
+        if 'sdfarm' in HOSTNAME:
+            self.inputpath="/xrd/store/user/jhchoi/plotter/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/combine.root"
+        
         self.nui_dict={}
     def Parse(self):
         self.OpenFile()

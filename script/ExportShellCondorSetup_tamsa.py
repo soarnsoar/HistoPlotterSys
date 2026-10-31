@@ -4,15 +4,28 @@ import os
 #export CMS_PATH=/cvmfs/cms.cern.ch
 #source $CMS_PATH/cmsset_default.sh
 
-def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
+def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=2,nmax=0):
+
     user=os.getenv("USER")
     HOSTNAME=os.getenv('HOSTNAME')
     command='('+command+')'
     os.system('mkdir -p '+WORKDIR)
     f=open(WORKDIR+'/run.sh','w')
     lines=[]
-    
+
     lines.append("#!/bin/bash")
+    lines.append('myerr=$?')
+    lines.append('ntry=0')
+    ##---new loop for setup----##
+    lines.append('while [ $myerr -ne 0 ]')
+    lines.append('do')
+    lines.append("ntry=`expr $ntry + 1`")
+    lines.append('if [ $ntry -gt 1 ]')
+    lines.append('then')
+    lines.append('echo "Sleep 60sec... for ntry=${ntry}"')
+    lines.append('sleep 60')
+    lines.append('fi')
+    
     #lines.append("export VO_CMS_SW_DIR="+os.getenv("VO_CMS_SW_DIR"))
     lines.append("export CMS_PATH=/cvmfs/cms.cern.ch")
     lines.append("source $CMS_PATH/cmsset_default.sh")
@@ -21,6 +34,19 @@ def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
     lines.append("cd "+os.getenv("CMSSW_BASE"))
     lines.append("eval `scramv1 ru -sh`")
     lines.append('cd '+os.getcwd()+'/'+WORKDIR)
+    lines.append('myerr=$?')
+
+
+    lines.append('if [ $ntry -gt '+str(nretry)+' ]')
+    lines.append('then')
+    lines.append('break')
+    lines.append('fi')
+
+    lines.append('done')
+    
+    lines.append('echo "[Setup is done.]"')
+
+    
     #lines.append('python run.py &> run.log')
     #lines.append(command+'||myerr=$?')
     lines.append(command)
@@ -29,11 +55,18 @@ def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
     #lines.append('then')
     #lines.append('myerr=0')
     #lines.append('fi')
-    lines.append('ntry=1')
+    lines.append('ntry=0')
     lines.append('echo "myerr=$myerr"')
     lines.append('while [ $myerr -ne 0 ]')
     lines.append('do')
+    
+
     lines.append("ntry=`expr $ntry + 1`")
+    lines.append('if [ $ntry -gt 1 ]')
+    lines.append('then')
+    lines.append('echo "Sleep 60sec... for ntry=${ntry}"')
+    lines.append('sleep 60')
+    lines.append('fi')
     #lines.append(command+'||myerr=$?')   
     lines.append(command)
     lines.append('myerr=$?')
@@ -86,8 +119,8 @@ def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=3,nmax=0):
         lines.append('output = run.out')
         lines.append('error = run.err')
         lines.append('log = run.log')
-        lines.append('should_transfer_files = YES')
-        lines.append('when_to_transfer_output = ON_EXIT')       
+        #lines.append('should_transfer_files = YES')
+        #lines.append('when_to_transfer_output = ON_EXIT')       
     else:
         lines.append('output = '+os.getcwd()+'/'+WORKDIR+'/run.out')
         lines.append('error = '+os.getcwd()+'/'+WORKDIR+'/run.err')
