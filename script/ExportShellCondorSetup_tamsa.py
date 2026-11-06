@@ -152,7 +152,7 @@ if __name__ == '__main__':
    parser.add_option("-m","--ncpu",   dest="ncpu", help="number of multicores",default=1)
    parser.add_option("-s","--submit",   dest="submit",action="store_true", help="submit",default=False)
    parser.add_option("-r","--memory",   dest="memory", help="memory")
-   parser.add_option("--nmax",   dest="nmax", help="nmax condor")
+   parser.add_option("--nmax",   dest="nmax", help="nmax condor", default=800)
    (options, args) = parser.parse_args()
 
    command=options.command
