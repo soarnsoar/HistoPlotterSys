@@ -2,12 +2,12 @@
 
     
     ("Bkg_Others",{
-        "procs":["WW_pythia","WZ_pythia","ZZ_pythia"]+["WJets_MG"],
+        "procs":["VV"]+["WJets_MG"],
         "color":5,
         "name":"OtherBkg",
     }),
     ("Bkg_QCD",{
-        "procs":["QCD_bEnriched_HT100to200","QCD_bEnriched_HT1000to1500","QCD_bEnriched_HT1500to2000","QCD_bEnriched_HT200to300","QCD_bEnriched_HT300to500","QCD_bEnriched_HT500to700","QCD_bEnriched_HT700to1000",'QCD_bEnriched_HT2000toInf'],
+        "procs":["QCD_bEnriched"],
         "color":5,
         "name":"QCD",
     }),
