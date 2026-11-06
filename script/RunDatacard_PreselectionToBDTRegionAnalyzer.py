@@ -118,12 +118,12 @@ if __name__ == '__main__':
         
     Ana="PreselectionToBDTRegionAnalyzer"
     
-    suffix="runSys__jetpuid_loose__lepveto__use_beffasym__bdt2512.5__bdtcut__apply_chargeid_eff_corr__apply_chargeid_acc_corr__"
+    suffix="runSys__jetpuid_loose__use_beffasym__newlepveto__bdt2608.2__bdtcut__apply_chargeid_eff_corr__apply_chargeid_acc_corr__"
     
     #AllEvents__muH__high_peak
     rapidity_regions=["broad","high_peak","low_peak","mid_peak"]
     bchargeids=["muH","muL","eH","eL","jH","jOthers"]
-    cutlist=[]
+    cutlist=['AllEvents']
     for rapidity_region in rapidity_regions:
         for bchargeid in bchargeids:
             this_cut="AllEvents__"+bchargeid+"__"+rapidity_region
