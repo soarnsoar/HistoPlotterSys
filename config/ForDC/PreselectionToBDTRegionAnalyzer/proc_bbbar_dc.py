@@ -1,5 +1,4 @@
 [
-
     
     ("Bkg_Others",{
         "procs":["VV"]+["WJets_MG"],
@@ -45,21 +44,21 @@
     }),                
     
     ("DYothers",{
-        "procs":[p+"_others" for p in ["DYJetsToEE_MiNNLO","DYJetsToMuMu_MiNNLO","DYJetsToTauTau_MiNNLO"]],
+        "procs":['DY'],
         "color":8,
         "name":"DY others",
     }),
 
 
     ("DYbminus",{
-        "procs":[p+"_b" for p in ["DYJetsToEE_MiNNLO","DYJetsToMuMu_MiNNLO","DYJetsToTauTau_MiNNLO"]],
+        "procs":['DYgb_b'],
         "color":61,
         "name":"DY b^{-}",
         "IsSig":True,
     }),
 
     ("DYbplus",{
-        "procs":[p+"_bbar" for p in ["DYJetsToEE_MiNNLO","DYJetsToMuMu_MiNNLO","DYJetsToTauTau_MiNNLO"]],
+        "procs":['DYgb_bbar'],
         "color":99,
         "name":"DY b^{+}",
         "IsSig":True,

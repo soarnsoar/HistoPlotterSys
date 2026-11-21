@@ -45,7 +45,7 @@
     }),                
     
     ("DYothers",{
-        "procs":[p+"_others" for p in ["DYJetsToEE_MiNNLO","DYJetsToMuMu_MiNNLO","DYJetsToTauTau_MiNNLO"]],
+        "procs":["DY"],
         "color":8,
         "name":"DY others",
     }),
@@ -55,19 +55,19 @@
     ##  __logx_-3.5To0
 
     ("DYbminus_logx_Under_m4.5",{
-        "procs":[p+"_b__logx_-InfTo-4.5" for p in ["DYJetsToEE_MiNNLO","DYJetsToMuMu_MiNNLO","DYJetsToTauTau_MiNNLO"]],
+        "procs":["DYgb__blogx_-InfTo-4.5"],
         "color":61,
         "name":"DY b^{-}, log(xb)<-4.5",
         "IsSig":True,
     }),
     ("DYbminus_logx_m4.5_To_m3.5",{
-        "procs":[p+"_b__logx_-4.5To-3.5" for p in ["DYJetsToEE_MiNNLO","DYJetsToMuMu_MiNNLO","DYJetsToTauTau_MiNNLO"]],
+        "procs":['DYgb__blogx_-4.5To-3.5'],
         "color":65,
         "name":"DY b^{-}, -4.5<log(xb)<-3.5",
         "IsSig":True,
     }),
     ("DYbminus_logx_Over_m3.5",{
-        "procs":[p+"_b__logx_-3.5To0" for p in ["DYJetsToEE_MiNNLO","DYJetsToMuMu_MiNNLO","DYJetsToTauTau_MiNNLO"]],
+        "procs":['DYgb__blogx_-3.5To0'],
         "color":70,
         "name":"DY b^{-}, log(xb)>-3.5",
         "IsSig":True,
@@ -76,21 +76,21 @@
     
 
     ("DYbplus_logx_Under_m4.5",{
-        "procs":[p+"_bbar__logx_-InfTo-4.5" for p in ["DYJetsToEE_MiNNLO","DYJetsToMuMu_MiNNLO","DYJetsToTauTau_MiNNLO"]],
+        "procs":['DYgb__bbarlogx_-InfTo-4.5'],
         "color":91,
         "name":"DY b^{+}, log(xb)<-4.5",
         "IsSig":True,
     }),
 
     ("DYbplus_logx_m4.5_To_m3.5",{
-        "procs":[p+"_bbar__logx_-4.5To-3.5" for p in ["DYJetsToEE_MiNNLO","DYJetsToMuMu_MiNNLO","DYJetsToTauTau_MiNNLO"]],
+        "procs":['DYgb__bbarlogx_-4.5To-3.5'],
         "color":95,
         "name":"DY b^{+}, -4.5<log(xb)<-3.5",
         "IsSig":True,
     }),
 
     ("DYbplus_logx_Over_m3.5",{
-        "procs":[p+"_bbar__logx_-3.5To0" for p in ["DYJetsToEE_MiNNLO","DYJetsToMuMu_MiNNLO","DYJetsToTauTau_MiNNLO"]],
+        "procs":['DYgb__bbarlogx_-3.5To0'],
         "color":99,
         "name":"DY b^{+}, log(xb)>-3.5",
         "IsSig":True,
