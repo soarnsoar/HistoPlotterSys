@@ -152,7 +152,34 @@ class JHDatacard:
             hup.SetBinContent(ibin,ynom+dyup)
             hdown.SetBinContent(ibin,ynom-dydown)
         return hup,hdown
+    def GetCorrelUncorrel( self,_hsys,_hnom,_rho):
+        _hcorrel=_hnom.Clone()
+        _hcorrel.Reset()
 
+        _huncorrel=_hnom.Clone()
+        _huncorrel.Reset()        
+
+        _scale_to_correl = math.sqrt(_rho)
+        _scale_to_uncorrel = math.sqrt(1-_rho)
+        
+        Nbins=_hnom.GetNbinsX()
+        for ibin in range(1,Nbins+2):
+            ynom=_hnom.GetBinContent(ibin)
+            ysys=_hsys.GetBinContent(ibin)
+            dy=ysys-ynom
+
+            dy_correl = dy*_scale_to_correl
+            dy_uncorrel = dy*_scale_to_uncorrel
+
+            y_correl = ynom+dy_correl
+            y_uncorrel = ynom+dy_uncorrel
+            
+            _hcorrel.SetBinContent(ibin,y_correl)
+            _huncorrel.SetBinContent(ibin,y_uncorrel)
+        return _hcorrel,_huncorrel
+        
+
+        
     def GetUpDownHessian(self,proc,sys,idx1):
         #def GetHist(self,sys="nom",idx1=0,idx2=0):
         hup=self.plotter.HistColl[proc].GetHist().Clone()
@@ -294,7 +321,7 @@ class JHDatacard:
                     ##----Make NuisanceShapes----##
                     for idx1 in self.plotter.HistColl[proc].GetSysIdx1List(sys):
                         Nidx2 = len(self.plotter.HistColl[proc].GetSysIdx2List(sys,idx1))
-                        if Nidx2 > 11 and not ("PDF" in sys) : ##own stat in lepton sys
+                        if Nidx2 > 11 and not ("PDF" in sys) and not ('QCDScale' in sys) : ##own stat in lepton sys
                             this_idx2=self.plotter.HistColl[proc].GetSysIdx2List(sys,idx1)[0]
                             this_sysname=self.nuisance_map[sys][str(idx1)][str(this_idx2)][0]
                             hup,hdown=self.GetUpDownReplica(proc,sys,idx1)
@@ -308,9 +335,29 @@ class JHDatacard:
 
                             self.AddShape(proc,this_sysname,"Up",hup)
                             self.AddShape(proc,this_sysname,"Down",hdown)
+                        elif ('jes' in sys) and ('Source' in sys) and ('rho' in self.nuisance_map[sys][str(idx1)]):##jes by sources and need correl not 0 or 1
+                            this_rho = self.nuisance_map[sys][str(idx1)]['rho']
+                            
+                            for idx2 in self.plotter.HistColl[proc].GetSysIdx2List(sys,idx1):
+                                
+                                this_sysname=self.nuisance_map[sys][str(idx1)][str(idx2)][0]
+                                this_sysname_correl=this_sysname
+                                this_sysname_uncorrel=this_sysname+self.year
+                                this_sysdir=self.nuisance_map[sys][str(idx1)][str(idx2)][1]
+
+                                this_hsys=self.plotter.HistColl[proc].GetHist(sys,idx1,idx2).Clone()
+                                hcorrel,huncorrel=self.GetCorrelUncorrel(this_hsys,self.plotter.HistColl[proc].GetHist(),this_rho)
+                                if not this_sysname_correl in self.FullSysList : self.FullSysList.append(this_sysname_correl)
+                                if not this_sysname_uncorrel in self.FullSysList : self.FullSysList.append(this_sysname_uncorrel)
+
+                                #self.AddShape(proc,this_sysname,this_sysdir,_h)
+
+                                self.AddShape(proc,this_sysname_correl,this_sysdir,hcorrel)
+                                self.AddShape(proc,this_sysname_uncorrel,this_sysdir,huncorrel)                                
 
 
-                    
+                                
+                                
                         elif Nidx2==1 or (sys=="topptweight") or (sys=="zptweight") or ("muR" in sys and "muF" in sys) or ("QCDScale" in sys) or ("PDF" in sys) : ##QCDscale OR oneside sys OR PDF hessian member
                             if self.EnvelopRMSScalePDF:
                                 if ("muR" in sys and "muF" in sys) or("QCDScale" in sys): ##QCDSclae ->Envelop
@@ -358,7 +405,6 @@ class JHDatacard:
                                 if ("muR" in sys and "muF" in sys) or("QCDScale" in sys): ##QCDSclae ->Envelop
                                     this_idx2=self.plotter.HistColl[proc].GetSysIdx2List(sys,idx1)[0]
                                     hup,hdown= self.GetUpDownEnvelop(proc,sys,idx1)
-                                    
                                     this_sysname=self.nuisance_map[sys][str(idx1)][str(this_idx2)][0]
                                     if len(self.nuisance_map[sys][str(idx1)][str(idx2)])>2:
                                         if not self.nuisance_map[sys][str(idx1)][str(idx2)][2] : continue 

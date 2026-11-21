@@ -65,24 +65,157 @@
         }
     },
 
-    #"jesAsym": {
-    #    "0": {
-    #        "Down": ["JESAsym__YEAR__","Down"],
-    #        "Up": ["JESAsym__YEAR__","Up"]
-    #    }
-    #},
-    "jesbminus":{
-        "0":{
-            "Down": ["JESbminus","Down"],
-            "Up": ["JESbminus","Up"],
-            }
+    'jesBySource': {
+        'AbsoluteMPFBias': {
+            "Down": ["AbsoluteMPFBias", "Down"],
+            "Up": ["AbsoluteMPFBias", "Up"]
+        },
+        'AbsoluteScale': {
+            "Down": ["AbsoluteScale", "Down"],
+            "Up": ["AbsoluteScale", "Up"]
+        },
+        'AbsoluteStat': {
+            "Down": ["AbsoluteStat__YEAR__", "Down"],
+            "Up": ["AbsoluteStat__YEAR__", "Up"]
+        },
+        'FlavorQCD': {
+            "Down": ["FlavorQCD", "Down"],
+            "Up": ["FlavorQCD", "Up"]
+        },
+        'Fragmentation': {
+            "Down": ["Fragmentation", "Down"],
+            "Up": ["Fragmentation", "Up"]
+        },
+        'PileUpDataMC': {
+            "Down": ["PileUpDataMC", "Down"],
+            "Up": ["PileUpDataMC", "Up"],
+            'rho':0.5,
+        },
+        'PileUpPtBB': {
+            "Down": ["PileUpPtBB", "Down"],
+            "Up": ["PileUpPtBB", "Up"],
+            'rho':0.5
+        },
+        'PileUpPtEC1': {
+            "Down": ["PileUpPtEC1", "Down"],
+            "Up": ["PileUpPtEC1", "Up"],
+            "rho":0.5,
+            
+        },
+        'PileUpPtEC2': {
+            "Down": ["PileUpPtEC2", "Down"],
+            "Up": ["PileUpPtEC2", "Up"],
+            "rho":0.5,
+            
+            
+        },
+        'PileUpPtHF': {
+            "Down": ["PileUpPtHF", "Down"],
+            "Up": ["PileUpPtHF", "Up"],
+            "rho":0.5,
+        },
+        'PileUpPtRef': {
+            "Down": ["PileUpPtRef", "Down"],
+            "Up": ["PileUpPtRef", "Up"],
+            "rho":0.5,
+            
+        },
+        'RelativeFSR': {
+            "Down": ["RelativeFSR", "Down"],
+            "Up": ["RelativeFSR", "Up"],
+            "rho":0.5,
+        },
+        'RelativeJEREC1': {
+            "Down": ["RelativeJEREC1__YEAR__", "Down"],
+            "Up": ["RelativeJEREC1__YEAR__", "Up"]
+        },
+        'RelativeJEREC2': {
+            "Down": ["RelativeJEREC2__YEAR__", "Down"],
+            "Up": ["RelativeJEREC2__YEAR__", "Up"]
+        },
+        'RelativeJERHF': {
+            "Down": ["RelativeJERHF", "Down"],
+            "Up": ["RelativeJERHF", "Up"],
+            "rho":0.5,
+        },
+        'RelativePtBB': {
+            "Down": ["RelativePtBB", "Down"],
+            "Up": ["RelativePtBB", "Up"],
+            "rho":0.5,
+        },
+        'RelativePtEC1': {
+            "Down": ["RelativePtEC1__YEAR__", "Down"],
+            "Up": ["RelativePtEC1__YEAR__", "Up"]
+        },
+        'RelativePtEC2': {
+            "Down": ["RelativePtEC2__YEAR__", "Down"],
+            "Up": ["RelativePtEC2__YEAR__", "Up"]
+        },
+        'RelativePtHF': {
+            "Down": ["RelativePtHF", "Down"],
+            "Up": ["RelativePtHF", "Up"],
+            "rho":0.5,
+        },
+        'RelativeBal': {
+            "Down": ["RelativeBal", "Down"],
+            "Up": ["RelativeBal", "Up"],
+            "rho":0.5,
+        },
+        'RelativeSample': {
+            "Down": ["RelativeSample__YEAR__", "Down"],
+            "Up": ["RelativeSample__YEAR__", "Up"]
+        },
+        'RelativeStatEC': {
+            "Down": ["RelativeStatEC__YEAR__", "Down"],
+            "Up": ["RelativeStatEC__YEAR__", "Up"]
+        },
+        'RelativeStatFSR': {
+            "Down": ["RelativeStatFSR__YEAR__", "Down"],
+            "Up": ["RelativeStatFSR__YEAR__", "Up"]
+        },
+        'RelativeStatHF': {
+            "Down": ["RelativeStatHF__YEAR__", "Down"],
+            "Up": ["RelativeStatHF__YEAR__", "Up"]
+        },
+        'SinglePionECAL': {
+            "Down": ["SinglePionECAL", "Down"],
+            "Up": ["SinglePionECAL", "Up"]
+        },
+        'SinglePionHCAL': {
+            "Down": ["SinglePionHCAL", "Down"],
+            "Up": ["SinglePionHCAL", "Up"]
+        },
+        'TimePtEta': {
+            "Down": ["TimePtEta__YEAR__", "Down"],
+            "Up": ["TimePtEta__YEAR__", "Up"]
+        },
+        'AbsoluteFlavMap': {
+            "Down": ["AbsoluteFlavMap", "Down"],
+            "Up": ["AbsoluteFlavMap", "Up"]
+        },
+        'FlavorPhotonJet': {
+            "Down": ["FlavorPhotonJet", "Down"],
+            "Up": ["FlavorPhotonJet", "Up"]
+        },
+        'FlavorPureBottom': {
+            "Down": ["FlavorPureBottom", "Down"],
+            "Up": ["FlavorPureBottom", "Up"]
+        },
+        'FlavorPureCharm': {
+            "Down": ["FlavorPureCharm", "Down"],
+            "Up": ["FlavorPureCharm", "Up"]
+        },
+        'FlavorPureQuark': {
+            "Down": ["FlavorPureQuark", "Down"],
+            "Up": ["FlavorPureQuark", "Up"]
+        },
+        'FlavorZJet': {
+            "Down": ["FlavorZJet", "Down"],
+            "Up": ["FlavorZJet", "Up"]
+        }
     },
-    "jesbplus":{
-        "0":{
-            "Down": ["JESbplus","Down"],
-            "Up": ["JESbplus","Up"],
-            }
-    },    
+    
+    
     "pu__YEAR__": {
         #https://twiki.cern.ch/twiki/bin/view/CMS/PileupJSONFileforData#Recommended_cross_section
         ## Fully correlated
