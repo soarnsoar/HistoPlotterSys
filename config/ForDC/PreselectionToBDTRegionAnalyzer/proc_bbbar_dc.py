@@ -51,14 +51,14 @@
 
 
     ("DYbminus",{
-        "procs":['DYgb_b'],
+        "procs":['DY_b'],
         "color":61,
         "name":"DY b^{-}",
         "IsSig":True,
     }),
 
     ("DYbplus",{
-        "procs":['DYgb_bbar'],
+        "procs":['DY_bbar'],
         "color":99,
         "name":"DY b^{+}",
         "IsSig":True,
