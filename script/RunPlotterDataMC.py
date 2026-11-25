@@ -39,6 +39,7 @@ def RunWithCondor(blind,Year,AnalyzerName,cut,x,procpath,dirname,outname,suffix,
     curdir=str(os.getcwd())
     this_var_suffix="__".join(this_var)
     this_proc_suffix="__".join(this_proc)
+    this_proc_suffix=this_proc_suffix.replace(' ','_')
     normbybin_suffix=""
     if normbybin:
         normbybin_suffix="__normbybin"

@@ -87,9 +87,9 @@ def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,ps
     jobname="datacard__"+Ana+"__"+Year
     submit=1
     ncpu=1
-    memory=4800
+    memory=3200
     nretry=1
-    nmax=480
+    nmax='800'
     #nmax=False
 
     curdir=os.getcwd()

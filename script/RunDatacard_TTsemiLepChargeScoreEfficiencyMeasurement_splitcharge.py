@@ -89,7 +89,7 @@ def RunWithCondor(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,ps
     ncpu=1
     memory=False
     nretry=1
-    nmax=400
+    nmax=480
     #nmax=False
 
     curdir=os.getcwd()
@@ -159,7 +159,7 @@ def GetRebinning(year,cut,x,suffix):
 if __name__ == '__main__':
     ##----Setup-----##
     Years=["2016preVFP","2016postVFP","2017","2018"]
-        
+    #Years=["2018"]
     Ana="TTsemiLepChargeScoreEfficiencyMeasurement"
     suffix="runSys__use_beff_dasym__JETPUID_L__newlepveto__chi2kincut__bdt2608.2__splitcharge__"
         
