@@ -67,151 +67,155 @@
 
     'jesBySource': {
         'AbsoluteMPFBias': {
-            "Down": ["AbsoluteMPFBias", "Down"],
-            "Up": ["AbsoluteMPFBias", "Up"]
+            "Down": ["JESAbsoluteMPFBias", "Down"],
+            "Up": ["JESAbsoluteMPFBias", "Up"]
         },
         'AbsoluteScale': {
-            "Down": ["AbsoluteScale", "Down"],
-            "Up": ["AbsoluteScale", "Up"]
+            "Down": ["JESAbsoluteScale", "Down"],
+            "Up": ["JESAbsoluteScale", "Up"]
         },
         'AbsoluteStat': {
-            "Down": ["AbsoluteStat__YEAR__", "Down"],
-            "Up": ["AbsoluteStat__YEAR__", "Up"]
+            "Down": ["JESAbsoluteStat__YEAR__", "Down"],
+            "Up": ["JESAbsoluteStat__YEAR__", "Up"]
         },
         'FlavorQCD': {
-            "Down": ["FlavorQCD", "Down"],
-            "Up": ["FlavorQCD", "Up"]
+            "Down": ["JESFlavorQCD", "Down"],
+            "Up": ["JESFlavorQCD", "Up"]
         },
         'Fragmentation': {
-            "Down": ["Fragmentation", "Down"],
-            "Up": ["Fragmentation", "Up"]
+            "Down": ["JESFragmentation", "Down"],
+            "Up": ["JESFragmentation", "Up"]
         },
         'PileUpDataMC': {
-            "Down": ["PileUpDataMC", "Down"],
-            "Up": ["PileUpDataMC", "Up"],
+            "Down": ["JESPileUpDataMC", "Down"],
+            "Up": ["JESPileUpDataMC", "Up"],
             'rho':0.5,
         },
         'PileUpPtBB': {
-            "Down": ["PileUpPtBB", "Down"],
-            "Up": ["PileUpPtBB", "Up"],
+            "Down": ["JESPileUpPtBB", "Down"],
+            "Up": ["JESPileUpPtBB", "Up"],
             'rho':0.5
         },
         'PileUpPtEC1': {
-            "Down": ["PileUpPtEC1", "Down"],
-            "Up": ["PileUpPtEC1", "Up"],
+            "Down": ["JESPileUpPtEC1", "Down"],
+            "Up": ["JESPileUpPtEC1", "Up"],
             "rho":0.5,
             
         },
         'PileUpPtEC2': {
-            "Down": ["PileUpPtEC2", "Down"],
-            "Up": ["PileUpPtEC2", "Up"],
+            "Down": ["JESPileUpPtEC2", "Down"],
+            "Up": ["JESPileUpPtEC2", "Up"],
             "rho":0.5,
             
             
         },
         'PileUpPtHF': {
-            "Down": ["PileUpPtHF", "Down"],
-            "Up": ["PileUpPtHF", "Up"],
+            "Down": ["JESPileUpPtHF", "Down"],
+            "Up": ["JESPileUpPtHF", "Up"],
             "rho":0.5,
         },
         'PileUpPtRef': {
-            "Down": ["PileUpPtRef", "Down"],
-            "Up": ["PileUpPtRef", "Up"],
+            "Down": ["JESPileUpPtRef", "Down"],
+            "Up": ["JESPileUpPtRef", "Up"],
             "rho":0.5,
             
         },
         'RelativeFSR': {
-            "Down": ["RelativeFSR", "Down"],
-            "Up": ["RelativeFSR", "Up"],
+            "Down": ["JESRelativeFSR", "Down"],
+            "Up": ["JESRelativeFSR", "Up"],
             "rho":0.5,
         },
         'RelativeJEREC1': {
-            "Down": ["RelativeJEREC1__YEAR__", "Down"],
-            "Up": ["RelativeJEREC1__YEAR__", "Up"]
+            "Down": ["JESRelativeJEREC1__YEAR__", "Down"],
+            "Up": ["JESRelativeJEREC1__YEAR__", "Up"]
         },
         'RelativeJEREC2': {
-            "Down": ["RelativeJEREC2__YEAR__", "Down"],
-            "Up": ["RelativeJEREC2__YEAR__", "Up"]
+            "Down": ["JESRelativeJEREC2__YEAR__", "Down"],
+            "Up": ["JESRelativeJEREC2__YEAR__", "Up"]
         },
         'RelativeJERHF': {
-            "Down": ["RelativeJERHF", "Down"],
-            "Up": ["RelativeJERHF", "Up"],
+            "Down": ["JESRelativeJERHF", "Down"],
+            "Up": ["JESRelativeJERHF", "Up"],
             "rho":0.5,
         },
         'RelativePtBB': {
-            "Down": ["RelativePtBB", "Down"],
-            "Up": ["RelativePtBB", "Up"],
+            "Down": ["JESRelativePtBB", "Down"],
+            "Up": ["JESRelativePtBB", "Up"],
             "rho":0.5,
         },
         'RelativePtEC1': {
-            "Down": ["RelativePtEC1__YEAR__", "Down"],
-            "Up": ["RelativePtEC1__YEAR__", "Up"]
+            "Down": ["JESRelativePtEC1__YEAR__", "Down"],
+            "Up": ["JESRelativePtEC1__YEAR__", "Up"]
         },
         'RelativePtEC2': {
-            "Down": ["RelativePtEC2__YEAR__", "Down"],
-            "Up": ["RelativePtEC2__YEAR__", "Up"]
+            "Down": ["JESRelativePtEC2__YEAR__", "Down"],
+            "Up": ["JESRelativePtEC2__YEAR__", "Up"]
         },
         'RelativePtHF': {
-            "Down": ["RelativePtHF", "Down"],
-            "Up": ["RelativePtHF", "Up"],
+            "Down": ["JESRelativePtHF", "Down"],
+            "Up": ["JESRelativePtHF", "Up"],
             "rho":0.5,
         },
         'RelativeBal': {
-            "Down": ["RelativeBal", "Down"],
-            "Up": ["RelativeBal", "Up"],
+            "Down": ["JESRelativeBal", "Down"],
+            "Up": ["JESRelativeBal", "Up"],
             "rho":0.5,
         },
         'RelativeSample': {
-            "Down": ["RelativeSample__YEAR__", "Down"],
-            "Up": ["RelativeSample__YEAR__", "Up"]
+            "Down": ["JESRelativeSample__YEAR__", "Down"],
+            "Up": ["JESRelativeSample__YEAR__", "Up"]
         },
         'RelativeStatEC': {
-            "Down": ["RelativeStatEC__YEAR__", "Down"],
-            "Up": ["RelativeStatEC__YEAR__", "Up"]
+            "Down": ["JESRelativeStatEC__YEAR__", "Down"],
+            "Up": ["JESRelativeStatEC__YEAR__", "Up"]
         },
         'RelativeStatFSR': {
-            "Down": ["RelativeStatFSR__YEAR__", "Down"],
-            "Up": ["RelativeStatFSR__YEAR__", "Up"]
+            "Down": ["JESRelativeStatFSR__YEAR__", "Down"],
+            "Up": ["JESRelativeStatFSR__YEAR__", "Up"]
         },
         'RelativeStatHF': {
-            "Down": ["RelativeStatHF__YEAR__", "Down"],
-            "Up": ["RelativeStatHF__YEAR__", "Up"]
+            "Down": ["JESRelativeStatHF__YEAR__", "Down"],
+            "Up": ["JESRelativeStatHF__YEAR__", "Up"]
         },
         'SinglePionECAL': {
-            "Down": ["SinglePionECAL", "Down"],
-            "Up": ["SinglePionECAL", "Up"]
+            "Down": ["JESSinglePionECAL", "Down"],
+            "Up": ["JESSinglePionECAL", "Up"]
         },
         'SinglePionHCAL': {
-            "Down": ["SinglePionHCAL", "Down"],
-            "Up": ["SinglePionHCAL", "Up"]
+            "Down": ["JESSinglePionHCAL", "Down"],
+            "Up": ["JESSinglePionHCAL", "Up"]
         },
         'TimePtEta': {
-            "Down": ["TimePtEta__YEAR__", "Down"],
-            "Up": ["TimePtEta__YEAR__", "Up"]
+            "Down": ["JESTimePtEta__YEAR__", "Down"],
+            "Up": ["JESTimePtEta__YEAR__", "Up"]
         },
         'AbsoluteFlavMap': {
-            "Down": ["AbsoluteFlavMap", "Down"],
-            "Up": ["AbsoluteFlavMap", "Up"]
+            "Down": ["JESAbsoluteFlavMap", "Down"],
+            "Up": ["JESAbsoluteFlavMap", "Up"]
         },
         'FlavorPhotonJet': {
-            "Down": ["FlavorPhotonJet", "Down"],
-            "Up": ["FlavorPhotonJet", "Up"]
+            "Down": ["JESFlavorPhotonJet", "Down"],
+            "Up": ["JESFlavorPhotonJet", "Up"]
         },
         'FlavorPureBottom': {
-            "Down": ["FlavorPureBottom", "Down"],
-            "Up": ["FlavorPureBottom", "Up"]
+            "Down": ["JESFlavorPureBottom", "Down"],
+            "Up": ["JESFlavorPureBottom", "Up"]
         },
         'FlavorPureCharm': {
-            "Down": ["FlavorPureCharm", "Down"],
-            "Up": ["FlavorPureCharm", "Up"]
+            "Down": ["JESFlavorPureCharm", "Down"],
+            "Up": ["JESFlavorPureCharm", "Up"]
         },
         'FlavorPureQuark': {
-            "Down": ["FlavorPureQuark", "Down"],
-            "Up": ["FlavorPureQuark", "Up"]
+            "Down": ["JESFlavorPureQuark", "Down"],
+            "Up": ["JESFlavorPureQuark", "Up"]
+        },
+        'FlavorPureGluon':{
+            "Down": ["JESFlavorPureGluon", "Down"],
+            "Up": ["JESFlavorPureGluon", "Up"]
         },
         'FlavorZJet': {
-            "Down": ["FlavorZJet", "Down"],
-            "Up": ["FlavorZJet", "Up"]
+            "Down": ["JESFlavorZJet", "Down"],
+            "Up": ["JESFlavorZJet", "Up"]
         }
     },
     
