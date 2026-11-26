@@ -574,7 +574,7 @@ class JHDatacard:
             for sysname in self.info[proc]:
                 #print("sysname=",sysname)
                 #print("self.info[proc][sysname]=")
-                print(self.info[proc][sysname])
+                #print(self.info[proc][sysname])
                 ##
                 if sysname=="nom": 
                     self.info[proc]["nom"]["nom"].SetName(proc)

@@ -19,7 +19,7 @@ class Parser:
         #else:
         #    self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/combine.root"
         self.inputpath=maindir+"/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/combine.root"
-        if 'sdfarm' in HOSTNAME:
+        if 'sdfarm' in HOSTNAME or 'gsdc' in HOSTNAME:
             self.inputpath="/xrd/store/user/jhchoi/plotter/SKFlatOutput/"+self.AnaName+"/"+self.YEAR+"/"+self.suffix+"/combine.root"
         
         self.nui_dict={}
