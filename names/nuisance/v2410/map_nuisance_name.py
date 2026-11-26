@@ -58,13 +58,25 @@
             "Up":["JER__YEAR__","Up"],
         }
     },
+    'jerByEta':{
+	"Eta0To1p93": {
+            "Down": ['JER_Eta0To1p93___YEAR__','Down'],
+            "Up":  ['JER_Eta0To1p93___YEAR__','Up'],
+	},
+        "Eta1p93To2p5": {
+            "Down":  ['JER_Eta1p93To2p5___YEAR__','Down'],
+            "Up":  ['JER_Eta1p93To2p5___YEAR__','Up'],
+	}
+    },
+
+    
     "jes__YEAR__": {
         "0": {
             "Down": ["JES__YEAR__","Down"],
             "Up": ["JES__YEAR__","Up"]
         }
     },
-
+    
     'jesBySource': {
         'AbsoluteMPFBias': {
             "Down": ["JESAbsoluteMPFBias", "Down"],

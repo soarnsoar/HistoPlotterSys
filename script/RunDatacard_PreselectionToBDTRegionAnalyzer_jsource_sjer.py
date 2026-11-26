@@ -46,6 +46,9 @@ def RunYear(Ana,Year,suffix,cut,xname,StatOnly,PreCalcScalePDF,DoSimple,Rebinnin
     mydc.NuisanceSkip.append('jes'+Year)
     mydc.NuisanceSkip.append('JES'+Year)
 
+    mydc.NuisanceSkip.append('jer'+Year)
+    mydc.NuisanceSkip.append('JER'+Year)
+
 
     GIT_HistoPlotterSys=os.getenv("GIT_HistoPlotterSys")
     procpath=GIT_HistoPlotterSys+"/config/ForDC/PreselectionToBDTRegionAnalyzer/proc_bbbar_dc.py"
