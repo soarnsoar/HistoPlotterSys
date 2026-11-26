@@ -114,7 +114,7 @@ def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=2,nmax=0):
     #    ncpu=ncpu_criteria
 
     lines.append('request_cpus = '+str(ncpu))
-    if 'sdfarm' in HOSTNAME:
+    if 'sdfarm' in HOSTNAME or 'gsdc' in HOSTNAME:
         lines.append('accounting_group=group_cms')
         lines.append('output = run.out')
         lines.append('error = run.err')
@@ -135,7 +135,7 @@ def Export(WORKDIR,command,jobname,submit,ncpu,memory=False,nretry=2,nmax=0):
     if submit:
         CURDIR=os.getcwd()        
         submitcommand='condor_submit '+WORKDIR+'/run.jds > '+WORKDIR+'/run.jid'
-        if 'sdfarm' in HOSTNAME :
+        if 'sdfarm' in HOSTNAME or 'gsdc' in HOSTNAME :
             os.chdir(WORKDIR)
             submitcommand="condor_submit run.jds > run.jid"
         
